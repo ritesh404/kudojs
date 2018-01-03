@@ -1,0 +1,43 @@
+{
+  "name": "kudojs",
+  "version": "0.0.1",
+  "description": "A utility library to write functional code in Javascript",
+  "main": "dist/kudo.js",
+  "module": "dist/kudo.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:typescript": "tsc ./src/index.ts",
+    "build:js": "rollup -c",
+    "build": "rollup -c"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blitzritz/kudojs.git"
+  },
+  "keywords": [
+    "kudojs",
+    "functional",
+    "programming",
+    "fp",
+    "javascript"
+  ],
+  "author": "Ritesh Pillai",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/blitzritz/kudojs/issues"
+  },
+  "homepage": "https://github.com/blitzritz/kudojs#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-core": "6.26.0",
+    "babel-plugin-external-helpers": "6.22.0",
+    "babel-preset-env": "1.6.1",
+    "babelrc-rollup": "3.0.0",
+    "chai": "4.1.2",
+    "mocha": "4.1.0",
+    "rollup-plugin-babel": "3.0.3",
+    "rollup-plugin-istanbul": "2.0.0",
+    "rollup-plugin-typescript2": "0.9.0",
+    "typescript": "2.6.2"
+  }
+}

@@ -1,0 +1,11 @@
+tmp/*
+node_modules/*
+*.log
+.DS_Store
+*/.DS_Store
+.idea/
+.vscode
+build_stats.html
+coverage/*
+.rpt2_cache
+*/.rpt2_cache
