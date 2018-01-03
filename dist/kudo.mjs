@@ -62,7 +62,7 @@ var compose = function compose() {
         };
     });
 };
-//Algebraic Data Types
+
 var _Nothing = /** @class */function () {
     function Nothing() {}
     Nothing.prototype.getValue = function () {
@@ -127,6 +127,8 @@ var Maybe = {
         });
     }
 };
+
+//Algebraic Data Types
 var Kudo = {
     fmap: fmap,
     caseOf: caseOf,

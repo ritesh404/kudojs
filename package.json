@@ -29,6 +29,8 @@
   "homepage": "https://github.com/blitzritz/kudojs#readme",
   "dependencies": {},
   "devDependencies": {
+    "@types/chai": "4.0.10",
+    "@types/mocha": "2.2.45",
     "babel-core": "6.26.0",
     "babel-plugin-external-helpers": "6.22.0",
     "babel-preset-env": "1.6.1",
