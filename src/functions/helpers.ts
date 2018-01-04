@@ -15,7 +15,7 @@ const id = (x: any): any => x;
 const fmap = (fn: Function, f: Functor): Functor | Error =>
     typeof fn !== "function"
         ? throwError("function not provided")
-        : !f.map ? throwError("map not implemented") : f.map.call(null, fn);
+        : !f.map ? throwError("map not implemented") : f.map.call(f, fn);
 
 //caseOf :: Object -> patternMatch -> a
 const caseOf = (o: Object, p: PatternMatch): any =>
@@ -37,11 +37,11 @@ const curry = (fn: Function): Function | Error => {
 };
 
 //ncurry :: Function -> Function
-const ncurry = (fn: Function): Function | Error => {
+const ncurry = (fn: Function, args: Array<string>): Function | Error => {
     if (typeof fn !== "function") return throwError("Function not provided");
-    if (fn.arguments.length > 1) return throwError("Function Arity cannot be greater than 1");
-    if (typeof fn.arguments[0] !== "object") return throwError("Function argument must be an object type");
-    const args = Object.keys(fn.arguments[0]);
+    if (fn.length > 1) return throwError("Function Arity cannot be greater than 1");
+    //if (typeof fn.arguments[0] !== "object") return throwError("Function argument must be an object type");
+    //const args = Object.keys(fn.arguments[0]);
 
     return function curried(ar: Object): Function {
         const curArgs = Object.keys(ar);
@@ -52,7 +52,7 @@ const ncurry = (fn: Function): Function | Error => {
 };
 
 //compose :: Array<Function> -> Function
-const compose = (...fns: Array<Function>) => fns.reduce((f,g) => (...args:Array<any>) => f(g(...args)));
+const compose = (...fns: Array<Function>): Function | Error => fns.length > 0 ? fns.reduce((f,g) => (...args:Array<any>) => f(g(...args))) : throwError("Nothing to compose!");
 
 export {
     id,

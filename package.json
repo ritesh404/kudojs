@@ -5,7 +5,7 @@
   "main": "dist/kudo.js",
   "module": "dist/kudo.mjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha  --opts ./mocha.opts",
     "build:typescript": "tsc ./src/index.ts",
     "build:js": "rollup -c",
     "build": "rollup -c"
@@ -40,6 +40,7 @@
     "rollup-plugin-babel": "3.0.3",
     "rollup-plugin-istanbul": "2.0.0",
     "rollup-plugin-typescript2": "0.9.0",
+    "ts-node": "4.1.0",
     "typescript": "2.6.2"
   }
 }
