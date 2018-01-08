@@ -40,7 +40,11 @@ describe("Maybe Monad",() => {
         expect(l(Maybe.Nothing(1))).to.be.equal(r(Maybe.Nothing(1)));
     })
 
-    it("Should should pass the homomorphism law", () => {
+    it("Should pass the homomorphism law", () => {
         expect(unwrap(b.ap(a))).to.be.equal(unwrap(Maybe.Just(add2(1))));
+    })
+
+    it("A functor mapped to a function should the same as the function applied to the functor", () => {
+        expect(unwrap(a.map(add2))).to.be.equal(unwrap(b.ap(a)));
     })
 })
