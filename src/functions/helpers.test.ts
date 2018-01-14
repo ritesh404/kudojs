@@ -31,7 +31,7 @@ describe("fmap function", () => {
     })
 
     it("should throw an error if a functor is not provided", ()=> {
-        expect(fmap.bind(null, ()=>{}, 1)).to.throw("map not implemented")
+        expect(fmap.bind(null, ()=>{}, 1)).to.throw("Functor not found")
     });
 
     it("should throw an error if a function is not provided", ()=> {

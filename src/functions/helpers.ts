@@ -1,7 +1,7 @@
 import Functor from "../implements/functor";
 import PatternMatch from "../implements/patternmatch";
 import Monad from "../implements/monad";
-import { Applicative, Apply } from "../interfaces";
+import { Applicative, Apply, BiFunctor } from "../interfaces";
 
 const slice = Array.prototype.slice;
 
@@ -13,11 +13,26 @@ const throwError = (x: String): Error => {
 //id :: a -> a
 const id = (x: any): any => x;
 
+//isFunction :: Function -> boolean
 const isFunction = (f: any) => typeof f === "function";
 
+//once :: Function -> Function
+const once = (f: Function) => {
+    if(!isFunction(f)) throwError("Function not provided");
+    let _called = false;
+    let _result: any = undefined;
+
+    return (...args: Array<any>) => {
+        if(!_called){
+            _called = true;
+            _result = f.apply(null, args);
+        }
+        return _result;
+    }
+}
 //curry :: Function -> Function
-const curry = (fn: Function): Function | Error => {
-    if (!isFunction(fn)) return throwError("Function not provided");
+const curry = (fn: Function): Function => {
+    if (!isFunction(fn)) throwError("Function not provided");
 
     const arity = fn.length;
     return function curried() {
@@ -31,10 +46,9 @@ const curry = (fn: Function): Function | Error => {
 };
 
 //ncurry :: Function -> Function
-const ncurry = (fn: Function, args: Array<string>): Function | Error => {
-    if (!isFunction(fn)) return throwError("Function not provided");
-    if (fn.length > 1)
-        return throwError("Function Arity cannot be greater than 1");
+const ncurry = (fn: Function, args: Array<string>): Function => {
+    if (!isFunction(fn)) throwError("Function not provided");
+    if (fn.length > 1) throwError("Function Arity cannot be greater than 1");
     //if (typeof fn.arguments[0] !== "object") return throwError("Function argument must be an object type");
     //const args = Object.keys(fn.arguments[0]);
 
@@ -49,25 +63,34 @@ const ncurry = (fn: Function, args: Array<string>): Function | Error => {
 };
 
 //compose :: Array<Function> -> Function
-const compose = (...fns: Array<Function>): Function | Error =>
-    fns.length > 0
-        ? fns.reduce((f, g) => (...args: Array<any>) => f(g(...args)))
-        : throwError("Nothing to compose!");
+const compose = (...fns: Array<Function>): Function => {
+    if(fns.length <= 0) throwError("Nothing to compose!");
+    return fns.reduce((f, g) => (...args: Array<any>) => f(g(...args)));
+}
+    
 
 //fmap :: Functor f  => (a -> b) -> f a -> f b
-const _fmap = (fn: Function, f: Functor): Functor | Error =>
-    !isFunction(fn)
-        ? throwError("function not provided")
-        : !f.map ? throwError("map not implemented") : f.map.call(f, fn);
+const _fmap = (fn: Function, f: Functor): Functor => {
+    if(!isFunction(fn)) throwError("function not provided");
+    if(!f.map) throwError("Functor not found");
+    return f.map.call(f, fn);
+}
 const fmap = curry(_fmap);
 
+//bimap :: BiFunctor b => b a c ~> (a -> e) -> (c -> d) ->  b a c -> b e d  
+const _bimap = (f1: Function, f2: Function, b: BiFunctor): BiFunctor => {
+    if(!isFunction(f1) || !isFunction(f2)) throwError("Functions not provided");
+    if(!b.bimap) throwError("BiFunctor not found");
+    return b.bimap(f1, f2);
+}
+const bimap = curry(_bimap);
+
 //chain :: Monad m => m a -> (a -> m b) -> m b
-const _chain = (m: Monad, f: Function): Monad | Error =>
-    !m.chain
-        ? throwError("chain not implemented")
-        : !isFunction(f)
-          ? throwError("function not provided")
-          : m.chain.call(m, f);
+const _chain = (m: Monad, f: Function): Monad =>{
+    if(!m.chain) throwError("chain not implemented");
+    if(!isFunction(f)) throwError("function not provided");
+    return m.chain.call(m, f);
+}
 const chain = curry(_chain);
 
 //caseOf :: Object -> patternMatch -> a
@@ -75,9 +98,10 @@ const _caseOf = (o: Object, p: PatternMatch): any =>
     !p.caseOf ? throwError("caseOf not implemented") : p.caseOf.call(null, o);
 const caseOf = curry(_caseOf);
 
+//liftAn :: Apply a => f -> Array<a> -> a 
 const _liftAn = (f: Function, fn: Array<Apply>) => {
     if (!isFunction(f)) throwError("Function not found");
-    if (fn.length <= 0) throwError("No Functors found!");
+    if (fn.length <= 0) throwError("No Apply found!");
     const init: Apply = fn[0].map(f);
     let res = init;
     if (fn.length > 1) {
@@ -109,8 +133,11 @@ const liftA5 = curry(_liftA5);
 
 export {
     id,
+    isFunction,
     throwError,
+    once,
     fmap,
+    bimap,
     caseOf,
     curry,
     ncurry,

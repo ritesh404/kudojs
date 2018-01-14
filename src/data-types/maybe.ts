@@ -1,10 +1,10 @@
 // import Functor from "../implements/functor";
 // import Monad from "../implements/monad";
 // import PatternMatch from "../implements/patternmatch";
-import {Setoid, Apply, Applicative, Functor, Monad, PatternMatch} from "../interfaces";
-import {throwError} from "../functions/helpers";
+import {Setoid, Monad, PatternMatch} from "../interfaces";
+import {throwError, isFunction} from "../functions/helpers";
 
-class Nothing implements Monad, PatternMatch {
+class Nothing implements Setoid, Monad, PatternMatch {
 
     equals(n: Nothing){
        return n instanceof Nothing
@@ -43,40 +43,42 @@ class Nothing implements Monad, PatternMatch {
     }
 
     caseOf(o: {Nothing: Function}){
-        return o.Nothing ? o.Nothing() : throwError("Expected Nothing!");
+        return o.Nothing ? o.Nothing() : throwError("Maybe: Expected Nothing!");
     }
 }
 
-class Just implements Monad, PatternMatch {
-    
-    value: any;
+const _justs = new WeakMap();
+class Just implements Setoid, Monad, PatternMatch {
 
     constructor(v: any){
-        this.value = v;
+        _justs.set(this, v);
     }
 
     equals(j: Just){
-        return j instanceof Just && j.getValue() === this.value;
+        return j instanceof Just && j.getValue() === this.getValue();
     }
 
     of(v: any){
         return new Just(v);
     }
 
-    ap(j: Just | Nothing): Just | Nothing | Error{
-        return typeof this.value === "function" ? j.map(this.value) : throwError("Wrapped value must be a function");
+    ap(j: Just | Nothing): Just | Nothing{
+        if(!isFunction(this.getValue())) throwError("Maybe: Wrapped value is not a function");
+        return j.map(this.getValue());
     }
 
     getValue(){
-        return this.value;
+        return _justs.get(this);
     }
 
     map(f: Function){
-        return new Just(f(this.value));
+        if(!isFunction(f)) throwError("Maybe: Expected a function");
+        return new Just(f(this.getValue()));
     }
 
     chain(f: Function){
-        return f(this.value);
+        if(!isFunction(f)) throwError("Maybe: Expected a function");
+        return f(this.getValue());
     }
 
     isJust(){
@@ -88,11 +90,11 @@ class Just implements Monad, PatternMatch {
     }
 
     toString(){
-        return `Just(${this.value})`;
+        return `Just(${this.getValue()})`;
     }
 
     caseOf(o: {Just: Function}){
-        return o.Just ? o.Just(this.value) : throwError("Expected Just");
+        return o.Just ? o.Just(this.getValue()) : throwError("Maybe: Expected Just");
     }
 }
 
@@ -102,8 +104,10 @@ const Maybe = {
     Nothing: (v: any): Nothing => new Nothing(),
     fromNullable: (v: any): Just | Nothing => v ? new Just(v) : new Nothing(),
     withDefault: (def: any, v: any): Just => v ? new Just(v) : new Just(def),
-    andThen: (cb: Function, m: Just | Nothing): Just | Nothing | Error => m instanceof Just ? cb.call(null, m.getValue()) : m instanceof Nothing ? m : throwError("Unexpected Type"),
-    catMaybes: (ar: Array<Just|Nothing>): Array<any> => ar.filter( m => m instanceof Just).map(m => m.getValue())
+    andThen: (cb: Function, m: Just | Nothing): Just | Nothing | Error => m instanceof Just ? cb.call(null, m.getValue()) : m instanceof Nothing ? m : throwError("Maybe: Unexpected Type"),
+    catMaybes: (ar: Array<Just|Nothing>): Array<any> => ar.filter( m => m instanceof Just).map(m => m.getValue()),
+    isJust: (v: Just| Nothing) => v.isJust(),
+    isNothing: (v: Just| Nothing) => v.isNothing()
 }
 
 export default Maybe;

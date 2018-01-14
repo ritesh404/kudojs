@@ -6,6 +6,10 @@ export interface Functor {
     map(fn: Function): Functor
 }
 
+export interface BiFunctor  extends Functor{
+    bimap(a: Function, b: Function): BiFunctor
+}
+
 export interface Apply extends Functor {
     ap(a: Functor): Apply
     map(fn: Function): Apply
