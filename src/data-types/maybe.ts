@@ -10,6 +10,10 @@ class Nothing implements Setoid, Monad, PatternMatch {
        return n instanceof Nothing
     }
 
+    // isEqual(n: Nothing){
+    //     return this.equals(n);
+    // }
+
     of(v: any){
         return new Nothing();
     }
@@ -57,6 +61,10 @@ class Just implements Setoid, Monad, PatternMatch {
     equals(j: Just){
         return j instanceof Just && j.getValue() === this.getValue();
     }
+
+    // isEqual(n: Just){
+    //     return this.equals(n);
+    // }
 
     of(v: any){
         return new Just(v);

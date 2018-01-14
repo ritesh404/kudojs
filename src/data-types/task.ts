@@ -3,7 +3,7 @@ import {Monad, PatternMatch} from "../interfaces";
 import {once, compose, throwError, isFunction} from "../functions/helpers";
 
 const _tasks = new WeakMap();
-class Task implements Monad {
+class TaskType implements Monad {
 
     constructor(f: Function/*, cancel: Function*/){
         isFunction(f) ? _tasks.set(this, f) : throwError("Task: Expected a Function");
@@ -17,7 +17,7 @@ class Task implements Monad {
     }
 
     of(v: any) {
-        return new Task((_: any, resolve: Function) => resolve(v));
+        return new TaskType((_: any, resolve: Function) => resolve(v));
     }
 
     toString(){
@@ -28,11 +28,11 @@ class Task implements Monad {
     map(f: Function){
         if(!isFunction(f)) throwError("Task: Expected a function");
         const fork = _tasks.get(this);
-        return new Task((rej: Function, res: Function) => fork(rej, compose(res, f)));
+        return new TaskType((rej: Function, res: Function) => fork(rej, compose(res, f)));
     }
 
-    ap(t: Task){
-        if(!(t instanceof Task)) throwError("Task: type mismatch");
+    ap(t: TaskType){
+        if(!(t instanceof TaskType)) throwError("Task: type mismatch");
         const thisFork = _tasks.get(this);
         let value: Array<any>;
         let fn: Function;
@@ -40,7 +40,7 @@ class Task implements Monad {
         let gotFuction: boolean = false;
         let rejected: boolean = false;
 
-        return new Task((rej: Function, res: Function) => {
+        return new TaskType((rej: Function, res: Function) => {
             const rejOnce = compose(() => {rejected = true;}, once)(rej);
 
             const resolveBoth = () => {
@@ -69,10 +69,10 @@ class Task implements Monad {
         if(!isFunction(f)) throwError("Task: Function required");
         const thisFork = _tasks.get(this);
 
-        return new Task((rej: Function, res: Function) => {
+        return new TaskType((rej: Function, res: Function) => {
             thisFork(rej, (...args: Array<any>) => {
                 const t = f.call(null, args);
-                if(!(t instanceof Task)) throwError("Task: function must return another Task");
+                if(!(t instanceof TaskType)) throwError("Task: function must return another Task");
                 t.fork(rej, res);
             })
         });
@@ -85,5 +85,7 @@ class Task implements Monad {
         });
     }
 }
+
+const Task = (f: Function) => new TaskType(f);
 
 export default Task;

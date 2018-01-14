@@ -9,3 +9,5 @@ build_stats.html
 coverage/*
 .rpt2_cache
 */.rpt2_cache
+.nyc_output
+*/.nyc_output

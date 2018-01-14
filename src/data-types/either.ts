@@ -12,12 +12,16 @@ class Left implements Setoid, BiFunctor, Monad, PatternMatch {
        return n.isLeft && n.isLeft() && n.getValue() === this.getValue();
     }
 
+    // isEqual(n: any){
+    //     return this.equals(n);
+    // }
+
     of(v: any){
         return new Left(v);
     }
 
     ap(n: Left){
-        return this.of(n);
+        return this;
     }
 
     getValue(){
@@ -49,7 +53,7 @@ class Left implements Setoid, BiFunctor, Monad, PatternMatch {
     }
 
     toString(){
-        return `Left()`;
+        return `Left(${this.getValue()})`;
     }
 
     caseOf(o: {Left: Function}){
@@ -67,6 +71,10 @@ class Right implements Setoid, BiFunctor, Monad, PatternMatch {
     equals(j: Right){
         return j.isRight && j.isRight() && j.getValue() === this.getValue();
     }
+
+    // isEqual(n: any){
+    //     return this.equals(n);
+    // }
 
     of(v: any){
         return new Right(v);

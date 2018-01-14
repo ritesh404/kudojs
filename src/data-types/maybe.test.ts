@@ -9,6 +9,25 @@ import {
     ncurry,
     compose
 } from "../functions/helpers"
+// const laws: any = require("laws");
+// // console.log(laws);
+// laws.functor.identity(Maybe.Just).asTest({ verbose: true, times: 100 })();
+// laws.functor.composition(Maybe.Just).asTest({ verbose: true, times: 100 })();
+// laws.applicative.identity(Maybe.Just).asTest({ verbose: true, times: 100 })();
+// laws.applicative.composition(Maybe.Just).asTest({ verbose: true, times: 100 })();
+// laws.applicative.homomorphism(Maybe.Just).asTest({ verbose: true, times: 100 })();
+// laws.applicative.interchange(Maybe.Just).asTest({ verbose: true, times: 100 })();
+// laws.monad.leftIdentity(Maybe.Just).asTest({ verbose: true, times: 100 })();
+// laws.monad.rightIdentity(Maybe.Just).asTest({ verbose: true, times: 100 })();
+
+// laws.functor.identity(Maybe.Nothing).asTest({ verbose: true, times: 100 })();
+// laws.functor.composition(Maybe.Nothing).asTest({ verbose: true, times: 100 })();
+// laws.applicative.identity(Maybe.Nothing).asTest({ verbose: true, times: 100 })();
+// laws.applicative.composition(Maybe.Nothing).asTest({ verbose: true, times: 100 })();
+// laws.applicative.homomorphism(Maybe.Nothing).asTest({ verbose: true, times: 100 })();
+// laws.applicative.interchange(Maybe.Nothing).asTest({ verbose: true, times: 100 })();
+// laws.monad.leftIdentity(Maybe.Nothing).asTest({ verbose: true, times: 100 })();
+// laws.monad.rightIdentity(Maybe.Nothing).asTest({ verbose: true, times: 100 })();
 
 const unwrap = (m: {getValue: Function}) => m.getValue()
 
