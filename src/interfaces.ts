@@ -2,6 +2,10 @@ export interface Setoid {
     equals(s: Setoid): boolean
 }
 
+export interface Semigroup {
+    concat(s: Semigroup): Semigroup
+}
+
 export interface Functor {
     map(fn: Function): Functor
 }

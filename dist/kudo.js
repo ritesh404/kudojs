@@ -150,11 +150,14 @@ var _Left = /** @class */function () {
     Left.prototype.equals = function (n) {
         return n.isLeft && n.isLeft() && n.getValue() === this.getValue();
     };
+    // isEqual(n: any){
+    //     return this.equals(n);
+    // }
     Left.prototype.of = function (v) {
         return new Left(v);
     };
     Left.prototype.ap = function (n) {
-        return this.of(n);
+        return this;
     };
     Left.prototype.getValue = function () {
         return _lefts.get(this);
@@ -178,7 +181,7 @@ var _Left = /** @class */function () {
         return new _Right(this.getValue());
     };
     Left.prototype.toString = function () {
-        return "Left()";
+        return "Left(" + this.getValue() + ")";
     };
     Left.prototype.caseOf = function (o) {
         return o.Left ? o.Left() : throwError("Either: Expected Left!");
@@ -193,6 +196,9 @@ var _Right = /** @class */function () {
     Right.prototype.equals = function (j) {
         return j.isRight && j.isRight() && j.getValue() === this.getValue();
     };
+    // isEqual(n: any){
+    //     return this.equals(n);
+    // }
     Right.prototype.of = function (v) {
         return new Right(v);
     };
@@ -272,6 +278,9 @@ var _Nothing = /** @class */function () {
     Nothing.prototype.equals = function (n) {
         return n instanceof Nothing;
     };
+    // isEqual(n: Nothing){
+    //     return this.equals(n);
+    // }
     Nothing.prototype.of = function (v) {
         return new Nothing();
     };
@@ -309,6 +318,9 @@ var _Just = /** @class */function () {
     Just.prototype.equals = function (j) {
         return j instanceof Just && j.getValue() === this.getValue();
     };
+    // isEqual(n: Just){
+    //     return this.equals(n);
+    // }
     Just.prototype.of = function (v) {
         return new Just(v);
     };
@@ -376,7 +388,7 @@ var Maybe = {
 };
 
 var _tasks = new WeakMap();
-var Task = /** @class */function () {
+var Task$2 = /** @class */function () {
     function Task(f /*, cancel: Function*/) {
         isFunction(f) ? _tasks.set(this, f) : throwError("Task: Expected a Function");
         //cancel && isFunction(cancel) ? _cancels.set(this, cancel) : _cancels.set(this, function(){})
@@ -460,6 +472,10 @@ var Task = /** @class */function () {
     };
     return Task;
 }();
+
+var Task = function Task(f) {
+  return new Task$2(f);
+};
 
 //Algebraic Data Types
 var Kudo = {
