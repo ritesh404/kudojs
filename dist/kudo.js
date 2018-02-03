@@ -94,8 +94,8 @@ var _bimap = function _bimap(f1, f2, b) {
     return b.bimap(f1, f2);
 };
 var bimap = curry(_bimap);
-//chain :: Monad m => m a -> (a -> m b) -> m b
-var _chain = function _chain(m, f) {
+//chain :: Monad m => (a -> m b) -> m a -> m b
+var _chain = function _chain(f, m) {
     if (!m.chain) throwError("chain not implemented");
     if (!isFunction(f)) throwError("function not provided");
     return m.chain.call(m, f);
@@ -103,7 +103,7 @@ var _chain = function _chain(m, f) {
 var chain = curry(_chain);
 //caseOf :: Object -> patternMatch -> a
 var _caseOf = function _caseOf(o, p) {
-    return !p.caseOf ? throwError("caseOf not implemented") : p.caseOf.call(null, o);
+    return !p.caseOf ? throwError("caseOf not implemented") : p.caseOf(o);
 };
 var caseOf = curry(_caseOf);
 //liftAn :: Apply a => f -> Array<a> -> a 
@@ -115,7 +115,7 @@ var _liftAn = function _liftAn(f, fn) {
     if (fn.length > 1) {
         var rest = fn.slice(1);
         res = rest.reduce(function (a, ca) {
-            return a.ap(ca);
+            return ca.ap(a);
         }, init);
     }
     return res;
@@ -142,13 +142,94 @@ var liftA3 = curry(_liftA3);
 var liftA4 = curry(_liftA4);
 var liftA5 = curry(_liftA5);
 
+var _of = function _of(v) {
+    return new Pair$2(v, v);
+};
+var _pairs = new WeakMap();
+var Pair$2 = /** @class */function () {
+    function Pair(v1, v2) {
+        if (v1 === undefined || v2 === undefined) throwError("Pair: Both first and second values must be defined");
+        _pairs.set(this, [v1, v2]);
+    }
+    Pair.prototype.equals = function (j) {
+        return j.fst() === this.fst() && j.snd() === this.snd();
+    };
+    // isEqual(n: any){
+    //     return this.equals(n);
+    // }
+    Pair.prototype.concat = function (p) {
+        if (!(p instanceof Pair)) throwError("Pair: Pair required");
+        var lf = this.fst();
+        var ls = this.snd();
+        var rf = p.fst();
+        var rs = p.snd();
+        if (!lf.concat || !ls.concat || !rf.concat || !rs.concat) throwError("Pair: Both Pairs must contain Semigroups");
+        return new Pair(lf.concat(rf), ls.concat(rs));
+    };
+    Pair.prototype.of = function (v) {
+        return _of(v);
+    };
+    Pair.prototype.fst = function () {
+        return this.getValue()[0];
+    };
+    Pair.prototype.snd = function () {
+        return this.getValue()[1];
+    };
+    Pair.prototype.ap = function (j) {
+        if (!(j instanceof Pair)) throwError("Pair: Pair required");
+        var fn = j.snd();
+        if (!isFunction(fn)) throwError("Pair: Second wrapped value should be a function");
+        var l = this.fst();
+        var r = j.fst();
+        //console.log(l, r, fn);
+        if (!l.concat || !r.concat) throwError('Pair: Types should be Semigroups');
+        return new Pair(l.concat(r), fn(this.snd()));
+    };
+    Pair.prototype.getValue = function () {
+        return _pairs.get(this);
+    };
+    Pair.prototype.map = function (f) {
+        if (!isFunction(f)) throwError("Pair: Expected a function");
+        return new Pair(this.fst(), f(this.snd()));
+    };
+    Pair.prototype.bimap = function (f1, f2) {
+        if (!isFunction(f1) || !isFunction(f2)) throwError("Pair: Expected functions for both parts");
+        return new Pair(f1(this.fst()), f2(this.snd()));
+    };
+    Pair.prototype.chain = function (f) {
+        if (!isFunction(f)) throwError("Pair: Expected a function");
+        var l = this.fst();
+        if (!l.concat) throwError("Pair: First value should be a Semigroup");
+        var p = f(this.snd());
+        if (!(p instanceof Pair)) throwError("Pair: Function must return a Pair");
+        var r = p.fst();
+        if (!r.concat) throwError("Pair: First value of the returned Pair should be a Semigroup");
+        return new Pair(l.concat(r), p.snd());
+    };
+    Pair.prototype.swap = function () {
+        var v = this.getValue();
+        return new Pair(v[1], v[0]);
+    };
+    Pair.prototype.toString = function () {
+        var v = this.getValue();
+        return "Pair((" + v[0] + "), (" + v[1] + "))";
+    };
+    return Pair;
+}();
+Pair$2.prototype.of = _of;
+
+var Pair = function Pair(v1, v2) {
+  return new Pair$2(v1, v2);
+};
+Pair.of = Pair$2.prototype.of;
+
 var _lefts = new WeakMap();
 var _Left = /** @class */function () {
     function Left(v) {
         _lefts.set(this, v);
     }
     Left.prototype.equals = function (n) {
-        return n.isLeft && n.isLeft() && n.getValue() === this.getValue();
+        return n instanceof Left && n.isLeft && n.isLeft() && n.getValue() === this.getValue();
     };
     // isEqual(n: any){
     //     return this.equals(n);
@@ -184,7 +265,7 @@ var _Left = /** @class */function () {
         return "Left(" + this.getValue() + ")";
     };
     Left.prototype.caseOf = function (o) {
-        return o.Left ? o.Left() : throwError("Either: Expected Left!");
+        return o.Left ? o.Left(this.getValue()) : throwError("Either: Expected Left!");
     };
     return Left;
 }();
@@ -194,7 +275,7 @@ var _Right = /** @class */function () {
         _rights.set(this, v);
     }
     Right.prototype.equals = function (j) {
-        return j.isRight && j.isRight() && j.getValue() === this.getValue();
+        return j instanceof Right && j.isRight && j.isRight() && j.getValue() === this.getValue();
     };
     // isEqual(n: any){
     //     return this.equals(n);
@@ -203,8 +284,8 @@ var _Right = /** @class */function () {
         return new Right(v);
     };
     Right.prototype.ap = function (j) {
-        if (!isFunction(this.getValue())) throwError("Either: Wrapped value is not a function");
-        return j.map(this.getValue());
+        if (!isFunction(j.getValue())) throwError("Either: Wrapped value is not a function");
+        return this.map(j.getValue());
     };
     Right.prototype.getValue = function () {
         return _rights.get(this);
@@ -268,6 +349,15 @@ var Either = {
                 return new _Left(error);
             }
         };
+    },
+    bimap: function bimap$$1(e, fl, fr) {
+        return e.bimap(fl, fr);
+    },
+    isLeft: function isLeft(v) {
+        return v.isLeft && v.isLeft();
+    },
+    isRight: function isRight(v) {
+        return v.isRight && v.isRight();
     }
     //catMaybes: (ar: Array<Right|Left>): Array<any> => ar.filter( m => m instanceof Right).map(m => m.getValue())
     // partitionEithers: 
@@ -276,7 +366,7 @@ var Either = {
 var _Nothing = /** @class */function () {
     function Nothing() {}
     Nothing.prototype.equals = function (n) {
-        return n instanceof Nothing;
+        return n instanceof Nothing && n.isNothing && n.isNothing();
     };
     // isEqual(n: Nothing){
     //     return this.equals(n);
@@ -285,7 +375,7 @@ var _Nothing = /** @class */function () {
         return new Nothing();
     };
     Nothing.prototype.ap = function (n) {
-        return this.of(n);
+        return this;
     };
     Nothing.prototype.getValue = function () {
         return null;
@@ -316,7 +406,7 @@ var _Just = /** @class */function () {
         _justs.set(this, v);
     }
     Just.prototype.equals = function (j) {
-        return j instanceof Just && j.getValue() === this.getValue();
+        return j instanceof Just && j.isJust && j.isJust() && j.getValue() === this.getValue();
     };
     // isEqual(n: Just){
     //     return this.equals(n);
@@ -325,8 +415,8 @@ var _Just = /** @class */function () {
         return new Just(v);
     };
     Just.prototype.ap = function (j) {
-        if (!isFunction(this.getValue())) throwError("Maybe: Wrapped value is not a function");
-        return j.map(this.getValue());
+        if (!isFunction(j.getValue())) throwError("Maybe: Wrapped value is not a function");
+        return this.map(j.getValue());
     };
     Just.prototype.getValue = function () {
         return _justs.get(this);
@@ -357,6 +447,9 @@ var Maybe = {
     of: function of(v) {
         return new _Just(v);
     },
+    zero: function zero() {
+        return new _Nothing();
+    },
     Just: function Just(v) {
         return new _Just(v);
     },
@@ -368,9 +461,6 @@ var Maybe = {
     },
     withDefault: function withDefault(def, v) {
         return v ? new _Just(v) : new _Just(def);
-    },
-    andThen: function andThen(cb, m) {
-        return m instanceof _Just ? cb.call(null, m.getValue()) : m instanceof _Nothing ? m : throwError("Maybe: Unexpected Type");
     },
     catMaybes: function catMaybes(ar) {
         return ar.filter(function (m) {
@@ -387,6 +477,16 @@ var Maybe = {
     }
 };
 
+var _of$1 = function _of(v) {
+    return new Task$2(function (_, resolve) {
+        return resolve(v);
+    });
+};
+var _rejected = function _rejected(v) {
+    return new Task$2(function (rej, _) {
+        return rej(v);
+    });
+};
 var _tasks = new WeakMap();
 var Task$2 = /** @class */function () {
     function Task(f /*, cancel: Function*/) {
@@ -395,28 +495,32 @@ var Task$2 = /** @class */function () {
     }
     Task.prototype.fork = function (reject, resolve) {
         if (!isFunction(resolve) || !isFunction(reject)) throwError("Task: Reject and Resolve need to be functions");
-        var fn = _tasks.get(this);
+        var fn = this.getValue();
         fn(reject, resolve);
     };
     Task.prototype.of = function (v) {
-        return new Task(function (_, resolve) {
-            return resolve(v);
-        });
+        return _of$1(v);
+    };
+    Task.prototype.rejected = function (v) {
+        return _rejected(v);
     };
     Task.prototype.toString = function () {
-        var fork = _tasks.get(this);
+        var fork = this.getValue();
         return "Task(" + fork.toString() + ")";
     };
     Task.prototype.map = function (f) {
         if (!isFunction(f)) throwError("Task: Expected a function");
-        var fork = _tasks.get(this);
+        var fork = this.getValue();
         return new Task(function (rej, res) {
             return fork(rej, compose(res, f));
         });
     };
+    Task.prototype.getValue = function () {
+        return _tasks.get(this);
+    };
     Task.prototype.ap = function (t) {
         if (!(t instanceof Task)) throwError("Task: type mismatch");
-        var thisFork = _tasks.get(this);
+        var thisFork = this.getValue();
         var value;
         var fn;
         var gotValues = false;
@@ -425,20 +529,14 @@ var Task$2 = /** @class */function () {
         return new Task(function (rej, res) {
             var rejOnce = compose(function () {
                 rejected = true;
-            }, once)(rej);
+            }, once(rej));
             var resolveBoth = function resolveBoth() {
                 if (gotValues && gotFuction && !rejected) {
                     var exec = compose(res, fn);
                     exec.apply(null, value);
                 }
             };
-            thisFork(rejOnce, function (f) {
-                if (!isFunction(f)) throwError("Task: Wrapped value should be a function");
-                fn = f;
-                gotFuction = true;
-                resolveBoth();
-            });
-            t.fork(rejOnce, function () {
+            thisFork(rejOnce, function () {
                 var values = [];
                 for (var _i = 0; _i < arguments.length; _i++) {
                     values[_i] = arguments[_i];
@@ -447,11 +545,51 @@ var Task$2 = /** @class */function () {
                 gotValues = true;
                 resolveBoth();
             });
+            t.fork(rejOnce, function (f) {
+                if (!isFunction(f)) throwError("Task: Wrapped value should be a function");
+                fn = f;
+                gotFuction = true;
+                resolveBoth();
+            });
+        });
+    };
+    Task.prototype.concat = function (t) {
+        if (!(t instanceof Task)) throwError("Task: type mismatch");
+        var thisFork = this.getValue();
+        var thatFork = t.getValue();
+        return new Task(function (rej, res) {
+            var rejected = false;
+            var rejOnce = compose(function () {
+                rejected = true;
+            }, once(rej));
+            var result1;
+            var result2;
+            var resolveBoth = function resolveBoth() {
+                if (result1 && result2 && !rejected) {
+                    res.apply(null, result1.concat(result2));
+                }
+            };
+            thisFork(rejOnce, function () {
+                var values = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    values[_i] = arguments[_i];
+                }
+                result1 = values;
+                resolveBoth();
+            });
+            thatFork(rejOnce, function () {
+                var values = [];
+                for (var _i = 0; _i < arguments.length; _i++) {
+                    values[_i] = arguments[_i];
+                }
+                result2 = values;
+                resolveBoth();
+            });
         });
     };
     Task.prototype.chain = function (f) {
         if (!isFunction(f)) throwError("Task: Function required");
-        var thisFork = _tasks.get(this);
+        var thisFork = this.getValue();
         return new Task(function (rej, res) {
             thisFork(rej, function () {
                 var args = [];
@@ -465,24 +603,29 @@ var Task$2 = /** @class */function () {
         });
     };
     Task.prototype.toPromise = function () {
-        var thisFork = _tasks.get(this);
+        var thisFork = this.getValue();
         return new Promise(function (res, rej) {
             thisFork(rej, res);
         });
     };
     return Task;
 }();
+Task$2.prototype.of = _of$1;
+Task$2.prototype.rejected = _rejected;
 
 var Task = function Task(f) {
   return new Task$2(f);
 };
+Task.of = Task$2.prototype.of;
+Task.rejected = Task$2.prototype.rejected;
 
 //Algebraic Data Types
-var Kudo = {
+var index = {
     id: id,
     once: once,
     fmap: fmap,
     bimap: bimap,
+    chain: chain,
     caseOf: caseOf,
     curry: curry,
     ncurry: ncurry,
@@ -493,12 +636,13 @@ var Kudo = {
     liftA3: liftA3,
     liftA4: liftA4,
     liftA5: liftA5,
+    Pair: Pair,
     Either: Either,
     Maybe: Maybe,
     Task: Task
 };
 
-return Kudo;
+return index;
 
 })));
 //# sourceMappingURL=kudo.js.map

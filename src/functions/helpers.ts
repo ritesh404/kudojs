@@ -1,7 +1,7 @@
 import Functor from "../implements/functor";
 import PatternMatch from "../implements/patternmatch";
 import Monad from "../implements/monad";
-import { Applicative, Apply, BiFunctor } from "../interfaces";
+import { Apply, BiFunctor } from "../interfaces";
 
 const slice = Array.prototype.slice;
 
@@ -85,8 +85,8 @@ const _bimap = (f1: Function, f2: Function, b: BiFunctor): BiFunctor => {
 }
 const bimap = curry(_bimap);
 
-//chain :: Monad m => m a -> (a -> m b) -> m b
-const _chain = (m: Monad, f: Function): Monad =>{
+//chain :: Monad m => (a -> m b) -> m a -> m b
+const _chain = (f: Function, m: Monad,): Monad =>{
     if(!m.chain) throwError("chain not implemented");
     if(!isFunction(f)) throwError("function not provided");
     return m.chain.call(m, f);
@@ -95,7 +95,7 @@ const chain = curry(_chain);
 
 //caseOf :: Object -> patternMatch -> a
 const _caseOf = (o: Object, p: PatternMatch): any =>
-    !p.caseOf ? throwError("caseOf not implemented") : p.caseOf.call(null, o);
+    !p.caseOf ? throwError("caseOf not implemented") : p.caseOf(o);
 const caseOf = curry(_caseOf);
 
 //liftAn :: Apply a => f -> Array<a> -> a 
@@ -106,7 +106,7 @@ const _liftAn = (f: Function, fn: Array<Apply>) => {
     let res = init;
     if (fn.length > 1) {
         const rest = fn.slice(1);
-        res = rest.reduce((a: Apply, ca: Apply) => a.ap(ca), init);
+        res = rest.reduce((a: Apply, ca: Apply) => ca.ap(a), init);
     }
     return res;
 };
@@ -138,6 +138,7 @@ export {
     once,
     fmap,
     bimap,
+    chain,
     caseOf,
     curry,
     ncurry,

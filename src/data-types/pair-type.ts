@@ -1,5 +1,9 @@
-import {Setoid, Semigroup, BiFunctor, Monad, PatternMatch} from "../interfaces";
+import {Setoid, Semigroup, BiFunctor, Monad} from "../interfaces";
 import {throwError, isFunction} from "../functions/helpers";
+
+const _of = (v: any) =>{
+    return new Pair(v, v);
+}
 
 const _pairs = new WeakMap();
 class Pair implements Setoid, Semigroup, BiFunctor, Monad {
@@ -33,7 +37,7 @@ class Pair implements Setoid, Semigroup, BiFunctor, Monad {
     }
 
     of(v: any){
-        return new Pair(v, v);
+        return _of(v);
     }
 
     fst(){
@@ -46,14 +50,14 @@ class Pair implements Setoid, Semigroup, BiFunctor, Monad {
 
     ap(j: Pair): Pair{
         if(!(j instanceof Pair)) throwError("Pair: Pair required");
-        const fn = this.snd();
+        const fn = j.snd();
         if(!isFunction(fn)) throwError("Pair: Second wrapped value should be a function");
         const l = this.fst();
         const r = j.fst();
-
-        if(!l.concat && !r.concat) throwError('Pair: Types should be Semigroups');
+        //console.log(l, r, fn);
+        if(!l.concat || !r.concat) throwError('Pair: Types should be Semigroups');
       
-      return new Pair(l.concat(r), fn(j.snd()));
+      return new Pair(l.concat(r), fn(this.snd()));
     }
 
     getValue(){
@@ -92,7 +96,13 @@ class Pair implements Setoid, Semigroup, BiFunctor, Monad {
 
     toString(){
         const v = this.getValue();
-        return `Pair(${v[0]}, ${v[1]})`;
+        return `Pair((${v[0]}), (${v[1]}))`;
     }
 
 }
+
+
+export default Pair;
+export {
+    _of
+};

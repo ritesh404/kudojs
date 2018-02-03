@@ -6,8 +6,8 @@ import {throwError, isFunction} from "../functions/helpers";
 
 class Nothing implements Setoid, Monad, PatternMatch {
 
-    equals(n: Nothing){
-       return n instanceof Nothing
+    equals(n: Setoid): boolean{
+       return n instanceof Nothing && n.isNothing && n.isNothing();
     }
 
     // isEqual(n: Nothing){
@@ -19,7 +19,7 @@ class Nothing implements Setoid, Monad, PatternMatch {
     }
 
     ap(n: Nothing){
-        return this.of(n);
+        return this;
     }
 
     getValue(){
@@ -58,8 +58,8 @@ class Just implements Setoid, Monad, PatternMatch {
         _justs.set(this, v);
     }
 
-    equals(j: Just){
-        return j instanceof Just && j.getValue() === this.getValue();
+    equals(j: Setoid): boolean{
+        return j instanceof Just && j.isJust && j.isJust() && j.getValue() === this.getValue();
     }
 
     // isEqual(n: Just){
@@ -70,9 +70,10 @@ class Just implements Setoid, Monad, PatternMatch {
         return new Just(v);
     }
 
+
     ap(j: Just | Nothing): Just | Nothing{
-        if(!isFunction(this.getValue())) throwError("Maybe: Wrapped value is not a function");
-        return j.map(this.getValue());
+        if(!isFunction(j.getValue())) throwError("Maybe: Wrapped value is not a function");
+        return this.map(j.getValue());
     }
 
     getValue(){
@@ -108,11 +109,11 @@ class Just implements Setoid, Monad, PatternMatch {
 
 const Maybe = {
     of: (v: any) => new Just(v),
+    zero: () => new Nothing(),
     Just: (v: any): Just => new Just(v),
-    Nothing: (v: any): Nothing => new Nothing(),
+    Nothing: (v?: any): Nothing => new Nothing(),
     fromNullable: (v: any): Just | Nothing => v ? new Just(v) : new Nothing(),
     withDefault: (def: any, v: any): Just => v ? new Just(v) : new Just(def),
-    andThen: (cb: Function, m: Just | Nothing): Just | Nothing | Error => m instanceof Just ? cb.call(null, m.getValue()) : m instanceof Nothing ? m : throwError("Maybe: Unexpected Type"),
     catMaybes: (ar: Array<Just|Nothing>): Array<any> => ar.filter( m => m instanceof Just).map(m => m.getValue()),
     isJust: (v: Just| Nothing) => v.isJust(),
     isNothing: (v: Just| Nothing) => v.isNothing()

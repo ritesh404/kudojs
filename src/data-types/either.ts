@@ -8,8 +8,8 @@ class Left implements Setoid, BiFunctor, Monad, PatternMatch {
         _lefts.set(this, v);
     }
 
-    equals(n: any){
-       return n.isLeft && n.isLeft() && n.getValue() === this.getValue();
+    equals(n: Setoid): boolean{
+       return n instanceof Left && n.isLeft && n.isLeft() && n.getValue() === this.getValue();
     }
 
     // isEqual(n: any){
@@ -32,7 +32,7 @@ class Left implements Setoid, BiFunctor, Monad, PatternMatch {
         return this;
     }
 
-    bimap(f: Function, _:any){
+    bimap(f: Function, _:Function): Left{
         return this.of(f(this.getValue()))
     }
 
@@ -57,7 +57,7 @@ class Left implements Setoid, BiFunctor, Monad, PatternMatch {
     }
 
     caseOf(o: {Left: Function}){
-        return o.Left ? o.Left() : throwError("Either: Expected Left!");
+        return o.Left ? o.Left(this.getValue()) : throwError("Either: Expected Left!");
     }
 }
 
@@ -68,8 +68,8 @@ class Right implements Setoid, BiFunctor, Monad, PatternMatch {
         _rights.set(this, v);
     }
 
-    equals(j: Right){
-        return j.isRight && j.isRight() && j.getValue() === this.getValue();
+    equals(j: Setoid): boolean{
+        return j instanceof Right && j.isRight && j.isRight() && j.getValue() === this.getValue();
     }
 
     // isEqual(n: any){
@@ -81,8 +81,8 @@ class Right implements Setoid, BiFunctor, Monad, PatternMatch {
     }
 
     ap(j: Right | Left): Right | Left{
-        if(!isFunction(this.getValue())) throwError("Either: Wrapped value is not a function");
-        return j.map(this.getValue());
+        if(!isFunction(j.getValue())) throwError("Either: Wrapped value is not a function");
+        return this.map(j.getValue());
     }
 
     getValue(){
@@ -94,7 +94,7 @@ class Right implements Setoid, BiFunctor, Monad, PatternMatch {
         return new Right(f(this.getValue()));
     }
 
-    bimap(_: any, f:Function){
+    bimap(_: Function, f:Function): Right{
         return this.of(f(this.getValue()))
     }
 
@@ -137,7 +137,10 @@ const Either = {
         } catch (error) {
             return new Left(error);
         }
-    }
+    },
+    bimap: (e: Left | Right, fl: Function, fr: Function): Left | Right => e.bimap(fl, fr),
+    isLeft: (v: Left | Right) => v.isLeft && v.isLeft(),
+    isRight: (v: Left | Right) => v.isRight && v.isRight()
     //catMaybes: (ar: Array<Right|Left>): Array<any> => ar.filter( m => m instanceof Right).map(m => m.getValue())
     // partitionEithers: 
 }
