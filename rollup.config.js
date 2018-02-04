@@ -2,6 +2,7 @@ import babel from 'rollup-plugin-babel';
 import babelrc from 'babelrc-rollup';
 //import istanbul from 'rollup-plugin-istanbul';
 import typescript from 'rollup-plugin-typescript2';
+// import uglify from 'rollup-plugin-uglify';
 
 let pkg = require('./package.json');
 let external = Object.keys(pkg.dependencies);

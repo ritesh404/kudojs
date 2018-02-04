@@ -1,14 +1,6 @@
-import * as test from "tape"
-import Maybe from "./maybe"
-import {
-    id,
-    fmap,
-    caseOf,
-    curry,
-    ncurry,
-    compose,
-    throwError
-} from "../functions/helpers";
+import * as test from "tape";
+import Maybe from "./maybe";
+import { id, fmap, caseOf, compose } from "../functions/helpers";
 
 // const laws: any = require("laws");
 // console.log(laws);
@@ -31,87 +23,172 @@ import {
 // laws.monad.rightIdentity(Maybe.Nothing).asTest({ verbose: true, times: 100 })();
 
 const data = { a: { b: { c: 1 } } };
-const ar = [Maybe.Just(1),Maybe.Just(2),Maybe.Just(3),Maybe.Nothing(4),Maybe.Just(5)];
-const unwrap = (m: {getValue: Function}) => m.getValue();
-const prop = (k: any) => (xs: Object) => k in xs ? Maybe.Just(xs[k]) : Maybe.Nothing();
+const ar = [
+  Maybe.Just(1),
+  Maybe.Just(2),
+  Maybe.Just(3),
+  Maybe.Nothing(4),
+  Maybe.Just(5)
+];
+const unwrap = (m: { getValue: Function }) => m.getValue();
+const prop = (k: any) => (xs: Object) =>
+  k in xs ? Maybe.Just(xs[k]) : Maybe.Nothing();
 const add2 = (a: number) => a + 2;
 const sub1 = (a: number) => a - 1;
 
-test("Maybe",(t) => {
-    const a = Maybe.Just(1);
-    const b = Maybe.Just(add2);
-    const c = Maybe.Just(sub1);
-    const e = Maybe.Nothing(1);
-    const f = Maybe.Nothing(add2);
-    const g = Maybe.Nothing(sub1);
-    //const d = c.ap(b.ap(a.map( x => g => f => f(g(x)))));
+test("Maybe", t => {
+  const a = Maybe.Just(1);
+  const b = Maybe.Just(add2);
+  const c = Maybe.Just(sub1);
+  const e = Maybe.Nothing(1);
+  const f = Maybe.Nothing(add2);
+  const g = Maybe.Nothing(sub1);
+  //const d = c.ap(b.ap(a.map( x => g => f => f(g(x)))));
 
-    t.ok(Maybe.isJust(a), "Just is a Just");
-    t.notOk(Maybe.isNothing(a), "Just is not a Nothing");
-    t.notOk(Maybe.isJust(e), "Nothing is not a Just");
-    t.ok(Maybe.isNothing(e), "Nothing is a Nothing");
-    
-    t.equals(a.toString(), "Just(1)", "should give a Just");
-    t.equals(e.toString(), "Nothing()", "should give a Nothing");
-    
-    t.throws(() => a.map(1), "Just map expects a function")
-    t.equals(compose(unwrap, fmap(id))(a), compose(unwrap)(a), "Just should pass the identity law");
-    t.equals(compose(unwrap, fmap(id))(e), compose(unwrap)(e), "Nothing should pass the identity law");
+  t.ok(Maybe.isJust(a), "Just is a Just");
+  t.notOk(Maybe.isNothing(a), "Just is not a Nothing");
+  t.notOk(Maybe.isJust(e), "Nothing is not a Just");
+  t.ok(Maybe.isNothing(e), "Nothing is a Nothing");
 
-    const l1 = compose(unwrap, fmap((x) => sub1(add2(x))));
-    const r1 = compose(unwrap, fmap(sub1), fmap(add2));
-    t.equals(l1(a), r1(a), "Just should pass the composition law");
-    t.equals(l1(e), r1(e), "Nothing should pass the composition law");
+  t.equals(a.toString(), "Just(1)", "should give a Just");
+  t.equals(e.toString(), "Nothing()", "should give a Nothing");
 
-    t.throws(() => a.ap(a), "Just applicative expects a function")
-    t.ok(a.ap(c.ap(b.map(p => q => x => p(q(x))))).equals(a.ap(c).ap(b)), "Just should pass applicative composition")
-    
-    t.equals(unwrap(a.map(add2)), unwrap(a.ap(b)), "Just mapped to a function should the same as the function applied to Just");
-    t.equals(unwrap(e.map(add2)), unwrap(e.ap(b)), "Nothing mapped to a function should the same as the function applied to Nothing");
+  t.throws(() => a.map(1), "Just map expects a function");
+  t.equals(
+    compose(unwrap, fmap(id))(a),
+    compose(unwrap)(a),
+    "Just should pass the identity law"
+  );
+  t.equals(
+    compose(unwrap, fmap(id))(e),
+    compose(unwrap)(e),
+    "Nothing should pass the identity law"
+  );
 
-    t.ok(Maybe.zero().isNothing(), "zero creates a Nothing");
-    t.ok(Maybe.zero().of(5).isNothing(), "of Nothing creates a Nothing");
-    t.equals(unwrap(Maybe.of(6)), unwrap(Maybe.Just(6)), "of creates a Just");
-    t.equals(unwrap(a.of(6)), unwrap(Maybe.Just(6)), "Just of creates a Just");
-    t.equals(unwrap(e.of(6)), unwrap(Maybe.Nothing(6)), "Nothing of creates a Nothing");
+  const l1 = compose(unwrap, fmap(x => sub1(add2(x))));
+  const r1 = compose(unwrap, fmap(sub1), fmap(add2));
+  t.equals(l1(a), r1(a), "Just should pass the composition law");
+  t.equals(l1(e), r1(e), "Nothing should pass the composition law");
 
-    t.equals(unwrap(Maybe.fromNullable(1)), unwrap(a), "creates a Just when non nullable value is passed");
-    t.equals(unwrap(Maybe.fromNullable(null)), unwrap(Maybe.Nothing(null)), "creates a Nothing when nullable value is passed");
+  t.throws(() => a.ap(a), "Just applicative expects a function");
+  t.ok(
+    a.ap(c.ap(b.map(p => q => x => p(q(x))))).equals(a.ap(c).ap(b)),
+    "Just should pass applicative composition"
+  );
 
-    t.equals(unwrap(Maybe.withDefault(1, 2)), unwrap(Maybe.Just(2)), "creates a Just with default value if nullable value is passed");
-    t.equals(unwrap(Maybe.withDefault(1, null)), unwrap(a), "creates a Just with default value if nullable value is passed");
+  t.equals(
+    unwrap(a.map(add2)),
+    unwrap(a.ap(b)),
+    "Just mapped to a function should the same as the function applied to Just"
+  );
+  t.equals(
+    unwrap(e.map(add2)),
+    unwrap(e.ap(b)),
+    "Nothing mapped to a function should the same as the function applied to Nothing"
+  );
 
-    t.ok(Maybe.Just(1).equals(a),"Just equality");
-    t.notOk(Maybe.Just(1).equals(e),"Just inequality");
-    t.notOk(Maybe.Just(1).equals(Maybe.Just(2)),"Just inequality");
-    t.ok(Maybe.Just(1).equals(a) === a.equals(Maybe.Just(1)),"Just commutativity");
-    t.ok(Maybe.Nothing(1).equals(e),"Nothing equality");
-    t.notOk(Maybe.Nothing(1).equals(a),"Nothing inequality");
-    t.ok(Maybe.Nothing(1).equals(e) === e.equals(Maybe.Nothing(1)),"Nothing commutativity");
+  t.ok(Maybe.zero().isNothing(), "zero creates a Nothing");
+  t.ok(
+    Maybe.zero()
+      .of(5)
+      .isNothing(),
+    "of Nothing creates a Nothing"
+  );
+  t.equals(unwrap(Maybe.of(6)), unwrap(Maybe.Just(6)), "of creates a Just");
+  t.equals(unwrap(a.of(6)), unwrap(Maybe.Just(6)), "Just of creates a Just");
+  t.equals(
+    unwrap(e.of(6)),
+    unwrap(Maybe.Nothing(6)),
+    "Nothing of creates a Nothing"
+  );
 
-    t.throws(() => a.chain(1), "Just chain expects a function")
-    t.ok(prop("a")(data).chain(prop("b")).chain(prop("c")).equals(
-        prop("a")(data).chain(x => prop("b")(x).chain(prop("c")))
-    ),"Just chain Associativity");
-    t.ok(prop("a")(data).chain(prop("d")).chain(prop("c")).equals(
-        prop("a")(data).chain(x => prop("d")(x).chain(prop("c")))
-    ),"Nothing chain Associativity");
+  t.equals(
+    unwrap(Maybe.fromNullable(1)),
+    unwrap(a),
+    "creates a Just when non nullable value is passed"
+  );
+  t.equals(
+    unwrap(Maybe.fromNullable(null)),
+    unwrap(Maybe.Nothing(null)),
+    "creates a Nothing when nullable value is passed"
+  );
 
-    caseOf({
-        Just: (v) => t.equal(v, 1, "successful Just pattern match"),
-    }, a);
-    caseOf({
-        Nothing: (v) => t.notOk(v, "successful Nothing pattern match"),
-    }, e);
+  t.equals(
+    unwrap(Maybe.withDefault(1, 2)),
+    unwrap(Maybe.Just(2)),
+    "creates a Just with default value if nullable value is passed"
+  );
+  t.equals(
+    unwrap(Maybe.withDefault(1, null)),
+    unwrap(a),
+    "creates a Just with default value if nullable value is passed"
+  );
 
-    t.throws(() => caseOf({
-        Nothing: id,
-    }, a), "Maybe: Expected Just");
-    t.throws(() => caseOf({
-        Just: id,
-    }, e), "Maybe: Expected Nothing");
+  t.ok(Maybe.Just(1).equals(a), "Just equality");
+  t.notOk(Maybe.Just(1).equals(e), "Just inequality");
+  t.notOk(Maybe.Just(1).equals(Maybe.Just(2)), "Just inequality");
+  t.ok(
+    Maybe.Just(1).equals(a) === a.equals(Maybe.Just(1)),
+    "Just commutativity"
+  );
+  t.ok(Maybe.Nothing(1).equals(e), "Nothing equality");
+  t.notOk(Maybe.Nothing(1).equals(a), "Nothing inequality");
+  t.ok(
+    Maybe.Nothing(1).equals(e) === e.equals(Maybe.Nothing(1)),
+    "Nothing commutativity"
+  );
 
-    t.deepEqual(Maybe.catMaybes(ar), [1,2,3,5], "cat maybes");
+  t.throws(() => a.chain(1), "Just chain expects a function");
+  t.ok(
+    prop("a")(data)
+      .chain(prop("b"))
+      .chain(prop("c"))
+      .equals(prop("a")(data).chain(x => prop("b")(x).chain(prop("c")))),
+    "Just chain Associativity"
+  );
+  t.ok(
+    prop("a")(data)
+      .chain(prop("d"))
+      .chain(prop("c"))
+      .equals(prop("a")(data).chain(x => prop("d")(x).chain(prop("c")))),
+    "Nothing chain Associativity"
+  );
 
-    t.end();
-})
+  caseOf(
+    {
+      Just: v => t.equal(v, 1, "successful Just pattern match")
+    },
+    a
+  );
+  caseOf(
+    {
+      Nothing: v => t.notOk(v, "successful Nothing pattern match")
+    },
+    e
+  );
+
+  t.throws(
+    () =>
+      caseOf(
+        {
+          Nothing: id
+        },
+        a
+      ),
+    "Maybe: Expected Just"
+  );
+  t.throws(
+    () =>
+      caseOf(
+        {
+          Just: id
+        },
+        e
+      ),
+    "Maybe: Expected Nothing"
+  );
+
+  t.deepEqual(Maybe.catMaybes(ar), [1, 2, 3, 5], "cat maybes");
+
+  t.end();
+});

@@ -5,11 +5,11 @@
   "main": "dist/kudo.js",
   "module": "dist/kudo.mjs",
   "scripts": {
-    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' nyc tape src/**/*.test.ts | tap-spec",
-    "build:typescript": "tsc ./src/index.ts",
-    "build:js": "rollup -c",
-    "build": "rollup -c",
-    "precommit": "lint-staged"
+    "test": "cross-env NODE_ENV=test TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' nyc tape --reporter=lcov --require ts-node/register src/**/*.test.ts | tap-spec",
+    "build:typescript": "cross-env tsc ./src/index.ts",
+    "build:js": "cross-env rollup -c",
+    "build": "cross-env rollup -c",
+    "precommit": "cross-env lint-staged && npm run test"
   },
   "lint-staged": {
     "*.ts": [
@@ -19,24 +19,26 @@
   },
   "config": {
     "ghooks": {
-      "pre-commit": "lint-staged && npm run test"
+      "pre-commit": "npm run precommit"
     }
   },
   "nyc": {
     "check-coverage": true,
-    "branches": 100,
-    "functions": 100,
-    "lines": 100,
-    "statements": 100,
+    "branches": 95,
+    "functions": 95,
+    "lines": 95,
+    "statements": 95,
     "sourceMap": false,
-    "instrument": false,
+    "instrument": true,
     "all": true,
     "extension": [
       ".ts"
     ],
     "exclude": [
-      "**/*.d.ts",
-      "**/*.test.ts"
+      "src/**/*.test.ts",
+      "src/interfaces.ts",
+      "dist",
+      "node_modules"
     ],
     "reporter": [
       "text-summary",
@@ -46,7 +48,7 @@
       "ts-node/register"
     ],
     "include": [
-      "src"
+      "src/**/*.ts"
     ]
   },
   "repository": {
@@ -66,16 +68,14 @@
     "url": "https://github.com/blitzritz/kudojs/issues"
   },
   "homepage": "https://github.com/blitzritz/kudojs#readme",
-  "dependencies": {
-    "fantasy-land": "3.5.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/tape": "4.2.31",
     "babel-core": "6.26.0",
     "babel-plugin-external-helpers": "6.22.0",
     "babel-preset-env": "1.6.1",
-    "babel-register": "6.26.0",
     "babelrc-rollup": "3.0.0",
+    "cross-env": "5.1.3",
     "ghooks": "2.0.2",
     "laws": "0.2.1",
     "lint-staged": "6.1.0",

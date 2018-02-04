@@ -5,19 +5,15 @@
 }(this, (function () { 'use strict';
 
 var slice = Array.prototype.slice;
-//throwError :: String -> Error
 var throwError = function throwError(x) {
     throw x;
 };
-//id :: a -> a
 var id = function id(x) {
     return x;
 };
-//isFunction :: Function -> boolean
 var isFunction = function isFunction(f) {
     return typeof f === "function";
 };
-//once :: Function -> Function
 var once = function once(f) {
     if (!isFunction(f)) throwError("Function not provided");
     var _called = false;
@@ -34,7 +30,6 @@ var once = function once(f) {
         return _result;
     };
 };
-//curry :: Function -> Function
 var curry = function curry(fn) {
     if (!isFunction(fn)) throwError("Function not provided");
     var arity = fn.length;
@@ -46,12 +41,9 @@ var curry = function curry(fn) {
         };
     };
 };
-//ncurry :: Function -> Function
 var ncurry = function ncurry(fn, args) {
     if (!isFunction(fn)) throwError("Function not provided");
     if (fn.length > 1) throwError("Function Arity cannot be greater than 1");
-    //if (typeof fn.arguments[0] !== "object") return throwError("Function argument must be an object type");
-    //const args = Object.keys(fn.arguments[0]);
     return function curried(ar) {
         var curArgs = Object.keys(ar);
         var diff = args.filter(function (x) {
@@ -63,7 +55,6 @@ var ncurry = function ncurry(fn, args) {
         return fn.call(null, ar);
     };
 };
-//compose :: Array<Function> -> Function
 var compose = function compose() {
     var fns = [];
     for (var _i = 0; _i < arguments.length; _i++) {
@@ -80,33 +71,28 @@ var compose = function compose() {
         };
     });
 };
-//fmap :: Functor f  => (a -> b) -> f a -> f b
 var _fmap = function _fmap(fn, f) {
     if (!isFunction(fn)) throwError("function not provided");
     if (!f.map) throwError("Functor not found");
     return f.map.call(f, fn);
 };
 var fmap = curry(_fmap);
-//bimap :: BiFunctor b => b a c ~> (a -> e) -> (c -> d) ->  b a c -> b e d  
 var _bimap = function _bimap(f1, f2, b) {
     if (!isFunction(f1) || !isFunction(f2)) throwError("Functions not provided");
     if (!b.bimap) throwError("BiFunctor not found");
     return b.bimap(f1, f2);
 };
 var bimap = curry(_bimap);
-//chain :: Monad m => (a -> m b) -> m a -> m b
 var _chain = function _chain(f, m) {
     if (!m.chain) throwError("chain not implemented");
     if (!isFunction(f)) throwError("function not provided");
     return m.chain.call(m, f);
 };
 var chain = curry(_chain);
-//caseOf :: Object -> patternMatch -> a
 var _caseOf = function _caseOf(o, p) {
     return !p.caseOf ? throwError("caseOf not implemented") : p.caseOf(o);
 };
 var caseOf = curry(_caseOf);
-//liftAn :: Apply a => f -> Array<a> -> a 
 var _liftAn = function _liftAn(f, fn) {
     if (!isFunction(f)) throwError("Function not found");
     if (fn.length <= 0) throwError("No Apply found!");
@@ -146,7 +132,7 @@ var _of = function _of(v) {
     return new Pair$2(v, v);
 };
 var _pairs = new WeakMap();
-var Pair$2 = /** @class */function () {
+var Pair$2 = function () {
     function Pair(v1, v2) {
         if (v1 === undefined || v2 === undefined) throwError("Pair: Both first and second values must be defined");
         _pairs.set(this, [v1, v2]);
@@ -154,9 +140,6 @@ var Pair$2 = /** @class */function () {
     Pair.prototype.equals = function (j) {
         return j.fst() === this.fst() && j.snd() === this.snd();
     };
-    // isEqual(n: any){
-    //     return this.equals(n);
-    // }
     Pair.prototype.concat = function (p) {
         if (!(p instanceof Pair)) throwError("Pair: Pair required");
         var lf = this.fst();
@@ -181,8 +164,7 @@ var Pair$2 = /** @class */function () {
         if (!isFunction(fn)) throwError("Pair: Second wrapped value should be a function");
         var l = this.fst();
         var r = j.fst();
-        //console.log(l, r, fn);
-        if (!l.concat || !r.concat) throwError('Pair: Types should be Semigroups');
+        if (!l.concat || !r.concat) throwError("Pair: Types should be Semigroups");
         return new Pair(l.concat(r), fn(this.snd()));
     };
     Pair.prototype.getValue = function () {
@@ -216,24 +198,20 @@ var Pair$2 = /** @class */function () {
     };
     return Pair;
 }();
-Pair$2.prototype.of = _of;
 
 var Pair = function Pair(v1, v2) {
   return new Pair$2(v1, v2);
 };
-Pair.of = Pair$2.prototype.of;
+Pair.of = _of;
 
 var _lefts = new WeakMap();
-var _Left = /** @class */function () {
+var _Left = function () {
     function Left(v) {
         _lefts.set(this, v);
     }
     Left.prototype.equals = function (n) {
         return n instanceof Left && n.isLeft && n.isLeft() && n.getValue() === this.getValue();
     };
-    // isEqual(n: any){
-    //     return this.equals(n);
-    // }
     Left.prototype.of = function (v) {
         return new Left(v);
     };
@@ -270,16 +248,13 @@ var _Left = /** @class */function () {
     return Left;
 }();
 var _rights = new WeakMap();
-var _Right = /** @class */function () {
+var _Right = function () {
     function Right(v) {
         _rights.set(this, v);
     }
     Right.prototype.equals = function (j) {
         return j instanceof Right && j.isRight && j.isRight() && j.getValue() === this.getValue();
     };
-    // isEqual(n: any){
-    //     return this.equals(n);
-    // }
     Right.prototype.of = function (v) {
         return new Right(v);
     };
@@ -359,18 +334,13 @@ var Either = {
     isRight: function isRight(v) {
         return v.isRight && v.isRight();
     }
-    //catMaybes: (ar: Array<Right|Left>): Array<any> => ar.filter( m => m instanceof Right).map(m => m.getValue())
-    // partitionEithers: 
 };
 
-var _Nothing = /** @class */function () {
+var _Nothing = function () {
     function Nothing() {}
     Nothing.prototype.equals = function (n) {
         return n instanceof Nothing && n.isNothing && n.isNothing();
     };
-    // isEqual(n: Nothing){
-    //     return this.equals(n);
-    // }
     Nothing.prototype.of = function (v) {
         return new Nothing();
     };
@@ -401,16 +371,13 @@ var _Nothing = /** @class */function () {
     return Nothing;
 }();
 var _justs = new WeakMap();
-var _Just = /** @class */function () {
+var _Just = function () {
     function Just(v) {
         _justs.set(this, v);
     }
     Just.prototype.equals = function (j) {
         return j instanceof Just && j.isJust && j.isJust() && j.getValue() === this.getValue();
     };
-    // isEqual(n: Just){
-    //     return this.equals(n);
-    // }
     Just.prototype.of = function (v) {
         return new Just(v);
     };
@@ -483,15 +450,14 @@ var _of$1 = function _of(v) {
     });
 };
 var _rejected = function _rejected(v) {
-    return new Task$2(function (rej, _) {
-        return rej(v);
+    return new Task$2(function (reject, _) {
+        return reject(v);
     });
 };
 var _tasks = new WeakMap();
-var Task$2 = /** @class */function () {
-    function Task(f /*, cancel: Function*/) {
+var Task$2 = function () {
+    function Task(f) {
         isFunction(f) ? _tasks.set(this, f) : throwError("Task: Expected a Function");
-        //cancel && isFunction(cancel) ? _cancels.set(this, cancel) : _cancels.set(this, function(){})
     }
     Task.prototype.fork = function (reject, resolve) {
         if (!isFunction(resolve) || !isFunction(reject)) throwError("Task: Reject and Resolve need to be functions");
@@ -501,12 +467,9 @@ var Task$2 = /** @class */function () {
     Task.prototype.of = function (v) {
         return _of$1(v);
     };
-    Task.prototype.rejected = function (v) {
-        return _rejected(v);
-    };
     Task.prototype.toString = function () {
         var fork = this.getValue();
-        return "Task(" + fork.toString() + ")";
+        return "Task(" + fork.name + ")";
     };
     Task.prototype.map = function (f) {
         if (!isFunction(f)) throwError("Task: Expected a function");
@@ -610,16 +573,13 @@ var Task$2 = /** @class */function () {
     };
     return Task;
 }();
-Task$2.prototype.of = _of$1;
-Task$2.prototype.rejected = _rejected;
 
 var Task = function Task(f) {
   return new Task$2(f);
 };
-Task.of = Task$2.prototype.of;
-Task.rejected = Task$2.prototype.rejected;
+Task.of = _of$1;
+Task.rejected = _rejected;
 
-//Algebraic Data Types
 var index = {
     id: id,
     once: once,
