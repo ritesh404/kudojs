@@ -13,7 +13,9 @@ import {
   liftA2,
   liftA3,
   liftA4,
-  liftA5
+  liftA5,
+  eitherToMaybe,
+  maybeToEither
 } from "./functions/helpers";
 
 //Algebraic Data Types
@@ -38,6 +40,8 @@ export default {
   liftA3,
   liftA4,
   liftA5,
+  eitherToMaybe,
+  maybeToEither,
   Pair,
   Either,
   Maybe,
