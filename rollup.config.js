@@ -8,7 +8,9 @@ let pkg = require('./package.json');
 let external = Object.keys(pkg.dependencies);
 
 let plugins = [
-  typescript(),
+  typescript({
+    tsconfig: "./tsconfig.json"
+  }),
   babel(babelrc())
 ];
 

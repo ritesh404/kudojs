@@ -1,36 +1,108 @@
-// import Functor from "../implements/functor";
-// import Monad from "../implements/monad";
-// import PatternMatch from "../implements/patternmatch";
-import { Setoid, Monad, PatternMatch } from "../interfaces";
-import { throwError, isFunction } from "../functions/helpers";
+import { Setoid, Monad, Alt, PatternMatch } from "../interfaces";
+import { throwError, isFunction, caseOf } from "../functions/helpers";
 
-export class Nothing implements Setoid, Monad, PatternMatch {
+export default abstract class Maybe<A>
+  implements Setoid, Monad<A>, Alt<A>, PatternMatch {
+  _value: A;
+
+  abstract equals(n: Setoid): boolean;
+  abstract map<B>(f: (a: A) => B): Maybe<B>;
+  abstract chain<B>(f: (a: A) => Maybe<B>): Maybe<B>;
+  abstract caseOf(o: { Nothing: Function } | { Just: Function }): any;
+  abstract isNothing(): boolean;
+  abstract isJust(): boolean;
+
+  static of<A>(v: A): Maybe<A> {
+    return new Just(v);
+  }
+
+  static zero<A>(): Maybe<A> {
+    return new Nothing();
+  }
+
+  static Just<A>(v: A): Maybe<A> {
+    return new Just(v);
+  }
+
+  static Nothing<A>(): Maybe<A> {
+    return new Nothing();
+  }
+
+  static fromNullable<A>(v: any): Maybe<A> {
+    return v ? new Just(v) : new Nothing();
+  }
+
+  static withDefault<A>(def: any, v: any): Maybe<A> {
+    return v ? new Just(v) : new Just(def);
+  }
+
+  static catMaybes<A>(ar: Array<Maybe<A>>): Array<any> {
+    return ar.filter(m => m.isJust()).map(m => m.getValue());
+  }
+
+  static isNothing<A>(v: Maybe<A>): boolean {
+    return v.isNothing();
+  }
+
+  static isJust<A>(v: Maybe<A>): boolean {
+    return v.isJust();
+  }
+
+  of<A>(v: A): Maybe<A> {
+    return new Just(v);
+  }
+
+  alt<B>(v: Maybe<B>): Maybe<B> {
+    return caseOf(
+      {
+        Nothing: (x: any) => v,
+        Just: (x: any) => this
+      },
+      this
+    );
+  }
+
+  ap<B>(j: Maybe<(a: A) => B>): Maybe<B> {
+    if (!isFunction(j.getValue()))
+      throwError("Maybe: Wrapped value is not a function");
+
+    return caseOf(
+      {
+        Nothing: (v: A) => j,
+        Just: (v: (a: A) => B) => this.map(v)
+      },
+      j
+    );
+  }
+
+  getValue(): A {
+    return this._value;
+  }
+}
+// @ts-ignore: implicit any
+Maybe.prototype["fantasy-land/equals"] = Maybe.prototype.equals;
+// @ts-ignore: implicit any
+Maybe.prototype["fantasy-land/map"] = Maybe.prototype.map;
+// @ts-ignore: implicit any
+Maybe.prototype["fantasy-land/chain"] = Maybe.prototype.chain;
+// @ts-ignore: implicit any
+Maybe.prototype["fantasy-land/of"] = Maybe.prototype.of;
+// @ts-ignore: implicit any
+Maybe.prototype["fantasy-land/zero"] = Maybe.prototype.zero;
+// @ts-ignore: implicit any
+Maybe.prototype["fantasy-land/ap"] = Maybe.prototype.ap;
+
+export class Nothing<A> extends Maybe<A> {
   equals(n: Setoid): boolean {
     return n instanceof Nothing && n.isNothing && n.isNothing();
   }
 
-  // isEqual(n: Nothing){
-  //     return this.equals(n);
-  // }
-
-  of(v: any) {
+  map<B>(f: (a: A) => B): Maybe<B> {
     return new Nothing();
   }
 
-  ap(n: Nothing) {
-    return this;
-  }
-
-  getValue(): null {
-    return null;
-  }
-
-  map(f: Function) {
-    return this;
-  }
-
-  chain(f: Function) {
-    return this;
+  chain<B>(f: (a: A) => Maybe<B>): Maybe<B> {
+    return new Nothing();
   }
 
   isJust() {
@@ -50,10 +122,10 @@ export class Nothing implements Setoid, Monad, PatternMatch {
   }
 }
 
-const _justs = new WeakMap();
-export class Just implements Setoid, Monad, PatternMatch {
+export class Just<A> extends Maybe<A> {
   constructor(v: any) {
-    _justs.set(this, v);
+    super();
+    this._value = v;
   }
 
   equals(j: Setoid): boolean {
@@ -65,30 +137,12 @@ export class Just implements Setoid, Monad, PatternMatch {
     );
   }
 
-  // isEqual(n: Just){
-  //     return this.equals(n);
-  // }
-
-  of(v: any) {
-    return new Just(v);
-  }
-
-  ap(j: Just | Nothing): Just | Nothing {
-    if (!isFunction(j.getValue()))
-      throwError("Maybe: Wrapped value is not a function");
-    return this.map(j.getValue());
-  }
-
-  getValue(): any {
-    return _justs.get(this);
-  }
-
-  map(f: Function) {
+  map<B>(f: (a: A) => B): Maybe<B> {
     if (!isFunction(f)) throwError("Maybe: Expected a function");
     return new Just(f(this.getValue()));
   }
 
-  chain(f: Function) {
+  chain<B>(f: (a: A) => Maybe<B>): Maybe<B> {
     if (!isFunction(f)) throwError("Maybe: Expected a function");
     return f(this.getValue());
   }
@@ -111,18 +165,3 @@ export class Just implements Setoid, Monad, PatternMatch {
       : throwError("Maybe: Expected Just");
   }
 }
-
-const Maybe = {
-  of: (v: any) => new Just(v),
-  zero: () => new Nothing(),
-  Just: (v: any): Just => new Just(v),
-  Nothing: (v?: any): Nothing => new Nothing(),
-  fromNullable: (v: any): Just | Nothing => (v ? new Just(v) : new Nothing()),
-  withDefault: (def: any, v: any): Just => (v ? new Just(v) : new Just(def)),
-  catMaybes: (ar: Array<Just | Nothing>): Array<any> =>
-    ar.filter(m => m instanceof Just).map(m => m.getValue()),
-  isJust: (v: Just | Nothing) => v.isJust(),
-  isNothing: (v: Just | Nothing) => v.isNothing()
-};
-
-export default Maybe;

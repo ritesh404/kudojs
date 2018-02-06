@@ -1,7 +1,7 @@
-import TaskType, {_of, _rejected} from "./task-type"
+import TaskType from "./task-type";
 
-const Task: any = (f: Function) => new TaskType(f);
-Task.of = _of;
-Task.rejected = _rejected;
+const Task: any = (f: (rej: Function, res: Function) => any) => new TaskType(f);
+Task.of = TaskType.of;
+Task.rejected = TaskType.rejected;
 
 export default Task;

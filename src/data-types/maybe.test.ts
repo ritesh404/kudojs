@@ -27,7 +27,7 @@ const ar = [
   Maybe.Just(1),
   Maybe.Just(2),
   Maybe.Just(3),
-  Maybe.Nothing(4),
+  Maybe.Nothing(),
   Maybe.Just(5)
 ];
 const unwrap = (m: { getValue: Function }) => m.getValue();
@@ -40,9 +40,7 @@ test("Maybe", t => {
   const a = Maybe.Just(1);
   const b = Maybe.Just(add2);
   const c = Maybe.Just(sub1);
-  const e = Maybe.Nothing(1);
-  const f = Maybe.Nothing(add2);
-  const g = Maybe.Nothing(sub1);
+  const e = Maybe.Nothing();
   //const d = c.ap(b.ap(a.map( x => g => f => f(g(x)))));
 
   t.ok(Maybe.isJust(a), "Just is a Just");
@@ -88,19 +86,8 @@ test("Maybe", t => {
   );
 
   t.ok(Maybe.zero().isNothing(), "zero creates a Nothing");
-  t.ok(
-    Maybe.zero()
-      .of(5)
-      .isNothing(),
-    "of Nothing creates a Nothing"
-  );
   t.equals(unwrap(Maybe.of(6)), unwrap(Maybe.Just(6)), "of creates a Just");
   t.equals(unwrap(a.of(6)), unwrap(Maybe.Just(6)), "Just of creates a Just");
-  t.equals(
-    unwrap(e.of(6)),
-    unwrap(Maybe.Nothing(6)),
-    "Nothing of creates a Nothing"
-  );
 
   t.equals(
     unwrap(Maybe.fromNullable(1)),
@@ -109,7 +96,7 @@ test("Maybe", t => {
   );
   t.equals(
     unwrap(Maybe.fromNullable(null)),
-    unwrap(Maybe.Nothing(null)),
+    unwrap(Maybe.Nothing()),
     "creates a Nothing when nullable value is passed"
   );
 
@@ -131,10 +118,10 @@ test("Maybe", t => {
     Maybe.Just(1).equals(a) === a.equals(Maybe.Just(1)),
     "Just commutativity"
   );
-  t.ok(Maybe.Nothing(1).equals(e), "Nothing equality");
-  t.notOk(Maybe.Nothing(1).equals(a), "Nothing inequality");
+  t.ok(Maybe.Nothing().equals(e), "Nothing equality");
+  t.notOk(Maybe.Nothing().equals(a), "Nothing inequality");
   t.ok(
-    Maybe.Nothing(1).equals(e) === e.equals(Maybe.Nothing(1)),
+    Maybe.Nothing().equals(e) === e.equals(Maybe.Nothing()),
     "Nothing commutativity"
   );
 

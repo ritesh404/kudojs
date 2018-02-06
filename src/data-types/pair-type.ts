@@ -1,30 +1,32 @@
 import { Setoid, Semigroup, BiFunctor, Monad } from "../interfaces";
 import { throwError, isFunction } from "../functions/helpers";
 
-const _of = (v: any) => {
-  return new Pair(v, v);
-};
+class Pair<A, B> implements Setoid, Semigroup, BiFunctor<A, B>, Monad<B> {
+  _value: Array<A | B>;
 
-const _pairs = new WeakMap();
-class Pair implements Setoid, Semigroup, BiFunctor, Monad {
-  constructor(v1: any, v2: any) {
+  constructor(v1: A, v2: B) {
     if (v1 === undefined || v2 === undefined)
       throwError("Pair: Both first and second values must be defined");
-    _pairs.set(this, [v1, v2]);
+    // _pairs.set(this, [v1, v2]);
+    this._value = [v1, v2];
   }
 
-  equals(j: Pair) {
-    return j.fst() === this.fst() && j.snd() === this.snd();
+  static of<A>(v: A) {
+    return new Pair(v, v);
   }
 
-  // isEqual(n: any){
-  //     return this.equals(n);
-  // }
+  of<A>(v: A) {
+    return new Pair(v, v);
+  }
 
-  concat(p: Pair) {
+  equals(j: Pair<A, B>) {
+    return <A>j.fst() === <A>this.fst() && <B>j.snd() === <B>this.snd();
+  }
+
+  concat(p: Pair<Semigroup, Semigroup>): Pair<A, B> {
     if (!(p instanceof Pair)) throwError("Pair: Pair required");
-    const lf = this.fst();
-    const ls = this.snd();
+    const lf: any = this.fst();
+    const ls: any = this.snd();
     const rf = p.fst();
     const rs = p.snd();
 
@@ -34,25 +36,21 @@ class Pair implements Setoid, Semigroup, BiFunctor, Monad {
     return new Pair(lf.concat(rf), ls.concat(rs));
   }
 
-  of(v: any) {
-    return _of(v);
+  fst(): A {
+    return <A>this.getValue()[0];
   }
 
-  fst() {
-    return this.getValue()[0];
+  snd(): B {
+    return <B>this.getValue()[1];
   }
 
-  snd() {
-    return this.getValue()[1];
-  }
-
-  ap(j: Pair): Pair {
+  ap<C, D>(j: Pair<C, (b: B) => D>): Pair<Semigroup, D> {
     if (!(j instanceof Pair)) throwError("Pair: Pair required");
-    const fn = j.snd();
+    const fn: any = j.snd();
     if (!isFunction(fn))
       throwError("Pair: Second wrapped value should be a function");
-    const l = this.fst();
-    const r = j.fst();
+    const l: any = this.fst();
+    const r: any = j.fst();
     //console.log(l, r, fn);
     if (!l.concat || !r.concat) throwError("Pair: Types should be Semigroups");
 
@@ -60,33 +58,33 @@ class Pair implements Setoid, Semigroup, BiFunctor, Monad {
   }
 
   getValue() {
-    return _pairs.get(this);
+    return this._value;
   }
 
-  map(f: Function) {
+  map<C>(f: (a: B) => C): Pair<A, C> {
     if (!isFunction(f)) throwError("Pair: Expected a function");
-    return new Pair(this.fst(), f(this.snd()));
+    return new Pair(<A>this.fst(), f(<B>this.snd()));
   }
 
-  bimap(f1: Function, f2: Function) {
+  bimap<C, D>(f1: (a: A) => C, f2: (a: B) => D): Pair<C, D> {
     if (!isFunction(f1) || !isFunction(f2))
       throwError("Pair: Expected functions for both parts");
-    return new Pair(f1(this.fst()), f2(this.snd()));
+    return new Pair(f1(<A>this.fst()), f2(<B>this.snd()));
   }
 
-  chain(f: Function) {
+  chain<C, D>(f: (a: B) => Pair<C, D>): Pair<C, D> {
     if (!isFunction(f)) throwError("Pair: Expected a function");
-    const l = this.fst();
+    const l: any = this.fst();
     if (!l.concat) throwError("Pair: First value should be a Semigroup");
-    const p = f(this.snd());
+    const p = f(<B>this.snd());
     if (!(p instanceof Pair)) throwError("Pair: Function must return a Pair");
-    const r = p.fst();
+    const r: any = p.fst();
     if (!r.concat)
       throwError(
         "Pair: First value of the returned Pair should be a Semigroup"
       );
 
-    return new Pair(l.concat(r), p.snd());
+    return new Pair(<C>l.concat(r), <D>p.snd());
   }
 
   swap() {
@@ -100,5 +98,19 @@ class Pair implements Setoid, Semigroup, BiFunctor, Monad {
   }
 }
 
+// @ts-ignore: implicit any
+Pair.prototype["fantasy-land/equals"] = Pair.prototype.equals;
+// @ts-ignore: implicit any
+Pair.prototype["fantasy-land/map"] = Pair.prototype.map;
+// @ts-ignore: implicit any
+Pair.prototype["fantasy-land/concat"] = Pair.prototype.concat;
+// @ts-ignore: implicit any
+Pair.prototype["fantasy-land/bimap"] = Pair.prototype.bimap;
+// @ts-ignore: implicit any
+Pair.prototype["fantasy-land/chain"] = Pair.prototype.chain;
+// @ts-ignore: implicit any
+Pair.prototype["fantasy-land/of"] = Pair.prototype.of;
+// @ts-ignore: implicit any
+Pair.prototype["fantasy-land/ap"] = Pair.prototype.ap;
+
 export default Pair;
-export { _of };

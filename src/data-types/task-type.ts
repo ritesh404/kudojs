@@ -1,20 +1,27 @@
 import { Monad, Semigroup } from "../interfaces";
 import { once, compose, throwError, isFunction } from "../functions/helpers";
 
-const _of = (v: any) => {
-  return new Task((_: any, resolve: Function) => resolve(v));
-};
+class Task implements Semigroup, Monad<(rej: Function, res: Function) => any> {
+  _value: (rej: Function, res: Function) => any;
 
-const _rejected = (v: any) => {
-  return new Task((reject: Function, _: Function) => reject(v));
-};
+  constructor(f: (rej: Function, res: Function) => any) {
+    isFunction(f) ? (this._value = f) : throwError("Task: Expected a Function");
+  }
 
-const _tasks = new WeakMap();
-class Task implements Semigroup, Monad {
-  constructor(f: Function) {
-    isFunction(f)
-      ? _tasks.set(this, f)
-      : throwError("Task: Expected a Function");
+  static of(v: any) {
+    return new Task((_: Function, resolve: Function) => resolve(v));
+  }
+
+  static rejected(v: any) {
+    return new Task((reject: Function, _: Function) => reject(v));
+  }
+
+  of(v: any) {
+    return new Task((_: Function, resolve: Function) => resolve(v));
+  }
+
+  rejected(v: any) {
+    return new Task((reject: Function, _: Function) => reject(v));
   }
 
   fork(reject: Function, resolve: Function) {
@@ -24,16 +31,12 @@ class Task implements Semigroup, Monad {
     fn(reject, resolve);
   }
 
-  of(v: any) {
-    return _of(v);
-  }
-
   toString() {
     const fork = this.getValue();
     return `Task(${fork.name})`;
   }
 
-  map(f: Function) {
+  map<A, B>(f: (a: A) => B): Task {
     if (!isFunction(f)) throwError("Task: Expected a function");
     const fork = this.getValue();
     return new Task((rej: Function, res: Function) =>
@@ -42,7 +45,7 @@ class Task implements Semigroup, Monad {
   }
 
   getValue() {
-    return _tasks.get(this);
+    return this._value;
   }
 
   ap(t: Task) {
@@ -120,8 +123,7 @@ class Task implements Semigroup, Monad {
     return new Task((rej: Function, res: Function) => {
       thisFork(rej, (...args: Array<any>) => {
         const t = f.call(null, args);
-        if (!(t instanceof Task))
-          throwError("Task: function must return another Task");
+        if (!t.fork) throwError("Task: function must return another Task");
         t.fork(rej, res);
       });
     });
@@ -135,5 +137,15 @@ class Task implements Semigroup, Monad {
   }
 }
 
+// @ts-ignore: implicit any
+Task.prototype["fantasy-land/map"] = Task.prototype.map;
+// @ts-ignore: implicit any
+Task.prototype["fantasy-land/concat"] = Task.prototype.concat;
+// @ts-ignore: implicit any
+Task.prototype["fantasy-land/chain"] = Task.prototype.chain;
+// @ts-ignore: implicit any
+Task.prototype["fantasy-land/of"] = Task.prototype.of;
+// @ts-ignore: implicit any
+Task.prototype["fantasy-land/ap"] = Task.prototype.ap;
+
 export default Task;
-export { _of, _rejected };

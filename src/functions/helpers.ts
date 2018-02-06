@@ -1,4 +1,6 @@
 import { Functor, Monad, Apply, BiFunctor, PatternMatch } from "../interfaces";
+import Either from "../data-types/either";
+import Maybe from "../data-types/maybe";
 
 const slice = Array.prototype.slice;
 
@@ -136,7 +138,7 @@ const chain = curry(_chain);
  * @summary caseOf :: Object -> patternMatch -> a
  */
 const _caseOf = (o: Object, p: PatternMatch): any =>
-  !p.caseOf ? throwError("caseOf not implemented") : p.caseOf(o);
+  !p.caseOf ? throwError("unable to match patterns") : p.caseOf(o);
 const caseOf = curry(_caseOf);
 
 const _liftAn = (f: Function, fn: Array<Apply>) => {
@@ -217,6 +219,32 @@ const liftA4 = curry(_liftA4);
  */
 const liftA5 = curry(_liftA5);
 
+/** @function maybeToEither
+ * @param {Maybe} m - Maybe type
+ * @description Converts a Maybe type to an Either Type
+ */
+const maybeToEither = <A>(m: Maybe<A>) =>
+  caseOf(
+    {
+      Nothing: (v: any) => Either.Left(null),
+      Just: (v: any) => Either.Right(v)
+    },
+    m
+  );
+
+/** @function eitherToMaybe
+ * @param {Maybe} m - Maybe type
+ * @description Converts a Maybe type to an Either Type
+ */
+const eitherToMaybe = <A, B>(e: Either<A, B>) =>
+  caseOf(
+    {
+      Left: (v: any) => Maybe.Nothing(),
+      Right: (v: any) => Maybe.Just(v)
+    },
+    e
+  );
+
 export {
   id,
   isFunction,
@@ -234,5 +262,7 @@ export {
   liftA2,
   liftA3,
   liftA4,
-  liftA5
+  liftA5,
+  maybeToEither,
+  eitherToMaybe
 };

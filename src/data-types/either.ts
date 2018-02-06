@@ -1,10 +1,103 @@
 import { Setoid, Monad, PatternMatch, BiFunctor } from "../interfaces";
-import { throwError, isFunction } from "../functions/helpers";
+import { caseOf, throwError, isFunction } from "../functions/helpers";
 
-const _lefts = new WeakMap();
-class Left implements Setoid, BiFunctor, Monad, PatternMatch {
-  constructor(v: any) {
-    _lefts.set(this, v);
+abstract class Either<A, B>
+  implements Setoid, BiFunctor<A, B>, Monad<B>, PatternMatch {
+  _value: A | B;
+
+  abstract equals(n: Setoid): boolean;
+  abstract map<C>(f: (a: B) => C): Either<A, C>;
+  abstract bimap<C, D>(fl: (a: A) => C, fr: (a: B) => D): Either<C, D>;
+  abstract chain<C>(f: (a: B) => Either<A, C>): Either<A, C>;
+  abstract caseOf(o: { Left: Function } | { Right: Function }): any;
+  abstract swap(): Either<A, B>;
+  abstract isLeft(): boolean;
+  abstract isRight(): boolean;
+
+  static of<A, B>(v: B): Either<A, B> {
+    return new Right(v);
+  }
+
+  static Right<A, B>(v: B): Either<A, B> {
+    return new Right(v);
+  }
+
+  static Left<A, B>(v: A): Either<A, B> {
+    return new Left(v);
+  }
+
+  static fromNullable<A, B>(v: any): Either<A, B> {
+    return v ? new Right(v) : new Left(v);
+  }
+
+  static withDefault<A, B>(def: any, v: any): Either<A, B> {
+    return v ? new Right(v) : new Right(def);
+  }
+
+  static swap<A, B>(e: Either<A, B>) {
+    return e.swap();
+  }
+
+  static try(f: Function) {
+    return <A, B>(...args: Array<any>): Either<A, B> => {
+      try {
+        return new Right<A, B>(f.apply(null, args));
+      } catch (e) {
+        return new Left<A, B>(e);
+      }
+    };
+  }
+
+  static bimap<A, B, C, D>(e: Either<A, B>, fl: (a: A) => C, fr: (a: B) => D) {
+    return e.bimap(fl, fr);
+  }
+
+  static isLeft<A, B>(v: Either<A, B>): boolean {
+    return v.isLeft();
+  }
+
+  static isRight<A, B>(v: Either<A, B>): boolean {
+    return v.isRight();
+  }
+
+  of<B>(v: B): Either<A, B> {
+    return new Right(v);
+  }
+
+  ap<C>(j: Either<A, (a: B) => C>): Either<B, C> {
+    if (!isFunction(j.getValue()))
+      throwError("Either: Wrapped value is not a function");
+
+    return caseOf(
+      {
+        Left: (v: A) => j,
+        Right: (v: (a: B) => C) => this.map(v)
+      },
+      j
+    );
+  }
+
+  getValue(): A | B {
+    return this._value;
+  }
+}
+// @ts-ignore: implicit any
+Either.prototype["fantasy-land/equals"] = Either.prototype.equals;
+// @ts-ignore: implicit any
+Either.prototype["fantasy-land/map"] = Either.prototype.map;
+// @ts-ignore: implicit any
+Either.prototype["fantasy-land/bimap"] = Either.prototype.bimap;
+// @ts-ignore: implicit any
+Either.prototype["fantasy-land/chain"] = Either.prototype.chain;
+// @ts-ignore: implicit any
+Either.prototype["fantasy-land/of"] = Either.prototype.of;
+// @ts-ignore: implicit any
+Either.prototype["fantasy-land/ap"] = Either.prototype.ap;
+
+class Left<A, B> extends Either<A, B> {
+  constructor(v: A) {
+    super();
+    this._value = v;
   }
 
   equals(n: Setoid): boolean {
@@ -16,32 +109,16 @@ class Left implements Setoid, BiFunctor, Monad, PatternMatch {
     );
   }
 
-  // isEqual(n: any){
-  //     return this.equals(n);
-  // }
-
-  of(v: any) {
-    return new Left(v);
+  map<C>(f: (a: B) => C): Either<A, C> {
+    return new Left<A, C>(<A>this.getValue());
   }
 
-  ap(n: Left) {
-    return this;
+  bimap<C, D>(fl: (a: A) => C, fr: (a: B) => D): Either<C, D> {
+    return new Left(fl(<A>this.getValue()));
   }
 
-  getValue() {
-    return _lefts.get(this);
-  }
-
-  map(f: Function) {
-    return this;
-  }
-
-  bimap(f: Function, _: Function): Left {
-    return this.of(f(this.getValue()));
-  }
-
-  chain(f: Function) {
-    return this;
+  chain<C>(f: (a: B) => Either<A, C>): Either<A, C> {
+    return new Left<A, C>(<A>this.getValue());
   }
 
   isRight() {
@@ -52,8 +129,8 @@ class Left implements Setoid, BiFunctor, Monad, PatternMatch {
     return true;
   }
 
-  swap() {
-    return new Right(this.getValue());
+  swap(): Either<A, B> {
+    return new Right<A, B>(<B>this.getValue());
   }
 
   toString() {
@@ -67,10 +144,10 @@ class Left implements Setoid, BiFunctor, Monad, PatternMatch {
   }
 }
 
-const _rights = new WeakMap();
-class Right implements Setoid, BiFunctor, Monad, PatternMatch {
-  constructor(v: any) {
-    _rights.set(this, v);
+class Right<A, B> extends Either<A, B> {
+  constructor(v: B) {
+    super();
+    this._value = v;
   }
 
   equals(j: Setoid): boolean {
@@ -82,36 +159,18 @@ class Right implements Setoid, BiFunctor, Monad, PatternMatch {
     );
   }
 
-  // isEqual(n: any){
-  //     return this.equals(n);
-  // }
-
-  of(v: any) {
-    return new Right(v);
-  }
-
-  ap(j: Right | Left): Right | Left {
-    if (!isFunction(j.getValue()))
-      throwError("Either: Wrapped value is not a function");
-    return this.map(j.getValue());
-  }
-
-  getValue() {
-    return _rights.get(this);
-  }
-
-  map(f: Function) {
+  map<C>(f: (a: B) => C): Either<A, C> {
     if (!isFunction(f)) throwError("Either: Expected a function");
-    return new Right(f(this.getValue()));
+    return new Right<A, C>(f(<B>this.getValue()));
   }
 
-  bimap(_: Function, f: Function): Right {
-    return this.of(f(this.getValue()));
+  bimap<C, D>(fl: (a: A) => C, fr: (a: B) => D): Either<C, D> {
+    return new Right(fr(<B>this.getValue()));
   }
 
-  chain(f: Function) {
+  chain<C>(f: (a: B) => Either<A, C>): Either<A, C> {
     if (!isFunction(f)) throwError("Either: Expected a function");
-    return f(this.getValue());
+    return f(<B>this.getValue());
   }
 
   isRight() {
@@ -122,8 +181,8 @@ class Right implements Setoid, BiFunctor, Monad, PatternMatch {
     return false;
   }
 
-  swap() {
-    return new Left(this.getValue());
+  swap(): Either<A, B> {
+    return new Left<A, B>(<A>this.getValue());
   }
 
   toString() {
@@ -136,25 +195,5 @@ class Right implements Setoid, BiFunctor, Monad, PatternMatch {
       : throwError("Either: Expected Right");
   }
 }
-
-const Either = {
-  of: (v: any) => new Right(v),
-  Right: (v: any): Right => new Right(v),
-  Left: (v: any): Left => new Left(v),
-  fromNullable: (v: any): Right | Left => (v ? new Right(v) : new Left(v)),
-  withDefault: (def: any, v: any): Right => (v ? new Right(v) : new Right(def)),
-  swap: (e: Left | Right) => e.swap(),
-  try: (f: Function) => (...args: Array<any>) => {
-    try {
-      return new Right(f.apply(null, args));
-    } catch (error) {
-      return new Left(error);
-    }
-  },
-  bimap: (e: Left | Right, fl: Function, fr: Function): Left | Right =>
-    e.bimap(fl, fr),
-  isLeft: (v: Left | Right) => v.isLeft && v.isLeft(),
-  isRight: (v: Left | Right) => v.isRight && v.isRight()
-};
 
 export default Either;

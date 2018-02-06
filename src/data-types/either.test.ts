@@ -39,9 +39,16 @@ test("Either", t => {
   //const d = c.ap(b.ap(a.map( x => g => f => f(g(x)))));
 
   t.ok(Either.isRight(a), "Right is a Right");
+  t.ok(a.isRight(), "Right is a Right");
   t.notOk(Either.isLeft(a), "Right is not a Left");
+  t.notOk(a.isLeft(), "Right is not a Left");
   t.notOk(Either.isRight(e), "Left is not a Right");
+  t.notOk(e.isRight(), "Left is not a Right");
   t.ok(Either.isLeft(e), "Left is a Left");
+  t.ok(e.isLeft(), "Left is a Left");
+
+  t.equals(a.getValue(), 1, "get value");
+  t.equals(e.getValue(), 1, "get value");
 
   t.equals(a.toString(), "Right(1)", "should give a Right");
   t.equals(e.toString(), "Left(1)", "should give a Left");
@@ -81,6 +88,7 @@ test("Either", t => {
   );
 
   t.equals(unwrap(Either.of(6)), unwrap(Either.Right(6)), "of creates a Right");
+  t.equals(unwrap(a.of(6)), unwrap(Either.Right(6)), "of creates a Right");
 
   t.equals(
     unwrap(Either.fromNullable(1)),
@@ -135,13 +143,13 @@ test("Either", t => {
   );
 
   t.equals(
-    unwrap(Either.bimap(a, v => v + 1, v => v + 2)),
-    unwrap(Either.Right(3)),
+    Either.bimap(a, v => v + 1, v => v + 2).equals(Either.Right(3)),
+    a.bimap(v => v + 1, v => v + 2).equals(Either.Right(3)),
     "bimap Right"
   );
   t.equals(
-    unwrap(Either.bimap(e, v => v + 1, v => v + 2)),
-    unwrap(Either.Left(2)),
+    Either.bimap(e, v => v + 1, v => v + 2).equals(Either.Left(2)),
+    e.bimap(v => v + 1, v => v + 2).equals(Either.Left(2)),
     "bimap Left"
   );
 

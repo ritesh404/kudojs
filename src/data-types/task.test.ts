@@ -1,6 +1,7 @@
 import * as test from "tape";
 import Task from "./task";
 import { id, fmap } from "../functions/helpers";
+import { setTimeout } from "timers";
 
 const add2 = (x: number) => x + 2;
 const sub1 = (x: number) => x - 1;
@@ -74,6 +75,13 @@ test("Task#Applicative", t => {
   let res1 = 1;
   let res2 = 2;
   t.throws(() => a.ap({}), "applicative expects a Task");
+  t.throws(
+    () =>
+      Task.of(1)
+        .ap(Task.of(1))
+        .fork(id, id),
+    "applicative expects function to return a function"
+  );
   a.ap(c.ap(b.map(p => q => x => p(q(x))))).fork(id, x => {
     res1 = x;
   });
@@ -93,6 +101,13 @@ test("Task#Chain Associativity", t => {
   let res1 = 1;
   let res2 = 2;
   t.throws(() => a.chain(1), "chain expects a function");
+  t.throws(
+    () =>
+      Task.of(1)
+        .chain(x => 1)
+        .fork(id, id),
+    "chain expects function to return a task"
+  );
   gimmeTask(1)
     .chain(gimmeTask)
     .chain(gimmeTask)
@@ -129,12 +144,18 @@ test("Task#To Promise", t => {
 test("Task#Rejected", t => {
   Task.rejected(2).fork(x => {
     t.equals(x, 2, "Rejected Task");
+  }, id);
+  a.rejected(2).fork(x => {
+    t.equals(x, 2, "Rejected Task");
     t.end();
   }, id);
 });
 
 test("Task#Of", t => {
   Task.of(3).fork(id, x => {
+    t.equals(x, 3, "of creates a Task");
+  });
+  a.of(3).fork(id, x => {
     t.equals(x, 3, "of creates a Task");
     t.end();
   });

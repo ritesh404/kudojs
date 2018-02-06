@@ -1,60 +1,60 @@
 export interface Setoid {
-    equals(s: Setoid): boolean
+  equals(s: Setoid): boolean;
 }
 
 export interface Semigroup {
-    concat(s: Semigroup): Semigroup
+  concat(s: Semigroup): Semigroup;
 }
 
 export interface Monoid extends Semigroup {
-    empty(): Monoid
+  empty(): Monoid;
 }
 
 export interface Foldable {
-    reduce(f: Function, x:any): any
+  reduce(f: Function, x: any): any;
 }
 
-export interface Functor {
-    map(fn: Function): Functor
+export interface Functor<A> {
+  map<B>(fn: (a: A) => B): Functor<B>;
 }
 
-export interface Alt extends Functor{
-    alt(a: Alt): Alt
+export interface Alt<A> extends Functor<A> {
+  alt<A>(a: Alt<A>): Alt<A>;
 }
 
-export interface Plus extends Alt {
-    zero(): Plus
+export interface Plus<A> extends Alt<A> {
+  zero(): Plus<A>;
 }
 
-export interface Extend extends Functor {
-    extend(fn: Function): Extend
+// export interface Extend extends Functor {
+//     extend(fn: Function): Extend
+// }
+
+export interface BiFunctor<A, B> extends Functor<B> {
+  bimap<C, D>(fa: (a: A) => C, fb: (a: B) => D): BiFunctor<C, D>;
 }
 
-export interface BiFunctor  extends Functor {
-    bimap(a: Function, b: Function): BiFunctor
+export interface Apply<A> extends Functor<A> {
+  ap<B>(j: Apply<(a: A) => B>): Apply<B>;
+  map<B>(fn: (a: A) => B): Apply<B>;
 }
 
-export interface Apply extends Functor {
-    ap(a: Functor): Apply
-    map(fn: Function): Apply
+export interface Applicative<A> extends Apply<A> {
+  of<A>(a: A): Applicative<A>;
 }
 
-export interface Applicative extends Apply {
-    of(a: any): Applicative
+export interface Chain<A> extends Apply<A> {
+  chain<B>(fn: (a: A) => Chain<B>): Chain<B>;
 }
 
-export interface Chain extends Apply {
-    chain(fn: Function): Monad
-}
+// export interface Traversable extends Functor, Foldable {
+//     traverse(a: Applicative, f: Function): Applicative
+// }
 
-export interface Traversable extends Functor, Foldable {
-    traverse(a: Applicative, f: Function): Applicative
-}
-
-export interface Monad extends Applicative, Chain {
-    
+export interface Monad<A> extends Applicative<A>, Chain<A> {
+  chain<B>(fn: (a: A) => Monad<B>): Monad<B>;
 }
 
 export interface PatternMatch {
-    caseOf(o: Object): any
+  caseOf(o: Object): any;
 }

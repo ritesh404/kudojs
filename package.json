@@ -1,9 +1,10 @@
 {
   "name": "kudojs",
   "version": "0.0.1",
-  "description": "A utility library to write functional code in Javascript",
+  "description": "A utility library to write code in functional programming style in Javascript and Typescript",
   "main": "dist/kudo.js",
   "module": "dist/kudo.mjs",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "cross-env NODE_ENV=test TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' nyc tape --reporter=lcov --require ts-node/register src/**/*.test.ts | tap-spec",
     "build:typescript": "cross-env tsc ./src/index.ts",
@@ -24,10 +25,10 @@
   },
   "nyc": {
     "check-coverage": true,
-    "branches": 95,
-    "functions": 95,
-    "lines": 95,
-    "statements": 95,
+    "branches": 90,
+    "functions": 90,
+    "lines": 90,
+    "statements": 90,
     "sourceMap": false,
     "instrument": true,
     "all": true,
@@ -41,7 +42,7 @@
       "node_modules"
     ],
     "reporter": [
-      "text-summary",
+      "text",
       "lcov"
     ],
     "require": [
@@ -60,7 +61,8 @@
     "functional",
     "programming",
     "fp",
-    "javascript"
+    "javascript",
+    "typescript"
   ],
   "author": "Ritesh Pillai",
   "license": "MIT",
