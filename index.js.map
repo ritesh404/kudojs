@@ -1,1 +1,0 @@
-{"version":3,"file":"index.js","sources":["src/index.ts"],"sourcesContent":["const Kudo = {};\n\nexport default Kudo;"],"names":["Kudo"],"mappings":";;;;;;AAAA,IAAMA,OAAO,EAAb;;;;;;;;"}

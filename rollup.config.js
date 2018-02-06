@@ -2,7 +2,7 @@ import babel from 'rollup-plugin-babel';
 import babelrc from 'babelrc-rollup';
 //import istanbul from 'rollup-plugin-istanbul';
 import typescript from 'rollup-plugin-typescript2';
-// import uglify from 'rollup-plugin-uglify';
+import uglify from 'rollup-plugin-uglify';
 
 let pkg = require('./package.json');
 let external = Object.keys(pkg.dependencies);
@@ -11,7 +11,8 @@ let plugins = [
   typescript({
     tsconfig: "./tsconfig.json"
   }),
-  babel(babelrc())
+  babel(babelrc()),
+  uglify()
 ];
 
 // if (process.env.BUILD !== 'production') {
