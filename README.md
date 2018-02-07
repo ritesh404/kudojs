@@ -1,4 +1,7 @@
-# KudoJS
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/7039911/35882138-2972170e-0ba9-11e8-8fcf-f96dfcb4d562.jpg">
+</p>
+
 ---
 KudoJS is a small utility library with a collection of popular Algebraic Data Types and Helper functions to help you write code in a functional programming style in Javascript.
 ### Installation
@@ -22,161 +25,44 @@ import kudoJS from "fp-kudojs"
 ### Helper Functions
 
 These are the functions under the `kudoJS.*` namespace 
-* [`kudoJS.id`](#kjsid)
-----
-### `kudoJS.id`
-Returns the value given to it. 
-
-`id(x: any): any`
-
-----
-### `kudoJS.once`
-Returns a function that when called fires the passed function only once
-
-`once(f: Function): Function`
-
-----
-
-### `kudoJS.curry`
-
-Returns a curried equivalent of the provided function
-
-`curry(fn: Function): Function`
-
-----
-
-### `kudoJS.ncurry`
-Returns a curried equivalent of the provided function which will accept named arguments in any order
-
-`ncurry(fn: Function, args: Array<string>): Function`
-
-* **Parameters:**
-	- ***fn: Function:*** Function to be curried and that which accepts a single named argument object
-    - ***args: Array<string>:*** Array of key names of the function named argument object
-
-----
-
-### `kudoJS.compose`
-
-Performs right-to-left function composition.
-
-`compose(...fns: Function): Function`
-
-----
-
-### `kudoJS.fmap`
-
-Takes a function and a functor, applies the function to each of the functor's values, and returns a functor
-
-`fmap(fn: (a: A) => B, f: Functor<A>): Functor<B>`
-
-----
-
-### `kudoJS.bimap`
-
-Maps both sides of the disjunction
-
-`bimap(f1: (a: A) => C, f2: (b: B) => D, b: BiFunctor<A, B>): BiFunctor<C, D>`
-
-----
-
-### `kudoJS.chain`
-
-Chain together in many computations of the same type
-
-`chain(f: (a: A) => Monad<B>, m: Monad<A>): Monad<B>`
-
-----
-
-### `kudoJS.caseOf`
-
-Conditional behaviour based on the structure of algebraic data types
-
-`caseOf(o: Object, p: ADT): any`
-
-* **Parameters**
-    - ***o: Object:*** An Object with key as ADT constructor name and value as function expression
-    - ***p: ADT*** An ADT that supports pattern matching
-
-**Example:**
-```
-import {caseOf, Maybe} from "fp-kudojs";
-
-const j1 = Maybe.Just(1);
-
-const k1 = caseOf({
-	Nothing: () => null,
-	Just: (v) => v+1
-}, j1);
-//k1 = 2;
-```
-----
-
-### `kudoJS.liftAn`
-
-lets us combine n separate wrapped values into one with a given function.
-
-`liftAn(f: (a: A ...an: A) => B, ar: Array<Apply<A>>): Apply<B>`
-
-----
-
-### `kudoJS.liftA1`
-
-AKA fmap.
-
-`liftA1(f: (a: A) => B, a1: Apply<A>): Apply<B>`
-
-----
-
-### `kudoJS.liftA2`
-
-lets us combine 2 separate wrapped values into one with a given function.
-
-`liftA2(f: (a1: A, a2: A) => B, ar1: Apply<A>, ar2: Apply<A>): Apply<B>`
-
-----
-
-### `kudoJS.liftA3`
-
-lets us combine 3 separate wrapped values into one with a given function.
-
-`liftA3(f: (a1: A, a2: A, a3: A) => B, ar1: Apply<A>, ar2: Apply<A>, ar3: Apply<A>): Apply<B>`
-
-----
-
-### `kudoJS.liftA4`
-
-lets us combine 4 separate wrapped values into one with a given function.
-
-`liftA4(f: (a1: A, a2: A, a3: A, a4: A) => B, ar1: Apply<A>, ar2: Apply<A>, ar3: Apply<A>, ar4: Apply<A>): Apply<B>`
-
-----
-
-### `kudoJS.liftA5`
-
-lets us combine 5 separate wrapped values into one with a given function.
-
-`liftA5(f: (a1: A, a2: A, a3: A, a4: A, a5: A) => B, ar1: Apply<A>, ar2: Apply<A>, ar3: Apply<A>, ar4: Apply<A>, ar5: Apply<A>): Apply<B>`
-
-----
-
-### `kudoJS.eitherToMaybe`
-Converts a Either type to an Maybe Type
-
-`eitherToMaybe(e: Either<A, B>): Maybe<A, B>`
-
-----
-
-### `kudoJS.maybeToEither`
-Converts a Maybe type to an Either Type
-
-`maybeToEither(m: Maybe<A, B>): Either<A, B>`
-
-----
+* [`kudoJS.id`](docs/helper-functions.md#kudojsid)
+* [`kudoJS.once`](docs/helper-functions.md#kudojsonce)
+* [`kudoJS.curry`](docs/helper-functions.md#kudojscurry)
+* [`kudoJS.ncurry`](docs/helper-functions.md#kudojsncurry)
+* [`kudoJS.compose`](docs/helper-functions.md#kudojscompose)
+* [`kudoJS.fmap`](docs/helper-functions.md#kudojsfmap)
+* [`kudoJS.bimap`](docs/helper-functions.md#kudojsbimap)
+* [`kudoJS.chain`](docs/helper-functions.md#kudojschain)
+* [`kudoJS.caseOf`](docs/helper-functions.md#kudojscaseof)
+* [`kudoJS.liftAn`](docs/helper-functions.md#kudojsliftan)
+* [`kudoJS.liftA1`](docs/helper-functions.md#kudojslifta1)
+* [`kudoJS.liftA2`](docs/helper-functions.md#kudojslifta2)
+* [`kudoJS.liftA3`](docs/helper-functions.md#kudojslifta3)
+* [`kudoJS.liftA4`](docs/helper-functions.md#kudojslifta4)
+* [`kudoJS.liftA5`](docs/helper-functions.md#kudojslifta5)
+* [`kudoJS.eitherToMaybe`](docs/helper-functions.md#kudojseithertomaybe)
+* [`kudoJS.maybeToEither`](docs/helper-functions.md#kudojsmaybeToEither)
+
+---
 
 ### Algebraic Data Types (ADTs)
 
 ***TODO: Documentation!***
+ADTs under the kudoJS.* namespace. All of the data types are compatible with the [Fantasy Land Specifications](https://github.com/fantasyland/) 
+
+* [`kudoJS.Pair`](docs/adts.md#kudojspair)
+* [`kudoJS.Maybe`](docs/adts.md#kudojsmaybe)
+* [`kudoJS.Either`](docs/adts.md#kudojseither)
+* [`kudoJS.Task`](docs/adts.md#kudojstask)
+
+| ADT           | Constructors  | Static Methods | Instance Methods  |
+| ------------- |:-------------:|:-----------------:| ----:|
+| `kudoJS.Pair`      | `Pair`, `of` || `equals`, `concat`, `fst`, `snd`, `ap`, `getValue`, `map`, `bimap`, `chain`, `swap`, `toString` |
+| `kudoJS.Maybe`      | `of`, `Just`, `Nothing`, `zero`, `fromNullable`, `withDefault`    | `catMaybes`, `isNothing`, `isJust` |  `equals`, `ap`, `alt`, `map`, `chain`, `toString`, `getValue`, `isNothing`, `isJust` |
+| `kudoJS.Either` |   `of`, `Left`, `Right`, `fromNullable`, `withDefault`    | `try`, `isLeft`, `isRight`   | `equals`, `ap`, `getValue`, `map`, `bimap`, `chain`, `swap`, `toString`, `isLeft`, `isRight` |
+| `kudoJS.Task` |       `Task`, `of`, `rejected`           |     |  `fork`, `concat`, `ap`, `getValue`, `map`, `chain`, `toPromise`, `toString`|
+
+** TODO: Add examples **
 
 ---
 ### License
