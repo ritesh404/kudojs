@@ -47,13 +47,12 @@ These are the functions under the `kudoJS.*` namespace
 
 ### Algebraic Data Types (ADTs)
 
-***TODO: Documentation!***
 ADTs under the kudoJS.* namespace. All of the data types are compatible with the [Fantasy Land Specifications](https://github.com/fantasyland/) 
 
-* [`kudoJS.Pair`](docs/adts.md#kudojspair)
-* [`kudoJS.Maybe`](docs/adts.md#kudojsmaybe)
-* [`kudoJS.Either`](docs/adts.md#kudojseither)
-* [`kudoJS.Task`](docs/adts.md#kudojstask)
+* [`kudoJS.Pair`](docs/pair.md)
+* [`kudoJS.Maybe`](docs/maybe.md)
+* [`kudoJS.Either`](docs/either.md)
+* [`kudoJS.Task`](docs/task.md)
 
 | ADT           | Constructors  | Static Methods | Instance Methods  |
 | ------------- |:-------------:|:-----------------:| ----:|
@@ -62,7 +61,6 @@ ADTs under the kudoJS.* namespace. All of the data types are compatible with the
 | `kudoJS.Either` |   `of`, `Left`, `Right`, `fromNullable`, `withDefault`    | `try`, `isLeft`, `isRight`   | `equals`, `ap`, `getValue`, `map`, `bimap`, `chain`, `swap`, `toString`, `isLeft`, `isRight` |
 | `kudoJS.Task` |       `Task`, `of`, `rejected`           |     |  `fork`, `concat`, `ap`, `getValue`, `map`, `chain`, `toPromise`, `toString`|
 
-** TODO: Add examples **
 
 ---
 ### License

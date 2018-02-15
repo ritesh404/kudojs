@@ -21,7 +21,7 @@ These are the functions under the `kudoJS.*` namespace
 
 ----
 ### `kudoJS.id`
-Returns the value given to it. 
+Identity function. Returns the value given to it. 
 
 `id(x: any): any`
 
@@ -235,7 +235,7 @@ lets us combine 5 separate wrapped values into one with a given function.
 ----
 
 ### `kudoJS.eitherToMaybe`
-Converts a Either type to an Maybe Type
+Converts an Either type to a Maybe Type
 
 `eitherToMaybe(e: Either<A, B>): Maybe<A, B>`
 
