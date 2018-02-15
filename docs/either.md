@@ -1,6 +1,11 @@
 <a name="Either"></a>
 
 ## Either
+Either is a monad and can be used as a generic structure for a type with two possibilities, a Left a or a Right b. It represents the logical disjunction between `a` and `b`
+
+A common use of this structure is to handle things like error handling and things that may fail and when you want to provide additional information on the failure. It is used to represent a value which is either correct or an error. As a convention the Left constructor is used to hold an error value and the Right constructor is used to hold a correct value. This sort of a structure forces handling of failures to be explicit, and avoids the problems associated with throwing exceptions.
+
+**Implements:** [BiFunctor](https://github.com/fantasyland/fantasy-land#bifunctor), [Monad](https://github.com/fantasyland/fantasy-land#monad), [Setoid](https://github.com/fantasyland/fantasy-land#setoid)
 
 * [Either](#Either)
     * [.of](#Either.of)

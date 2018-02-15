@@ -2,8 +2,9 @@
 <a name="Pair"></a>
 
 # Pair
-A Pair is another way of storing two values in a single value. Elements of a Pair does not need to be of the same type
+A Pair is another way of storing two values in a single value. Elements of a Pair do not need to be of the same type
 
+**Implements:** [BiFunctor](https://github.com/fantasyland/fantasy-land#bifunctor), [Monad](https://github.com/fantasyland/fantasy-land#monad), [Semigroup](https://github.com/fantasyland/fantasy-land#semigroup), [Setoid](https://github.com/fantasyland/fantasy-land#setoid)
 
 * [Pair](#Pair)
     * [Pair(v1, v2)](#new_Pair_new)

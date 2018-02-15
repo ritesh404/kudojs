@@ -1,6 +1,10 @@
 <a name="Maybe"></a>
 
 ## Maybe 
+Maybe is a structure for values that may not be present, or things that may fail.
+A Maybe can help in dealing with optional values, arguments, and records with optional fields etc.
+
+**Implements:** [Alt](https://github.com/fantasyland/fantasy-land#alt), [Monad](https://github.com/fantasyland/fantasy-land#monad), [Semigroup](https://github.com/fantasyland/fantasy-land#semigroup), [Setoid](https://github.com/fantasyland/fantasy-land#setoid)
 
 * [Maybe](#Maybe)
     * [.of](#Maybe.of)
