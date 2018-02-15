@@ -3,7 +3,7 @@
 ## Task
 A Task type makes it easy to model asynchronous operations that may fail, like HTTP requests or reading/writing to a databases
 
-**Implements:** [Monad](https://github.com/fantasyland/fantasy-land#monad), [Semigroup](https://github.com/fantasyland/fantasy-land#semigroup)
+**Implements:** <code>[Monad](https://github.com/fantasyland/fantasy-land#monad)</code>, <code>[Semigroup](https://github.com/fantasyland/fantasy-land#semigroup)</code>
 
 * [Task](#Task)
     * [Task(f)](#new_Task_new)

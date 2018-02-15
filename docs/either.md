@@ -5,7 +5,7 @@ Either is a monad and can be used as a generic structure for a type with two pos
 
 A common use of this structure is to handle things like error handling and things that may fail and when you want to provide additional information on the failure. It is used to represent a value which is either correct or an error. As a convention the Left constructor is used to hold an error value and the Right constructor is used to hold a correct value. This sort of a structure forces handling of failures to be explicit, and avoids the problems associated with throwing exceptions.
 
-**Implements:** [BiFunctor](https://github.com/fantasyland/fantasy-land#bifunctor), [Monad](https://github.com/fantasyland/fantasy-land#monad), [Setoid](https://github.com/fantasyland/fantasy-land#setoid)
+**Implements:** <code>[BiFunctor](https://github.com/fantasyland/fantasy-land#bifunctor)</code>, <code>[Monad](https://github.com/fantasyland/fantasy-land#monad)</code>, <code>[Setoid](https://github.com/fantasyland/fantasy-land#setoid)</code>
 
 * [Either](#Either)
     * [.of](#Either.of)

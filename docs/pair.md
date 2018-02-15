@@ -4,7 +4,7 @@
 # Pair
 A Pair is another way of storing two values in a single value. Elements of a Pair do not need to be of the same type
 
-**Implements:** [BiFunctor](https://github.com/fantasyland/fantasy-land#bifunctor), [Monad](https://github.com/fantasyland/fantasy-land#monad), [Semigroup](https://github.com/fantasyland/fantasy-land#semigroup), [Setoid](https://github.com/fantasyland/fantasy-land#setoid)
+**Implements:** <code>[BiFunctor](https://github.com/fantasyland/fantasy-land#bifunctor)</code>, <code>[Monad](https://github.com/fantasyland/fantasy-land#monad)</code>, <code>[Semigroup](https://github.com/fantasyland/fantasy-land#semigroup)</code>, <code>[Setoid](https://github.com/fantasyland/fantasy-land#setoid)</code>
 
 * [Pair](#Pair)
     * [Pair(v1, v2)](#new_Pair_new)
