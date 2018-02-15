@@ -90,7 +90,7 @@ Get the function within the Task
 <a name="Task.concat"></a>
 
 ### Task.concat(t)
-Concat the current Task with the passed one and get a new Task. Which when resloved would get the successfull result of both the task in an array.
+Concat the current Task with the passed one and get a new Task. Which when resloved would get the successfull result of both the tasks.
 
 
 | Param | Type | Description |

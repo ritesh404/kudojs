@@ -127,7 +127,7 @@ class Task implements Semigroup, Monad<(rej: Function, res: Function) => any> {
   /** @function Task.concat
    * @memberof Task
    * @param {Task} t - Task to concat
-   * @description Concat the current Task with the passed one and get a new Task. Which when resloved would get the successfull result of both the task in an array.
+   * @description Concat the current Task with the passed one and get a new Task. Which when resloved would get the successfull result of both the task.
    */
   concat(t: Task) {
     if (!(t instanceof Task)) throwError("Task: type mismatch");
