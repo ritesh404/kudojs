@@ -48,6 +48,7 @@ test("Pair", t => {
   );
 
   t.deepEqual(unwrap(Pair.of(1)), unwrap(Pair(1, 1)), "of creates a Pair");
+  t.deepEqual(unwrap(a.of(1)), unwrap(Pair(1, 1)), "of creates a Pair");
 
   t.ok(Pair([1], [2]).equals(a) === a.equals(Pair([1], [2])), "commutativity");
   t.ok(a.equals(a), "reflexivity");
@@ -75,6 +76,15 @@ test("Pair", t => {
   );
 
   t.throws(() => a.chain(1), "chain expects a function");
+  t.throws(
+    () => Pair(1, 1).chain(gimmePair),
+    "chain expects fst to be a semigroup"
+  );
+  t.throws(() => a.chain(() => 1), "chain expects function to return a pair");
+  t.throws(
+    () => a.chain(() => Pair.of(1)),
+    "chain expects fst of returned Pair to be a semigroup"
+  );
   t.ok(
     gimmePair([1])
       .chain(gimmePair)

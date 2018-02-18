@@ -56,6 +56,7 @@ test("Task#Semigroup", t => {
   let res2 = [2];
   const a1 = gimmeTask(2);
   const a2 = gimmeTask(3);
+  t.throws(() => a.concat(1), "concat expects a Task");
   a
     .concat(a1)
     .concat(a2)

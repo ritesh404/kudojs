@@ -125,6 +125,9 @@ test("Maybe", t => {
     "Nothing commutativity"
   );
 
+  t.ok(a.alt(Maybe.Just(2)).equals(a), "Just Alt returns the current Maybe");
+  t.ok(e.alt(Maybe.Just(1)).equals(a), "Nothing Alt returns the passed Maybe");
+
   t.throws(() => a.chain(1), "Just chain expects a function");
   t.ok(
     prop("a")(data)
