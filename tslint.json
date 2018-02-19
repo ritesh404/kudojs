@@ -1,0 +1,20 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:latest",
+        "tslint-config-prettier"
+    ],
+    "jsRules": {},
+    "rules": {
+        "array-type": [true, "generic"],
+        "only-arrow-functions": false,
+        "no-angle-bracket-type-assertion": false,
+        "ban-types": [true, ["Object", "Use {} instead."], ["String"]],
+        "curly": [true, "ignore-same-line"],
+        "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
+        "object-literal-sort-keys": false,
+        "max-classes-per-file": false,
+        "no-implicit-dependencies": [true, "dev"]
+    },
+    "rulesDirectory": []
+}
