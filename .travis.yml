@@ -2,20 +2,22 @@ sudo: false
 language: node_js
 cache:
   directories:
+    - ~/.npm
     - node_modules
-node_js:
-  - 6
-  - 8
-branches:
-  only:
-    - master
 notifications:
   email: false
+node_js:
+  - '9'
+  - '8'
+  - '6'
 before_script:
   - npm prune
 script:
   - npm test
   - npm run build
 after_success:
-  - npm run report-coverage
-  - npm run release
+  - npm install -g travis-deploy-once@6
+  - travis-deploy-once "npm run semantic-release"
+branches:
+  only:
+    - master
