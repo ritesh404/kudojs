@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/blitzritz/kudojs.svg?branch=master)](https://travis-ci.org/blitzritz/kudojs)
+[![Travis](https://img.shields.io/travis/blitzritz/kudojs.svg)]() [![npm (scoped)](https://img.shields.io/npm/v/fp-kudojs.svg)]()
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/7039911/35882138-2972170e-0ba9-11e8-8fcf-f96dfcb4d562.jpg">
