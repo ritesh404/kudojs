@@ -11,10 +11,10 @@ branches:
     - master
 notifications:
   email: false
-before_install:
-  - if [[ $TRAVIS_NODE_VERSION -lt 7 ]]; then npm install --global npm@4; fi
 before_script:
   - npm prune
 script:
   - npm test
   - npm run build
+after_success:
+  - npm run report-coverage

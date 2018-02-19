@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/blitzritz/kudojs.svg?branch=master)](https://travis-ci.org/blitzritz/kudojs)
+
 <p align="center">
   <img src="https://user-images.githubusercontent.com/7039911/35882138-2972170e-0ba9-11e8-8fcf-f96dfcb4d562.jpg">
 </p>
