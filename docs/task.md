@@ -26,7 +26,7 @@ Task constructor
 
 | Param | Type | Description |
 | --- | --- | --- |
-| f | <code>function</code> | A function that is passed with the arguments reject and resolve functions. When reject or resolve functions are called the Task gets rejected or resolved, respectively. Function f normally initiates an asynchronous work or one that has effects, and then, once that completes, either calls the resolve function to resolve the Task or else rejects it. |
+| f | <code>function</code> | A function that takes two arguments reject and resolve, which in turn are functions. Function f normally initiates an asynchronous work or one that has effects, and then, once it completes, either calls the resolve function to resolve the Task or else rejects it. |
 
 <a name="Task.of"></a>
 
@@ -81,7 +81,7 @@ Get the function within the Task
 <a name="Task.ap"></a>
 
 ### Task.ap(t)
-* Applys the successful value of the Task t to the successful value of the current Task
+Applys the successful value of the Task t to the successful value(a function) of the current Task
 
 | Param | Type | Description |
 | --- | --- | --- |
