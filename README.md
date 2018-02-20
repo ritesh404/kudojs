@@ -1,4 +1,7 @@
-[![Travis](https://img.shields.io/travis/blitzritz/kudojs.svg)]() [![npm (scoped)](https://img.shields.io/npm/v/fp-kudojs.svg)]()
+[![Travis](https://img.shields.io/travis/blitzritz/kudojs.svg)](https://travis-ci.org/blitzritz/kudojs) 
+[![npm (scoped)](https://img.shields.io/npm/v/fp-kudojs.svg)](https://www.npmjs.com/package/fp-kudojs)
+[![bitHound Dependencies](https://www.bithound.io/github/blitzritz/kudojs/badges/dependencies.svg)](https://www.bithound.io/github/blitzritz/kudojs/master/dependencies/npm)
+[![bitHound Dev Dependencies](https://www.bithound.io/github/blitzritz/kudojs/badges/devDependencies.svg)](https://www.bithound.io/github/blitzritz/kudojs/master/dependencies/npm)
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/7039911/35882138-2972170e-0ba9-11e8-8fcf-f96dfcb4d562.jpg">
