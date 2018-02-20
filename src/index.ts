@@ -5,7 +5,6 @@ import {
     chain,
     compose,
     curry,
-    eitherToMaybe,
     fmap,
     id,
     liftA1,
@@ -14,14 +13,13 @@ import {
     liftA4,
     liftA5,
     liftAn,
-    maybeToEither,
     ncurry,
     once
 } from "./functions/helpers";
 
 // Algebraic Data Types
-import Either from "./data-types/either";
-import Maybe from "./data-types/maybe";
+import Either, { maybeToEither } from "./data-types/either";
+import Maybe, { eitherToMaybe } from "./data-types/maybe";
 import Pair from "./data-types/pair";
 import Task from "./data-types/task";
 

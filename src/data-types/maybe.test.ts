@@ -1,6 +1,7 @@
 import * as test from "tape";
 import { caseOf, compose, fmap, id } from "../functions/helpers";
-import Maybe from "./maybe";
+import Either from "./either";
+import Maybe, { eitherToMaybe } from "./maybe";
 
 // const laws: any = require("laws");
 // console.log(laws);
@@ -181,6 +182,13 @@ test("Maybe", t => {
     );
 
     t.deepEqual(Maybe.catMaybes(ar), [1, 2, 3, 5], "cat maybes");
+
+    const j1 = Maybe.Just(1);
+    const r11 = Either.Right(1);
+    const n1 = Maybe.Nothing();
+    const l11 = Either.Left(null);
+    t.ok(eitherToMaybe(r11).equals(j1), "Right(1) transforms to Just(1)");
+    t.ok(eitherToMaybe(l11).equals(n1), "Left(null) transforms to Nothing()");
 
     t.end();
 });

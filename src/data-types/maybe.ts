@@ -1,5 +1,6 @@
 import { caseOf, isFunction, throwError } from "../functions/helpers";
 import { Alt, Monad, PatternMatch, Setoid } from "../interfaces";
+import Either from "./either";
 
 export default abstract class Maybe<A>
     implements Setoid, Monad<A>, Alt<A>, PatternMatch {
@@ -273,3 +274,17 @@ export class Just<A> extends Maybe<A> {
             : throwError("Maybe: Expected Just");
     }
 }
+
+/**
+ * @function eitherToMaybe
+ * @param {Maybe} m - Maybe type
+ * @description Converts a Either type to an Maybe Type
+ */
+export const eitherToMaybe = <A, B>(e: Either<A, B>) =>
+    caseOf(
+        {
+            Left: (v: any) => Maybe.Nothing(),
+            Right: (v: any) => Maybe.Just(v)
+        },
+        e
+    );

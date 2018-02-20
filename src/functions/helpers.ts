@@ -1,5 +1,3 @@
-import Either from "../data-types/either";
-import Maybe from "../data-types/maybe";
 import { Apply, BiFunctor, Functor, Monad, PatternMatch } from "../interfaces";
 
 const slice = Array.prototype.slice;
@@ -255,34 +253,6 @@ const liftA4 = curry(_liftA4);
  */
 const liftA5 = curry(_liftA5);
 
-/**
- * @function maybeToEither
- * @param {Maybe} m - Maybe type
- * @description Converts a Maybe type to an Either Type
- */
-const maybeToEither = <A>(m: Maybe<A>) =>
-    caseOf(
-        {
-            Nothing: (v: any) => Either.Left(null),
-            Just: (v: any) => Either.Right(v)
-        },
-        m
-    );
-
-/**
- * @function eitherToMaybe
- * @param {Maybe} m - Maybe type
- * @description Converts a Either type to an Maybe Type
- */
-const eitherToMaybe = <A, B>(e: Either<A, B>) =>
-    caseOf(
-        {
-            Left: (v: any) => Maybe.Nothing(),
-            Right: (v: any) => Maybe.Just(v)
-        },
-        e
-    );
-
 export {
     id,
     isFunction,
@@ -300,7 +270,5 @@ export {
     liftA2,
     liftA3,
     liftA4,
-    liftA5,
-    maybeToEither,
-    eitherToMaybe
+    liftA5
 };

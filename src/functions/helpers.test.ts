@@ -7,7 +7,6 @@ import {
     chain,
     compose,
     curry,
-    eitherToMaybe,
     fmap,
     id,
     isFunction,
@@ -17,7 +16,6 @@ import {
     liftA4,
     liftA5,
     liftAn,
-    maybeToEither,
     ncurry,
     once,
     throwError
@@ -181,15 +179,6 @@ test("Helpers", t => {
         5,
         "liftA4"
     );
-
-    const j1 = Maybe.Just(1);
-    const r1 = Either.Right(1);
-    const n1 = Maybe.Nothing();
-    const l1 = Either.Left(null);
-    t.ok(maybeToEither(j1).equals(r1), "Just(1) transforms to Right(1)");
-    t.ok(maybeToEither(n1).equals(l1), "Nothing() transforms to Left(null)");
-    t.ok(eitherToMaybe(r1).equals(j1), "Right(1) transforms to Just(1)");
-    t.ok(eitherToMaybe(l1).equals(n1), "Left(null) transforms to Nothing()");
 
     t.end();
 });

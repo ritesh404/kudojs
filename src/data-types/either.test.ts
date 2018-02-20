@@ -1,6 +1,7 @@
 import * as test from "tape";
 import { caseOf, compose, fmap, id } from "../functions/helpers";
-import Either from "./either";
+import Either, { maybeToEither } from "./either";
+import Maybe from "./maybe";
 
 // const laws: any = require("laws");
 // console.log(laws);
@@ -216,6 +217,13 @@ test("Either", t => {
             ),
         "Either: Expected Left"
     );
+
+    const j1 = Maybe.Just(1);
+    const r1 = Either.Right(1);
+    const n1 = Maybe.Nothing();
+    const l1 = Either.Left(null);
+    t.ok(maybeToEither(j1).equals(r1), "Just(1) transforms to Right(1)");
+    t.ok(maybeToEither(n1).equals(l1), "Nothing() transforms to Left(null)");
 
     t.end();
 });

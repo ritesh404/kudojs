@@ -1,5 +1,6 @@
 import { caseOf, isFunction, throwError } from "../functions/helpers";
 import { BiFunctor, Monad, PatternMatch, Setoid } from "../interfaces";
+import Maybe from "./maybe";
 
 abstract class Either<A, B>
     implements Setoid, BiFunctor<A, B>, Monad<B>, PatternMatch {
@@ -186,9 +187,8 @@ abstract class Either<A, B>
      * @description Applies the function inside the passed Either to the current Either if it is a Right
      */
     public ap<C>(j: Either<A, (a: B) => C>): Either<B, C> {
-        if (!isFunction(j.getValue())) {
+        if (!isFunction(j.getValue()))
             throwError("Either: Wrapped value is not a function");
-        }
 
         return caseOf(
             {
@@ -324,3 +324,17 @@ class Right<A, B> extends Either<A, B> {
 }
 
 export default Either;
+
+/**
+ * @function maybeToEither
+ * @param {Maybe} m - Maybe type
+ * @description Converts a Maybe type to an Either Type
+ */
+export const maybeToEither = <A>(m: Maybe<A>) =>
+    caseOf(
+        {
+            Nothing: (v: any) => Either.Left(null),
+            Just: (v: any) => Either.Right(v)
+        },
+        m
+    );
