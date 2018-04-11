@@ -18,7 +18,8 @@ import {
     liftAn,
     ncurry,
     once,
-    throwError
+    throwError,
+    when
 } from "./helpers";
 
 test("Helpers", t => {
@@ -178,6 +179,22 @@ test("Helpers", t => {
         ),
         5,
         "liftA4"
+    );
+
+    t.throws(() => when(1, 1), "when expects a function for predicate");
+    t.throws(
+        () => when(() => true, 1),
+        "when expects second argument to be a function"
+    );
+    t.equals(
+        when(() => true, x => x + "ed")("test"),
+        "tested",
+        "when predicate is true argument is modified"
+    );
+    t.equals(
+        when(() => false, x => x + "ed")("test"),
+        "test",
+        "when predicate is false argument is unchanged"
     );
 
     t.end();

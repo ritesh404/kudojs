@@ -253,6 +253,24 @@ const liftA4 = curry(_liftA4);
  */
 const liftA5 = curry(_liftA5);
 
+const _when = (p: Function, f: Function): Function => {
+    if (!isFunction(p)) throwError("Predicate is not a function");
+
+    if (!isFunction(f)) throwError("Argument needs a function");
+
+    return function(input: any) {
+        return p(input) === true ? f(input) : input;
+    };
+};
+
+/**
+ * @function when
+ * @param {Function} p - Predicate function
+ * @param {Function} f - Function to be run on the input
+ * @description Returns a function for which it takes one argument and passes it to the given predicate function. If the predicate is satisfied, f is run with the same argument. If the predicate is not satisfied, the argument is returned as is.
+ */
+const when = curry(_when);
+
 export {
     id,
     isFunction,
@@ -270,5 +288,6 @@ export {
     liftA2,
     liftA3,
     liftA4,
-    liftA5
+    liftA5,
+    when
 };

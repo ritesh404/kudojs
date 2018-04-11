@@ -16,6 +16,7 @@ These are the functions under the `kudoJS.*` namespace
 * [`kudoJS.liftA3`](#kudojslifta3)
 * [`kudoJS.liftA4`](#kudojslifta4)
 * [`kudoJS.liftA5`](#kudojslifta5)
+* [`kudoJS.when`](#kudojswhen)
 * [`kudoJS.eitherToMaybe`](#kudojseithertomaybe)
 * [`kudoJS.maybeToEither`](#kudojsmaybeToEither)
 
@@ -231,6 +232,18 @@ lets us combine 5 separate wrapped values into one with a given function.
 | a3 | <code>Apply</code> | Wrapped value(Apply) |
 | a4 | <code>Apply</code> | Wrapped value(Apply) |
 | a5 | <code>Apply</code> | Wrapped value(Apply) |
+
+----
+
+### `kudoJS.when`
+Returns a function for which it takes one argument and passes it to the given predicate function. If the predicate is satisfied, f is run with the same argument. If the predicate is not satisfied, the argument is returned as is.
+
+`when(p: Function, f: Function): Function`
+
+| Param | Type | Description |
+| --- | --- | --- |
+| p | <code>function</code> | Predicate function. Should return true or false based on the argument passed |
+| f | <code>function</code> | Function to be executed with the given argument when predicate is satisfied |
 
 ----
 

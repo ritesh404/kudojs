@@ -14,7 +14,8 @@ import {
     liftA5,
     liftAn,
     ncurry,
-    once
+    once,
+    when
 } from "./functions/helpers";
 
 // Algebraic Data Types
@@ -44,5 +45,6 @@ export default {
     liftAn,
     maybeToEither,
     ncurry,
-    once
+    once,
+    when
 };
