@@ -16,6 +16,7 @@ These are the functions under the `kudoJS.*` namespace
 * [`kudoJS.liftA3`](#kudojslifta3)
 * [`kudoJS.liftA4`](#kudojslifta4)
 * [`kudoJS.liftA5`](#kudojslifta5)
+* [`kudoJS.prop`](#kudojsprop)
 * [`kudoJS.eitherToMaybe`](#kudojseithertomaybe)
 * [`kudoJS.maybeToEither`](#kudojsmaybeToEither)
 
@@ -231,6 +232,18 @@ lets us combine 5 separate wrapped values into one with a given function.
 | a3 | <code>Apply</code> | Wrapped value(Apply) |
 | a4 | <code>Apply</code> | Wrapped value(Apply) |
 | a5 | <code>Apply</code> | Wrapped value(Apply) |
+
+----
+
+### `kudoJS.prop`
+Returns a Maybe Just if value exists for the given key else returns a Nothing
+
+`prop( key: string | number, o: { [k: string]: A; [k: number]: A }): Maybe<A>`
+
+| Param | Type | Description |
+| --- | --- | --- |
+| key | <code>string | number</code> | Key |
+| o | <code>Object</code> | Key Value Object |
 
 ----
 

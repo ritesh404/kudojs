@@ -1,7 +1,7 @@
 import * as test from "tape";
 import { caseOf, compose, fmap, id } from "../functions/helpers";
 import Either from "./either";
-import Maybe, { eitherToMaybe } from "./maybe";
+import Maybe, { eitherToMaybe, prop } from "./maybe";
 
 // const laws: any = require("laws");
 // console.log(laws);
@@ -32,8 +32,6 @@ const ar = [
     Maybe.Just(5)
 ];
 const unwrap = (m: { getValue: Function }) => m.getValue();
-const prop = (k: any) => (xs: {}) =>
-    k in xs ? Maybe.Just(xs[k]) : Maybe.Nothing();
 const add2 = (a: number) => a + 2;
 const sub1 = (a: number) => a - 1;
 
@@ -139,6 +137,7 @@ test("Maybe", t => {
             .equals(prop("a")(data).chain(x => prop("b")(x).chain(prop("c")))),
         "Just chain Associativity"
     );
+
     t.ok(
         prop("a")(data)
             .chain(prop("d"))
@@ -189,6 +188,21 @@ test("Maybe", t => {
     const l11 = Either.Left(null);
     t.ok(eitherToMaybe(r11).equals(j1), "Right(1) transforms to Just(1)");
     t.ok(eitherToMaybe(l11).equals(n1), "Left(null) transforms to Nothing()");
+
+    const data1 = { a: "A" };
+    t.throws(() => prop({}, data), "prop expects key to be string or number");
+    t.throws(
+        () => prop(1, "data"),
+        "prop expects second argument to be an object"
+    );
+    t.ok(
+        prop("a", data1).equals(Maybe.Just("A")),
+        "prop returns a Just if value exists"
+    );
+    t.ok(
+        prop("b", data1).equals(Maybe.Nothing()),
+        "prop returns a Nothing if value does not exists"
+    );
 
     t.end();
 });
