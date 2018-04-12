@@ -17,6 +17,7 @@ These are the functions under the `kudoJS.*` namespace
 * [`kudoJS.liftA4`](#kudojslifta4)
 * [`kudoJS.liftA5`](#kudojslifta5)
 * [`kudoJS.when`](#kudojswhen)
+* [`kudoJS.prop`](#kudojsprop)
 * [`kudoJS.eitherToMaybe`](#kudojseithertomaybe)
 * [`kudoJS.maybeToEither`](#kudojsmaybeToEither)
 
@@ -244,6 +245,18 @@ Returns a function for which it takes one argument and passes it to the given pr
 | --- | --- | --- |
 | p | <code>function</code> | Predicate function. Should return true or false based on the argument passed |
 | f | <code>function</code> | Function to be executed with the given argument when predicate is satisfied |
+
+----
+
+### `kudoJS.prop`
+Returns a Maybe Just if value exists for the given key else returns a Nothing
+
+`prop( key: string | number, o: { [k: string]: A; [k: number]: A }): Maybe<A>`
+
+| Param | Type | Description |
+| --- | --- | --- |
+| key | <code>string | number</code> | Key |
+| o | <code>Object</code> | Key Value Object |
 
 ----
 

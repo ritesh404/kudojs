@@ -20,7 +20,7 @@ import {
 
 // Algebraic Data Types
 import Either, { maybeToEither } from "./data-types/either";
-import Maybe, { eitherToMaybe } from "./data-types/maybe";
+import Maybe, { eitherToMaybe, prop } from "./data-types/maybe";
 import Pair from "./data-types/pair";
 import Task from "./data-types/task";
 
@@ -46,5 +46,6 @@ export default {
     maybeToEither,
     ncurry,
     once,
+    prop,
     when
 };

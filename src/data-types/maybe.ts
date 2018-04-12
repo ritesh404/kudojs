@@ -1,4 +1,4 @@
-import { caseOf, isFunction, throwError } from "../functions/helpers";
+import { caseOf, curry, isFunction, throwError } from "../functions/helpers";
 import { Alt, Monad, PatternMatch, Setoid } from "../interfaces";
 import Either from "./either";
 
@@ -288,3 +288,21 @@ export const eitherToMaybe = <A, B>(e: Either<A, B>) =>
         },
         e
     );
+
+const _prop = <A>(
+    key: string | number,
+    o: { [k: string]: A; [k: number]: A }
+): Maybe<A> => {
+    if (typeof key !== "string" && typeof key !== "number")
+        throwError("Key should be either string or number");
+    if (!o) Maybe.Nothing();
+    return key in o ? Maybe.fromNullable(o[key]) : Maybe.Nothing();
+};
+
+/**
+ * @function prop
+ * @param {string | number} key - Key
+ * @param {Object} o - Object
+ * @description Returns a Maybe Just if value exists for the given key else returns a Nothing
+ */
+export const prop = curry(_prop);
