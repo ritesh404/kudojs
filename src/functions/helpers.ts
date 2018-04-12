@@ -16,7 +16,7 @@ const throwError = (x: string) => {
  * @param {*} x - Any
  * @description Identity Function
  */
-const id = (x: any): any => x;
+const id = <A>(x: A): A => x;
 
 /**
  * @function isFunction
@@ -152,11 +152,11 @@ const chain = curry(_chain);
  * @description Conditional behavior based on the structure of algebraic data types
  * @summary caseOf :: Object -> patternMatch -> a
  */
-const _caseOf = (o: {}, p: PatternMatch): any =>
+const _caseOf = (o: { [k: string]: Function }, p: PatternMatch): any =>
     !p.caseOf ? throwError("unable to match patterns") : p.caseOf(o);
 const caseOf = curry(_caseOf);
 
-const _liftAn = <A, B>(f: any, fn: Array<Apply<A>>) => {
+const _liftAn = <A, B>(f: (a: A) => B, fn: Array<Apply<A>>) => {
     if (!isFunction(f)) throwError("Function not found");
     if (fn.length <= 0) throwError("No Apply found!");
     const init: any = fn[0].map(f);
