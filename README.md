@@ -45,6 +45,8 @@ These are the functions under the `kudoJS.*` namespace
 * [`kudoJS.liftA3`](docs/helper-functions.md#kudojslifta3)
 * [`kudoJS.liftA4`](docs/helper-functions.md#kudojslifta4)
 * [`kudoJS.liftA5`](docs/helper-functions.md#kudojslifta5)
+* [`kudoJS.when`](docs/helper-functions.md#kudojswhen)
+* [`kudoJS.prop`](docs/helper-functions.md#kudojsprop)
 * [`kudoJS.eitherToMaybe`](docs/helper-functions.md#kudojseithertomaybe)
 * [`kudoJS.maybeToEither`](docs/helper-functions.md#kudojsmaybeToEither)
 
