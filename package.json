@@ -62,7 +62,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/blitzritz/kudojs.git"
+    "url": "https://github.com/breezyboa/kudojs.git"
   },
   "keywords": [
     "kudojs",
@@ -75,9 +75,9 @@
   "author": "Ritesh Pillai",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/blitzritz/kudojs/issues"
+    "url": "https://github.com/breezyboa/kudojs/issues"
   },
-  "homepage": "https://github.com/blitzritz/kudojs#readme",
+  "homepage": "https://github.com/breezyboa/kudojs#readme",
   "dependencies": {},
   "devDependencies": {
     "@commitlint/cli": "6.1.0",
