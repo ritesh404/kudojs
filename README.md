@@ -2,10 +2,10 @@
   <img src="https://user-images.githubusercontent.com/7039911/35882138-2972170e-0ba9-11e8-8fcf-f96dfcb4d562.jpg">
 </p>
 
-[![Travis](https://img.shields.io/travis/blitzritz/kudojs.svg)](https://travis-ci.org/blitzritz/kudojs) 
+[![Travis](https://img.shields.io/travis/breezyboa/kudojs.svg)](https://travis-ci.org/breezyboa/kudojs) 
 [![npm (scoped)](https://img.shields.io/npm/v/fp-kudojs.svg)](https://www.npmjs.com/package/fp-kudojs)
-[![bitHound Dependencies](https://www.bithound.io/github/blitzritz/kudojs/badges/dependencies.svg)](https://www.bithound.io/github/blitzritz/kudojs/master/dependencies/npm)
-[![bitHound Dev Dependencies](https://www.bithound.io/github/blitzritz/kudojs/badges/devDependencies.svg)](https://www.bithound.io/github/blitzritz/kudojs/master/dependencies/npm)
+[![bitHound Dependencies](https://www.bithound.io/github/breezyboa/kudojs/badges/dependencies.svg)](https://www.bithound.io/github/breezyboa/kudojs/master/dependencies/npm)
+[![bitHound Dev Dependencies](https://www.bithound.io/github/breezyboa/kudojs/badges/devDependencies.svg)](https://www.bithound.io/github/breezyboa/kudojs/master/dependencies/npm)
 
 ---
 KudoJS is a small utility library with a collection of popular Algebraic Data Types and Helper functions to help you write code in a functional programming style in Javascript.
