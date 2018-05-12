@@ -4,8 +4,6 @@
 
 [![Travis](https://img.shields.io/travis/breezyboa/kudojs.svg)](https://travis-ci.org/breezyboa/kudojs) 
 [![npm (scoped)](https://img.shields.io/npm/v/fp-kudojs.svg)](https://www.npmjs.com/package/fp-kudojs)
-[![bitHound Dependencies](https://www.bithound.io/github/breezyboa/kudojs/badges/dependencies.svg)](https://www.bithound.io/github/breezyboa/kudojs/master/dependencies/npm)
-[![bitHound Dev Dependencies](https://www.bithound.io/github/breezyboa/kudojs/badges/devDependencies.svg)](https://www.bithound.io/github/breezyboa/kudojs/master/dependencies/npm)
 
 ---
 KudoJS is a small utility library with a collection of popular Algebraic Data Types and Helper functions to help you write code in a functional programming style in Javascript.
@@ -60,6 +58,7 @@ ADTs under the kudoJS.* namespace. All of the data types are compatible with the
 * [`kudoJS.Maybe`](docs/maybe.md)
 * [`kudoJS.Either`](docs/either.md)
 * [`kudoJS.Task`](docs/task.md)
+* [`kudoJS.Reader`](docs/reader.md)
 
 | ADT           | Constructors  | Static Methods | Instance Methods  |
 | ------------- |:-------------:|:-----------------:| ----:|
@@ -67,6 +66,7 @@ ADTs under the kudoJS.* namespace. All of the data types are compatible with the
 | `kudoJS.Maybe`      | `of`, `Just`, `Nothing`, `zero`, `fromNullable`, `withDefault`    | `catMaybes`, `isNothing`, `isJust` |  `equals`, `ap`, `alt`, `map`, `chain`, `toString`, `getValue`, `isNothing`, `isJust` |
 | `kudoJS.Either` |   `of`, `Left`, `Right`, `fromNullable`, `withDefault`    | `try`, `isLeft`, `isRight`   | `equals`, `ap`, `getValue`, `map`, `bimap`, `chain`, `swap`, `toString`, `isLeft`, `isRight` |
 | `kudoJS.Task` |       `Task`, `of`, `rejected`           |     |  `fork`, `concat`, `ap`, `getValue`, `map`, `chain`, `toPromise`, `toString`|
+| `kudoJS.Reader` |       `Reader`, `of`, `ask`           |     |  `runWith`, `ap`, `getValue`, `map`, `chain`, `toString`|
 
 
 ---
