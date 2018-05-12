@@ -22,12 +22,14 @@ import {
 import Either, { maybeToEither } from "./data-types/either";
 import Maybe, { eitherToMaybe, prop } from "./data-types/maybe";
 import Pair from "./data-types/pair";
+import Reader from "./data-types/reader";
 import Task from "./data-types/task";
 
 export default {
     Either,
     Maybe,
     Pair,
+    Reader,
     Task,
     bimap,
     caseOf,

@@ -1,7 +1,7 @@
 <a name="Task"></a>
 
 ## Task
-A Task type makes it easy to model asynchronous operations that may fail, like HTTP requests or reading/writing to a databases
+A Task makes it easy to model asynchronous operations that may fail, like HTTP requests or reading/writing to a files/databases
 
 **Implements:** <code>[Monad](https://github.com/fantasyland/fantasy-land#monad)</code>, <code>[Semigroup](https://github.com/fantasyland/fantasy-land#semigroup)</code>
 
