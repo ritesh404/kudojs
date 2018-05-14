@@ -23,6 +23,7 @@ import Either, { maybeToEither } from "./data-types/either";
 import Maybe, { eitherToMaybe, prop } from "./data-types/maybe";
 import Pair from "./data-types/pair";
 import Reader from "./data-types/reader";
+import State from "./data-types/state";
 import Task from "./data-types/task";
 
 export default {
@@ -30,6 +31,7 @@ export default {
     Maybe,
     Pair,
     Reader,
+    State,
     Task,
     bimap,
     caseOf,

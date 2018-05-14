@@ -44,11 +44,22 @@ test("Reader", t => {
         c.ap(b.ap(a1)).runWith("pete")
     );
 
+    t.deepEqual(Reader.of(1).runWith(1), 1, "of creates a Reader");
+    t.deepEqual(a1.of(1).runWith(1), 1, "of creates a Reader");
+
     t.deepEqual(
-        Reader.of(1).runWith(1),
-        Reader(() => 1).runWith(1),
-        "of creates a Reader"
+        Reader.ask(() => 1).runWith(1),
+        1,
+        "ask creates a Reader when a function is supplied"
     );
+
+    t.deepEqual(
+        Reader.ask().runWith(1),
+        1,
+        "ask creates a Reader when a nothing is supplied"
+    );
+
+    t.throws(() => Reader.ask(1), "ask expects a function or nothing");
 
     t.throws(() => a.chain(1), "chain expects a function");
     t.throws(

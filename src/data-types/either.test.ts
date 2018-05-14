@@ -3,29 +3,9 @@ import { caseOf, compose, fmap, id } from "../functions/helpers";
 import Either, { maybeToEither } from "./either";
 import Maybe from "./maybe";
 
-// const laws: any = require("laws");
-// console.log(laws);
-// laws.functor.identity(Either.Right).asTest({ verbose: true, times: 100 })();
-// laws.functor.composition(Either.Right).asTest({ verbose: true, times: 100 })();
-// laws.applicative.identity(Either.Right).asTest({ verbose: true, times: 100 })();
-// laws.applicative.composition(Either.Right).asTest({ verbose: true, times: 100 })();
-// laws.applicative.homomorphism(Either.Right).asTest({ verbose: true, times: 100 })();
-// laws.applicative.interchange(Either.Right).asTest({ verbose: true, times: 100 })();
-// laws.monad.leftIdentity(Either.Right).asTest({ verbose: true, times: 100 })();
-// laws.monad.rightIdentity(Either.Right).asTest({ verbose: true, times: 100 })();
-
-// laws.functor.identity(Either.Left).asTest({ verbose: true, times: 100 })();
-// laws.functor.composition(Either.Left).asTest({ verbose: true, times: 100 })();
-// laws.applicative.identity(Either.Left).asTest({ verbose: true, times: 100 })();
-// laws.applicative.composition(Either.Left).asTest({ verbose: true, times: 100 })();
-// laws.applicative.homomorphism(Either.Left).asTest({ verbose: true, times: 100 })();
-// laws.applicative.interchange(Either.Left).asTest({ verbose: true, times: 100 })();
-// laws.monad.leftIdentity(Either.Left).asTest({ verbose: true, times: 100 })();
-// laws.monad.rightIdentity(Either.Left).asTest({ verbose: true, times: 100 })();
-
 const data = { a: { b: { c: 1 } } };
 const unwrap = (m: { getValue: Function }) => m.getValue();
-const prop = (k: any) => (xs: {}) =>
+const prop = (k: any) => (xs: any) =>
     k in xs ? Either.Right(xs[k]) : Either.Left(1);
 const add2 = (a: number) => a + 2;
 const sub1 = (a: number) => a - 1;
@@ -35,8 +15,6 @@ test("Either", t => {
     const b = Either.Right(add2);
     const c = Either.Right(sub1);
     const e = Either.Left(1);
-    const f = Either.Left(add2);
-    const g = Either.Left(sub1);
 
     t.ok(Either.isRight(a), "Right is a Right");
     t.ok(a.isRight(), "Right is a Right");
@@ -219,11 +197,11 @@ test("Either", t => {
     );
 
     const j1 = Maybe.Just(1);
-    const r1 = Either.Right(1);
+    const r2 = Either.Right(1);
     const n1 = Maybe.Nothing();
-    const l1 = Either.Left(null);
-    t.ok(maybeToEither(j1).equals(r1), "Just(1) transforms to Right(1)");
-    t.ok(maybeToEither(n1).equals(l1), "Nothing() transforms to Left(null)");
+    const l2 = Either.Left(null);
+    t.ok(maybeToEither(j1).equals(r2), "Just(1) transforms to Right(1)");
+    t.ok(maybeToEither(n1).equals(l2), "Nothing() transforms to Left(null)");
 
     t.end();
 });

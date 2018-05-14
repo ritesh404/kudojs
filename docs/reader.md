@@ -58,7 +58,7 @@ Get the function within the Reader
 <a name="Reader.ap"></a>
 
 ### Reader.ap(t)
-Applys the successful value of the Reader t to the successful value(a function) of the current Reader
+ap allows for values wrapped in a Reader to be applied to functions also wrapped in a Reader. In order to use ap, the Reader must contain a function as its value.
 
 | Param | Type | Description |
 | --- | --- | --- |

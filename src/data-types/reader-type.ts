@@ -17,8 +17,7 @@ class Reader<A, B> implements Monad<B> {
     /**
      * @function Reader
      * @constructor
-     * @param {any} v1 - First element of the Reader
-     * @param {any} v2 - second element of the Reader
+     * @param {any} fn - A function of the form (e -> a) that is wrapped by the Reader, nothing is executed until it is run with an environment
      * @description Reader constructor
      */
     constructor(fn: Function) {
@@ -52,7 +51,7 @@ class Reader<A, B> implements Monad<B> {
      * @function Reader.ap
      * @memberof Reader
      * @param {Reader} j - Reader with function as the second element
-     * @description Applies the function inside the second element of the passed Reader to the current Reader and concats the first element of the second Reader to the first element of the current Reader
+     * @description ap allows for values wrapped in a Reader to be applied to functions also wrapped in a Reader. In order to use ap, the Reader must contain a function as its value.
      */
     public ap<C, D>(j: Reader<C, (b: B) => D>): Reader<C, D> {
         if (!(j instanceof Reader)) throwError("Reader: Reader required");
