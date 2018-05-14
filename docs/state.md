@@ -15,6 +15,8 @@ State should wrap a function of the form <code>s -> Pair a s</code> and can be c
     * [.ap(t)](#State.ap)
     * [.chain(f)](#State.chain)
     * [.runWith(e)](#State.runWith)
+    * [.execWith(e)](#State.execWith)
+    * [.evalWith(e)](#State.evalWith)
 
 <a name="new_State_new"></a>
 
