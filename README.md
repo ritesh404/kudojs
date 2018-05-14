@@ -59,6 +59,7 @@ ADTs under the kudoJS.* namespace. All of the data types are compatible with the
 * [`kudoJS.Either`](docs/either.md)
 * [`kudoJS.Task`](docs/task.md)
 * [`kudoJS.Reader`](docs/reader.md)
+* [`kudoJS.State`](docs/state.md)
 
 | ADT           | Constructors  | Static Methods | Instance Methods  |
 | ------------- |:-------------:|:-----------------:| ----:|
@@ -67,6 +68,7 @@ ADTs under the kudoJS.* namespace. All of the data types are compatible with the
 | `kudoJS.Either` |   `of`, `Left`, `Right`, `fromNullable`, `withDefault`    | `try`, `isLeft`, `isRight`   | `equals`, `ap`, `getValue`, `map`, `bimap`, `chain`, `swap`, `toString`, `isLeft`, `isRight` |
 | `kudoJS.Task` |       `Task`, `of`, `rejected`           |     |  `fork`, `concat`, `ap`, `getValue`, `map`, `chain`, `toPromise`, `toString`|
 | `kudoJS.Reader` |       `Reader`, `of`, `ask`           |     |  `runWith`, `ap`, `getValue`, `map`, `chain`, `toString`|
+| `kudoJS.State` |       `State`, `of`, `get`, `put`           |     |  `runWith`, `execWith`, `evalWith`, `ap`, `getValue`, `map`, `chain`, `toString`|
 
 
 ---
