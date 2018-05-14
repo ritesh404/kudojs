@@ -1,6 +1,6 @@
 {
   "name": "fp-kudojs",
-  "version": "0.0.2",
+  "version": "0.2.0",
   "description": "A utility library to write code in functional programming style in Javascript",
   "main": "dist/kudo.umd.js",
   "module": "dist/kudo.es.mjs",
@@ -13,7 +13,8 @@
     "build:js": "cross-env rollup -c",
     "build": "cross-env rollup -c",
     "precommit": "cross-env lint-staged && npm run test",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "travis-deploy-once": "travis-deploy-once"
   },
   "lint-staged": {
     "*.ts": [
@@ -99,12 +100,13 @@
     "rollup-plugin-istanbul": "2.0.1",
     "rollup-plugin-typescript2": "0.14.0",
     "rollup-plugin-uglify": "3.0.0",
-    "semantic-release": "15.4.1",
+    "semantic-release": "^15.4.1",
     "tap-spec": "4.1.1",
     "tape": "4.9.0",
     "ts-node": "4.1.0",
     "tslint": "5.10.0",
     "tslint-config-prettier": "1.12.0",
-    "typescript": "2.8.3"
+    "typescript": "2.8.3",
+    "travis-deploy-once": "^5.0.0"
   }
 }
