@@ -33,6 +33,7 @@ These are the functions under the `kudoJS.*` namespace
 * [`kudoJS.curry`](docs/helper-functions.md#kudojscurry)
 * [`kudoJS.ncurry`](docs/helper-functions.md#kudojsncurry)
 * [`kudoJS.compose`](docs/helper-functions.md#kudojscompose)
+* [`kudoJS.constant`](docs/helper-functions.md#kudojsconstant)
 * [`kudoJS.fmap`](docs/helper-functions.md#kudojsfmap)
 * [`kudoJS.bimap`](docs/helper-functions.md#kudojsbimap)
 * [`kudoJS.chain`](docs/helper-functions.md#kudojschain)

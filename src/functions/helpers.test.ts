@@ -6,6 +6,7 @@ import {
     caseOf,
     chain,
     compose,
+    constant,
     curry,
     fmap,
     id,
@@ -73,6 +74,10 @@ test("Helpers", t => {
         chain.bind(null, 1, e1),
         "chain throws an error if a function is not provided"
     );
+
+    const kfn = constant(val);
+    t.ok(isFunction(kfn), "constant returns a function");
+    t.equals(kfn(), val, "constant returns a function that returns a value");
 
     t.ok(isFunction(curry(() => 2)), "curry should return a function");
     t.throws(curry.bind(null), "curry throws an error if nothing is provided");

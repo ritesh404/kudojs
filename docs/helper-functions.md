@@ -6,6 +6,7 @@ These are the functions under the `kudoJS.*` namespace
 * [`kudoJS.curry`](#kudojscurry)
 * [`kudoJS.ncurry`](#kudojsncurry)
 * [`kudoJS.compose`](#kudojscompose)
+* [`kudoJS.constant`](#kudojsconstant)
 * [`kudoJS.fmap`](#kudojsfmap)
 * [`kudoJS.bimap`](#kudojsbimap)
 * [`kudoJS.chain`](#kudojschain)
@@ -23,7 +24,7 @@ These are the functions under the `kudoJS.*` namespace
 
 ----
 ### `kudoJS.id`
-Identity function. Returns the value given to it. 
+Identity function. Returns the value given to it
 
 `id(x: any): any`
 
@@ -71,7 +72,7 @@ Returns a curried equivalent of the provided function which will accept named ar
 
 ### `kudoJS.compose`
 
-Performs right-to-left function composition.
+Performs right-to-left function composition
 
 `compose(...fns: Function): Function`
 
@@ -79,6 +80,17 @@ Performs right-to-left function composition.
 | Param | Type | Description |
 | --- | --- | --- |
 | ...fns | <code>function</code> | functions to compose |
+
+
+----
+### `kudoJS.constant`
+Takes any value and gives back a function that will return that same value no matter what you pass it
+
+`constant(x: any): any`
+
+| Param | Type | Description |
+| --- | --- | --- |
+| x | <code>\*</code> | Any |
 
 ----
 

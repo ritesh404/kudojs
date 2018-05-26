@@ -19,6 +19,13 @@ const throwError = (x: string) => {
 const id = <A>(x: A): A => x;
 
 /**
+ * @function constant
+ * @param {*} x - Any
+ * @description Takes any value and gives back a function that will return that same value no matter what you pass it
+ */
+const constant = <A>(x: A): (() => A) => () => x;
+
+/**
  * @function isFunction
  * @param {*} f - Any
  * @description Check if supplied argument is
@@ -280,6 +287,7 @@ export {
     bimap,
     chain,
     caseOf,
+    constant,
     curry,
     ncurry,
     compose,

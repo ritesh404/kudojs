@@ -4,6 +4,7 @@ import {
     caseOf,
     chain,
     compose,
+    constant,
     curry,
     fmap,
     id,
@@ -36,6 +37,7 @@ test("Entry", t => {
     t.equals(Kudo.curry, curry, "curry function check");
     t.equals(Kudo.ncurry, ncurry, "ncurry function check");
     t.equals(Kudo.compose, compose, "compose function check");
+    t.equals(Kudo.constant, constant, "constant function check");
     t.equals(Kudo.liftAn, liftAn, "liftAn function check");
     t.equals(Kudo.liftA1, liftA1, "liftA1 function check");
     t.equals(Kudo.liftA2, liftA2, "liftA2 function check");
