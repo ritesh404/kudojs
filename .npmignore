@@ -1,0 +1,15 @@
+tmp/*
+*.log
+.DS_Store
+*/.DS_Store
+.idea/
+.vscode
+build_stats.html
+coverage/*
+.rpt2_cache
+*/.rpt2_cache
+.nyc_output
+*/.nyc_output
+*.test.ts
+.npmignore
+docs

@@ -2,8 +2,7 @@
   "name": "fp-kudojs",
   "version": "0.2.0",
   "description": "A utility library to write code in functional programming style in Javascript",
-  "main": "dist/kudo.umd.js",
-  "module": "dist/kudo.es.mjs",
+  "main": "dist/kudo.es.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "cross-env NODE_ENV=test TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' nyc tape --reporter=lcov --require ts-node/register src/**/*.test.ts | tap-spec",

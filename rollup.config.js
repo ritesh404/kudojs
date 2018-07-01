@@ -15,12 +15,6 @@ let plugins = [
   uglify()
 ];
 
-// if (process.env.BUILD !== 'production') {
-//   plugins.push(istanbul({
-//     exclude: ['test/**/*', 'node_modules/**/*']
-//   }));
-// }
-
 export default {
   input: 'src/index.ts',
   plugins: plugins,
