@@ -13,6 +13,7 @@
     "build:js": "cross-env rollup -c",
     "build": "cross-env rollup -c",
     "precommit": "cross-env lint-staged && npm run test",
+    "prepare": "npm run build",
     "semantic-release": "semantic-release",
     "travis-deploy-once": "travis-deploy-once"
   },
