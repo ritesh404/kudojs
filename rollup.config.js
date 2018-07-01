@@ -21,13 +21,13 @@ export default {
   external: external,
   output: [
     {
-      file: pkg.main,
+      file: "dist/kudo.umd.js",
       format: 'umd',
       name: 'kudoJS',
       sourcemap: true
     },
     {
-      file: pkg.module,
+      file: pkg.main,
       format: 'es',
       sourcemap: true
     }
