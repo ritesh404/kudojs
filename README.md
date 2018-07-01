@@ -23,7 +23,7 @@ import kudoJS from "fp-kudojs"
 ```
 ### Using without modules
 ```
-<script src="/path/to/kudo.umd.js"></script>
+<script src="/path/to/kudo.iife.js"></script>
 ```
 ### Helper Functions
 

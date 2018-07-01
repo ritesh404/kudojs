@@ -21,14 +21,21 @@ export default {
   external: external,
   output: [
     {
-      file: "dist/kudo.umd.js",
-      format: 'umd',
+      file: "dist/kudo.iife.js",
+      format: 'iife',
       name: 'kudoJS',
       sourcemap: true
     },
     {
       file: pkg.main,
+      format: 'cjs',
+      name: 'kudoJS',
+      sourcemap: true
+    },
+    {
+      file: pkg.module,
       format: 'es',
+      name: 'kudoJS',
       sourcemap: true
     }
   ]
