@@ -95,7 +95,12 @@ test("Maybe", t => {
     t.equals(
         unwrap(Maybe.fromNullable(null)),
         unwrap(Maybe.Nothing()),
-        "creates a Nothing when nullable value is passed"
+        "creates a Nothing when null value is passed"
+    );
+    t.equals(
+        unwrap(Maybe.fromNullable(undefined)),
+        unwrap(Maybe.Nothing()),
+        "creates a Nothing when undefined value is passed"
     );
 
     t.equals(

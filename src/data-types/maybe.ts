@@ -54,7 +54,7 @@ export default abstract class Maybe<A>
      * @description Creates a Just if the value is not null or undefiend else creates a Nothing
      */
     public static fromNullable<A>(v: any): Maybe<A> {
-        return v !== null ? new Just(v) : new Nothing();
+        return v ? new Just(v) : new Nothing();
     }
 
     /**
@@ -66,7 +66,7 @@ export default abstract class Maybe<A>
      * @description Creates a Just if the value v is not null or undefiend else creates a Just with the default value def
      */
     public static withDefault<A>(def: any, v: any): Maybe<A> {
-        return v !== null ? new Just(v) : new Just(def);
+        return v ? new Just(v) : new Just(def);
     }
 
     /**
