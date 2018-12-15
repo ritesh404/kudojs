@@ -1,6 +1,6 @@
 {
   "name": "fp-kudojs",
-  "version": "0.2.0",
+  "version": "0.3.4",
   "description": "A utility library to write code in functional programming style in Javascript",
   "main": "dist/kudo.cjs.js",
   "module": "dist/kudo.es.js",
