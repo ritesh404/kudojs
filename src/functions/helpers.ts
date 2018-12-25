@@ -177,7 +177,6 @@ const _liftAn = <A, B>(f: (a: A) => B, fn: Array<Apply<A>>) => {
     }
     return res;
 };
-const _liftA1 = <A, B>(f: (a: A) => B, f1: Apply<A>) => _liftAn(f, [f1]);
 const _liftA2 = <A, B>(f: (a: A) => (b: A) => B, f1: Apply<A>, f2: Apply<A>) =>
     _liftAn(f, [f1, f2]);
 const _liftA3 = <A, B>(
@@ -209,14 +208,6 @@ const _liftA5 = <A, B>(
  * @description lets us combine n separate wrapped values into one with a given function.
  */
 const liftAn = curry(_liftAn);
-
-/**
- * @function liftA1
- * @param {Function} f - Function to be lifted
- * @param {Apply} fn - 'Apply' to the function
- * @description Aka fmap
- */
-const liftA1 = curry(_liftA1);
 
 /**
  * @function liftA2
@@ -292,7 +283,6 @@ export {
     ncurry,
     compose,
     liftAn,
-    liftA1,
     liftA2,
     liftA3,
     liftA4,

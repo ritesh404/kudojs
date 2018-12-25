@@ -8,7 +8,6 @@ import {
     curry,
     fmap,
     id,
-    liftA1,
     liftA2,
     liftA3,
     liftA4,
@@ -39,7 +38,6 @@ test("Entry", t => {
     t.equals(Kudo.compose, compose, "compose function check");
     t.equals(Kudo.constant, constant, "constant function check");
     t.equals(Kudo.liftAn, liftAn, "liftAn function check");
-    t.equals(Kudo.liftA1, liftA1, "liftA1 function check");
     t.equals(Kudo.liftA2, liftA2, "liftA2 function check");
     t.equals(Kudo.liftA3, liftA3, "liftA3 function check");
     t.equals(Kudo.liftA4, liftA4, "liftA4 function check");

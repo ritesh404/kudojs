@@ -12,7 +12,6 @@ These are the functions under the `kudoJS.*` namespace
 * [`kudoJS.chain`](#kudojschain)
 * [`kudoJS.caseOf`](#kudojscaseof)
 * [`kudoJS.liftAn`](#kudojsliftan)
-* [`kudoJS.liftA1`](#kudojslifta1)
 * [`kudoJS.liftA2`](#kudojslifta2)
 * [`kudoJS.liftA3`](#kudojslifta3)
 * [`kudoJS.liftA4`](#kudojslifta4)
@@ -170,19 +169,6 @@ lets us combine n separate wrapped values into one with a given function.
 | --- | --- | --- |
 | a | <code>function</code> | Function with n arguments to be lifted |
 | ar | <code>Apply</code> | Array of wrapped values(Apply<A>). The values of which will be passed as arguments to the function `a`  |
-
-----
-
-### `kudoJS.liftA1`
-
-AKA fmap.
-
-`liftA1(f: (a: A) => B, a1: Apply<A>): Apply<B>`
-
-| Param | Type | Description |
-| --- | --- | --- |
-| f | <code>function</code> | Function to be lifted |
-| a1 | <code>Apply</code> | Wrapped value(Apply) |
 
 ----
 

@@ -39,7 +39,6 @@ These are the functions under the `kudoJS.*` namespace
 * [`kudoJS.chain`](docs/helper-functions.md#kudojschain)
 * [`kudoJS.caseOf`](docs/helper-functions.md#kudojscaseof)
 * [`kudoJS.liftAn`](docs/helper-functions.md#kudojsliftan)
-* [`kudoJS.liftA1`](docs/helper-functions.md#kudojslifta1)
 * [`kudoJS.liftA2`](docs/helper-functions.md#kudojslifta2)
 * [`kudoJS.liftA3`](docs/helper-functions.md#kudojslifta3)
 * [`kudoJS.liftA4`](docs/helper-functions.md#kudojslifta4)
