@@ -2,8 +2,8 @@ import * as test from "tape";
 import compose from "../functions/compose";
 import fmap from "../functions/fmap";
 import id from "../functions/id";
-import liftA3 from "../functions/liftA3";
 import Reader from "./reader";
+// import liftA3 from "../functions/liftA3";
 
 const ex1 = x => `${x}!`;
 const ex2 = x => `${x}!!`;
@@ -37,11 +37,11 @@ test("Reader", t => {
         "applicative expects wrapped function to return a function"
     );
 
-    const ex3 = y => x => `${x}$`;
-    const ex4 = y => x => `${x}#`;
+    // const ex3 = y => x => `${x}$`;
+    // const ex4 = y => x => `${x}#`;
     const a1 = Reader(name => `Hello ${name}`);
-    const b = Reader(ex3);
-    const c = Reader(ex4);
+    // const b = Reader(ex3);
+    // const c = Reader(ex4);
     // t.equals(
     //     liftA3(compose, a1, b, c).runWith("pete"),
     //     c.ap(b.ap(a1)).runWith("pete")

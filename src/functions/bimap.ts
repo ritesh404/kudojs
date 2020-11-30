@@ -1,4 +1,4 @@
-import { BiFunctor } from "../interfaces";
+import BiFunctor from "../interfaces/bifunctor";
 import curry from "./curry";
 import isFunction from "./isFunction";
 

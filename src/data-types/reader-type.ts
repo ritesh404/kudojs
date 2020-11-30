@@ -30,7 +30,7 @@ class Reader<A, B> implements Monad<B> {
         return this._value(ctx);
     }
 
-    public ap<C, D>(j: Reader<C, (b: B) => D>): Reader<C, D> {
+    public ap<C, D>(j: Reader<C, B>): Reader<C, D> {
         if (!(j instanceof Reader)) throw Error("Reader: Reader required");
         const runWith = this.getValue();
         return new Reader(function(e: any) {

@@ -16,7 +16,7 @@ const sub1 = (a: number) => a - 1;
 test("Either", t => {
     const a = Either.Right(1);
     const b = Either.Right(add2);
-    const c = Either.Right(sub1);
+    // const c = Either.Right(sub1);
     const e = Either.Left(1);
 
     t.ok(Either.isRight(a), "Right is a Right");
@@ -33,7 +33,7 @@ test("Either", t => {
 
     t.equals(a.toString(), "Right(1)", "should give a Right");
     t.equals(e.toString(), "Left(1)", "should give a Left");
-
+    // @ts-ignore
     t.throws(() => a.map(1), "Right map expects a function");
     t.equals(
         compose(unwrap, fmap(id))(a),
@@ -48,7 +48,7 @@ test("Either", t => {
 
     const l1 = compose(
         unwrap,
-        fmap(x => sub1(add2(x)))
+        fmap((x: number) => sub1(add2(x)))
     );
     const r1 = compose(unwrap, fmap(sub1), fmap(add2));
     t.equals(l1(a), r1(a), "Right should pass the composition law");
@@ -62,12 +62,15 @@ test("Either", t => {
 
     t.equals(
         unwrap(a.map(add2)),
+        // @ts-ignore
         unwrap(b.ap(a)),
         "Right mapped to a function should be the same as the function applied to Right"
     );
 
     t.equals(
+        // @ts-ignore
         unwrap(e.map(add2)),
+        // @ts-ignore
         unwrap(b.ap(e)),
         "Left mapped to a function should the same as the function applied to Left"
     );
@@ -91,13 +94,8 @@ test("Either", t => {
     );
 
     t.equals(
-        unwrap(Either.withDefault(1, 2)),
+        unwrap(Either.withDefault(2, Either.Left(null))),
         unwrap(Either.Right(2)),
-        "creates a Right with default value if nullable value is passed"
-    );
-    t.equals(
-        unwrap(Either.withDefault(1, null)),
-        unwrap(a),
         "creates a Right with default value if nullable value is passed"
     );
 
@@ -130,11 +128,13 @@ test("Either", t => {
     t.equals(
         Either.bimap(
             a,
+            // @ts-ignore
             v => v + 1,
             v => v + 2
         ).equals(Either.Right(3)),
         a
             .bimap(
+                // @ts-ignore
                 v => v + 1,
                 v => v + 2
             )
@@ -145,11 +145,13 @@ test("Either", t => {
         Either.bimap(
             e,
             v => v + 1,
+            // @ts-ignore
             v => v + 2
         ).equals(Either.Left(2)),
         e
             .bimap(
                 v => v + 1,
+                // @ts-ignore
                 v => v + 2
             )
             .equals(Either.Left(2)),
@@ -170,7 +172,7 @@ test("Either", t => {
         Either.Left(1).equals(e) === e.equals(Either.Left(1)),
         "Left commutativity"
     );
-
+    // @ts-ignore
     t.throws(() => a.chain(1), "Right chain expects a function");
     t.ok(
         prop("a")(data)

@@ -3,7 +3,6 @@ import compose from "../functions/compose";
 import fmap from "../functions/fmap";
 import id from "../functions/id";
 import isFunction from "../functions/isFunction";
-import liftA3 from "../functions/liftA3";
 
 import Pair from "./pair";
 import State from "./state";
@@ -56,8 +55,8 @@ test("State", t => {
     );
 
     // const a = State(name => Pair(name, name));
-    const ex3 = State(s => Pair(y => `${s}-${y}`, s));
-    const ex4 = State(s => Pair(y => `${s}+${y}`, s));
+    // const ex3 = State(s => Pair(y => `${s}-${y}`, s));
+    // const ex4 = State(s => Pair(y => `${s}+${y}`, s));
     // const d = liftA3(compose, a, ex4, ex3).evalWith("pete");
     // const f = ex3.ap(ex4.ap(a)).evalWith("pete");
     // t.equals(d, f);

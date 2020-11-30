@@ -60,17 +60,16 @@ export default abstract class Maybe<A>
         );
     }
 
-    public ap<B>(j: Maybe<(a: A) => B>): Maybe<B> {
-        if (!isFunction(j.getValue()))
-            throw Error("Maybe: Wrapped value is not a function");
+    public ap<B, C>(j: Maybe<B>): Maybe<C> {
+        return this.caseOf({
+            Nothing: (v: A) => j,
+            Just: (v: (a: B) => C) => {
+                if (!isFunction(v))
+                    throw Error("Either: Wrapped value is not a function");
 
-        return caseOf(
-            {
-                Nothing: (v: A) => j,
-                Just: (v: (a: A) => B) => this.map(v)
-            },
-            j
-        );
+                return j.map(v);
+            }
+        });
     }
 
     public getValue(): A {

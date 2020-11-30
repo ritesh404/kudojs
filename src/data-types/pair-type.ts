@@ -11,13 +11,14 @@ class Pair<A, B> implements Setoid, Semigroup, BiFunctor<A, B>, Monad<B> {
         if (v1 === undefined || v2 === undefined)
             throw Error("Pair: Both first and second values must be defined");
 
-        // _pairs.set(this, [v1, v2]);
         this._value = [v1, v2];
     }
+
     public static of<C>(v: C) {
         return new Pair(v, v);
     }
 
+    // @ts-ignore
     public of<C>(v: C) {
         return new Pair(v, v);
     }
@@ -47,19 +48,21 @@ class Pair<A, B> implements Setoid, Semigroup, BiFunctor<A, B>, Monad<B> {
         return <B>this.getValue()[1];
     }
 
-    public ap<C, D>(j: Pair<C, (b: B) => D>): Pair<Semigroup, D> {
+    // @ts-ignore
+    public ap<C, D>(j: Pair<C, B>): Pair<C, D> {
         if (!(j instanceof Pair)) throw Error("Pair: Pair required");
-        const fn: any = j.snd();
+        // @ts-ignore
+        const fn: (a: B) => D = this.snd();
         if (!isFunction(fn))
             throw Error("Pair: Second wrapped value should be a function");
 
         const l: any = this.fst();
         const r: any = j.fst();
-        // console.log(l, r, fn);
+
         if (!l.concat || !r.concat)
             throw Error("Pair: Types should be Semigroups");
 
-        return new Pair(l.concat(r), fn(this.snd()));
+        return new Pair(l.concat(r), fn(r));
     }
 
     public getValue() {
@@ -78,6 +81,7 @@ class Pair<A, B> implements Setoid, Semigroup, BiFunctor<A, B>, Monad<B> {
         return new Pair(f1(<A>this.fst()), f2(<B>this.snd()));
     }
 
+    // @ts-ignore
     public chain<C, D>(f: (a: B) => Pair<C, D>): Pair<C, D> {
         if (!isFunction(f)) throw Error("Pair: Expected a function");
         const l: any = this.fst();

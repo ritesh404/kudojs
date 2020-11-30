@@ -23,11 +23,14 @@ abstract class Either<A, B>
     }
 
     public static fromNullable<C, D>(v: any): Either<C, D> {
-        return v ? new Right(v) : new Left(v);
+        return v !== null || v !== undefined ? new Right(v) : new Left(v);
     }
 
-    public static withDefault<C, D>(def: any, v: any): Either<C, D> {
-        return v ? new Right(v) : new Right(def);
+    public static withDefault<C, D, F>(
+        def: any,
+        v: Either<F, D>
+    ): Either<C, D> {
+        return v.caseOf({ Left: () => Either.of(def), Right: () => v });
     }
 
     public static swap<C, D>(e: Either<C, D>) {
@@ -59,18 +62,20 @@ abstract class Either<A, B>
     public static isRight<C, D>(v: Either<C, D>): boolean {
         return v.isRight();
     }
+    // @ts-ignore
     public of<C>(v: C): Either<A, C> {
         return new Right(v);
     }
 
-    public ap<C>(j: Either<A, C>): Either<B, C> {
+    // @ts-ignore
+    public ap<C, D>(j: Either<C, B>): Either<C, D> {
         return this.caseOf({
             Left: (v: A) => j,
-            Right: (v: (a: B) => C) => {
-                if (!isFunction(this.getValue()))
+            Right: (v: (a: B) => D) => {
+                if (!isFunction(v))
                     throw Error("Either: Wrapped value is not a function");
 
-                return j.map(this.getValue());
+                return j.map(v);
             }
         });
     }
@@ -84,6 +89,7 @@ abstract class Either<A, B>
 
     public abstract bimap<C, D>(fl: (a: A) => C, fr: (a: B) => D): Either<C, D>;
 
+    // @ts-ignore
     public abstract chain<C>(f: (a: B) => Either<A, C>): Either<A, C>;
 
     public abstract caseOf(o: {

@@ -137,6 +137,11 @@ test("Helpers", t => {
     t.throws(() => liftAn(1, [e1]), "liftAn expects a function");
     t.throws(() => liftAn(add2, []), "liftAn expects a Array of Apply");
     t.equals(unwrap(liftAn(add2, [e1])), 3, "liftAn");
+    t.equals(
+        unwrap(liftAn(x1 => x2 => x3 => x1 + x2 + x3, [e1, e1, e1])),
+        3,
+        "liftAn 3"
+    );
     t.equals(unwrap(liftA2(a => b => a + b, e1, Either.Right(1))), 2, "liftA2");
     t.equals(
         unwrap(

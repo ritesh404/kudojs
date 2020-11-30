@@ -1,4 +1,4 @@
-import { Apply } from "../interfaces";
+import Apply from "../interfaces/apply";
 import curry from "./curry";
 
 /**

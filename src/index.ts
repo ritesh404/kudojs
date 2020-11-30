@@ -1,6 +1,5 @@
 /* istanbul ignore file */
 
-// Algebraic Data Types
 import Either, { maybeToEither } from "./data-types/either";
 import Maybe, { eitherToMaybe, prop } from "./data-types/maybe";
 import Pair from "./data-types/pair";

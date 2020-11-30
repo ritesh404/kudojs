@@ -14,7 +14,7 @@ function liftAn<A, B>(f: (a: A) => B, fns: Array<Apply<A>>) {
             a: Apply<(ar: A) => B>,
             ca: Apply<A>
         ) {
-            return ca.ap(a);
+            return a.ap(ca);
         },
         init);
     }

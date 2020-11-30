@@ -13,7 +13,6 @@ Happy linting! 💖
 */
 module.exports = {
     env: {
-        browser: true,
         es6: true
     },
     extends: ["prettier", "prettier/@typescript-eslint"],
