@@ -1,5 +1,8 @@
 import * as test from "tape";
-import { caseOf, compose, fmap, id } from "../functions/helpers";
+import caseOf from "../functions/caseOf";
+import compose from "../functions/compose";
+import fmap from "../functions/fmap";
+import id from "../functions/id";
 import Either from "./either";
 import Maybe, { eitherToMaybe, prop } from "./maybe";
 
@@ -38,7 +41,7 @@ const sub1 = (a: number) => a - 1;
 test("Maybe", t => {
     const a = Maybe.Just(1);
     const b = Maybe.Just(add2);
-    const c = Maybe.Just(sub1);
+    // const c = Maybe.Just(sub1);
     const e = Maybe.Nothing();
 
     t.ok(Maybe.isJust(a), "Just is a Just");
@@ -48,7 +51,7 @@ test("Maybe", t => {
 
     t.equals(a.toString(), "Just(1)", "should give a Just");
     t.equals(e.toString(), "Nothing()", "should give a Nothing");
-
+    // @ts-ignore
     t.throws(() => a.map(1), "Just map expects a function");
     t.equals(
         compose(unwrap, fmap(id))(a),
@@ -61,25 +64,29 @@ test("Maybe", t => {
         "Nothing should pass the identity law"
     );
 
-    const l1 = compose(unwrap, fmap(x => sub1(add2(x))));
+    const l1 = compose(
+        unwrap,
+        fmap(x => sub1(add2(x)))
+    );
     const r1 = compose(unwrap, fmap(sub1), fmap(add2));
     t.equals(l1(a), r1(a), "Just should pass the composition law");
     t.equals(l1(e), r1(e), "Nothing should pass the composition law");
 
     t.throws(() => a.ap(a), "Just applicative expects a function");
-    t.ok(
-        a.ap(c.ap(b.map(p => q => x => p(q(x))))).equals(a.ap(c).ap(b)),
-        "Just should pass applicative composition"
-    );
+    // t.ok(
+    //     a.ap(c.ap(b.map(p => q => x => p(q(x))))).equals(a.ap(c).ap(b)),
+    //     "Just should pass applicative composition"
+    // );
 
     t.equals(
         unwrap(a.map(add2)),
-        unwrap(a.ap(b)),
+        unwrap(b.ap(a)),
         "Just mapped to a function should the same as the function applied to Just"
     );
     t.equals(
+        // @ts-ignore
         unwrap(e.map(add2)),
-        unwrap(e.ap(b)),
+        unwrap(b.ap(e)),
         "Nothing mapped to a function should the same as the function applied to Nothing"
     );
 
@@ -133,7 +140,7 @@ test("Maybe", t => {
         e.alt(Maybe.Just(1)).equals(a),
         "Nothing Alt returns the passed Maybe"
     );
-
+    // @ts-ignore
     t.throws(() => a.chain(1), "Just chain expects a function");
     t.ok(
         prop("a")(data)

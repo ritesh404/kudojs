@@ -1,39 +1,23 @@
-import { compose, isFunction, once, throwError } from "../functions/helpers";
-import { Monad, Semigroup } from "../interfaces";
+import compose from "../functions/compose";
+import isFunction from "../functions/isFunction";
+import once from "../functions/once";
+import Monad from "../interfaces/monad";
+import Semigroup from "../interfaces/semigroup";
 
 class Task implements Semigroup, Monad<(rej: Function, res: Function) => any> {
-    /**
-     * @function Task.of
-     * @constructor
-     * @param {any} v - value that is passed to the resolve function
-     * @description Task constructor that creates a Task which immediately resolves
-     */
+    private _value: (rej: Function, res: Function) => any;
+
+    public constructor(f: (rej: Function, res: Function) => any) {
+        if (isFunction(f)) this._value = f;
+        else throw Error("Task: Expected a Function");
+    }
+
     public static of(v: any) {
         return new Task((_: Function, resolve: Function) => resolve(v));
     }
 
-    /**
-     * @function Task.rejected
-     * @constructor
-     * @param {any} v - value that is passed to the rejected function
-     * @description Task constructor that creates a Task which immediately gets rejected
-     */
     public static rejected(v: any) {
         return new Task((reject: Function, _: Function) => reject(v));
-    }
-
-    private _value: (rej: Function, res: Function) => any;
-
-    /**
-     * @function Task
-     * @constructor
-     * @param {Function} f - A function that is passed with the arguments reject and resolve functions. When reject or resolve functions are called the Task gets rejected or resolved, respectively. Function f normally initiates an asynchronous work or one that has effects, and then, once that completes, either calls the resolve function to resolve the Task or else rejects it.
-     * @description Task constructor
-     */
-    constructor(f: (rej: Function, res: Function) => any) {
-        isFunction(f)
-            ? (this._value = f)
-            : throwError("Task: Expected a Function");
     }
 
     public of(v: any) {
@@ -44,62 +28,33 @@ class Task implements Semigroup, Monad<(rej: Function, res: Function) => any> {
         return new Task((reject: Function, _: Function) => reject(v));
     }
 
-    /**
-     * @function Task.fork
-     * @constructor
-     * @param {Function} reject - Function to be called when the Task is rejected
-     * @param {Function} resolve - Function to be called when the Task is resolved
-     * @description Executes the Task
-     */
     public fork(reject: Function, resolve: Function) {
         if (!isFunction(resolve) || !isFunction(reject))
-            throwError("Task: Reject and Resolve need to be functions");
+            throw Error("Task: Reject and Resolve need to be functions");
 
         const fn = this.getValue();
         fn(reject, resolve);
     }
 
-    /**
-     * @function Task.toString
-     * @memberof Task
-     * @description Get a stringified version of the Task
-     */
     public toString() {
         const fork: any = this.getValue();
         return `Task(${fork.name})`;
     }
 
-    /**
-     * @function Task.map
-     * @memberof Task
-     * @param {Function} f - Function
-     * @description Apply the function f to value of a successfully resolved Task
-     */
     public map<A, B>(f: (a: A) => B): Task {
-        if (!isFunction(f)) throwError("Task: Expected a function");
+        if (!isFunction(f)) throw Error("Task: Expected a function");
         const fork = this.getValue();
         return new Task((rej: Function, res: Function) =>
             fork(rej, compose(res, f))
         );
     }
 
-    /**
-     * @function Task.getValue
-     * @memberof Task
-     * @description Get the function within the Task
-     */
     public getValue() {
         return this._value;
     }
 
-    /**
-     * @function Task.ap
-     * @memberof Task
-     * @param {Task} t - Task with function as the second element
-     * @description * Applys the successful value of the Task t to the successful value of the current Task
-     */
     public ap(t: Task) {
-        if (!(t instanceof Task)) throwError("Task: type mismatch");
+        if (!(t instanceof Task)) throw Error("Task: type mismatch");
         const thisFork = this.getValue();
         let value: Array<any>;
         let fn: Function;
@@ -127,7 +82,7 @@ class Task implements Semigroup, Monad<(rej: Function, res: Function) => any> {
 
             t.fork(rejOnce, (f: Function) => {
                 if (!isFunction(f))
-                    throwError("Task: Wrapped value should be a function");
+                    throw Error("Task: Wrapped value should be a function");
 
                 fn = f;
                 gotFuction = true;
@@ -136,14 +91,8 @@ class Task implements Semigroup, Monad<(rej: Function, res: Function) => any> {
         });
     }
 
-    /**
-     * @function Task.concat
-     * @memberof Task
-     * @param {Task} t - Task to concat
-     * @description Concat the current Task with the passed one and get a new Task. Which when resloved would get the successfull result of both the task.
-     */
     public concat(t: Task) {
-        if (!(t instanceof Task)) throwError("Task: type mismatch");
+        if (!(t instanceof Task)) throw Error("Task: type mismatch");
         const thisFork = this.getValue();
         const thatFork = t.getValue();
 
@@ -172,32 +121,21 @@ class Task implements Semigroup, Monad<(rej: Function, res: Function) => any> {
         });
     }
 
-    /**
-     * @function Task.chain
-     * @memberof Task
-     * @param {Function} f - Function that returns another Task
-     * @description Chain together many computations that return a Task
-     */
     public chain(f: Function) {
-        if (!isFunction(f)) throwError("Task: Function required");
+        if (!isFunction(f)) throw Error("Task: Function required");
         const thisFork = this.getValue();
 
         return new Task((rej: Function, res: Function) => {
             thisFork(rej, (...args: Array<any>) => {
                 const t = f.call(null, args);
                 if (!t.fork)
-                    throwError("Task: function must return another Task");
+                    throw Error("Task: function must return another Task");
 
                 t.fork(rej, res);
             });
         });
     }
 
-    /**
-     * @function Task.toPromise
-     * @memberof Task
-     * @description Converts the current task to a Promise
-     */
     public toPromise() {
         const thisFork = this.getValue();
         return new Promise((res: Function, rej: Function) => {

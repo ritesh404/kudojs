@@ -1,6 +1,6 @@
 import * as test from "tape";
-import { setTimeout } from "timers";
-import { fmap, id } from "../functions/helpers";
+import fmap from "../functions/fmap";
+import id from "../functions/id";
 import Task from "./task";
 
 const add2 = (x: number) => x + 2;
@@ -18,6 +18,7 @@ const c = Task((rej, res) => setTimeout(() => res(add2), 0));
 const gimmeTask = x => Task((rej, res) => setTimeout(() => res(x + 2), 0));
 
 test("Task#Functor Identity", t => {
+    // @ts-ignore
     t.throws(() => a.map(1), "map expects a function");
     let res1 = 2;
     let res2 = 2;
@@ -36,11 +37,11 @@ test("Task#Functor Identity", t => {
 test("Task#Functor Composition", t => {
     let res1 = "res1";
     let res2 = "res2";
+    // @ts-ignore
     a.map(x => sub1(add2(x))).fork(id, x => {
         res1 = x;
     });
-    a
-        .map(sub1)
+    a.map(sub1)
         .map(add2)
         .fork(id, x => {
             res2 = x;
@@ -56,9 +57,9 @@ test("Task#Semigroup", t => {
     let res2 = [2];
     const a1 = gimmeTask(2);
     const a2 = gimmeTask(3);
+    // @ts-ignore
     t.throws(() => a.concat(1), "concat expects a Task");
-    a
-        .concat(a1)
+    a.concat(a1)
         .concat(a2)
         .fork(id, (r1, r2, r3) => {
             res1 = [r1, r2, r3];
@@ -75,6 +76,7 @@ test("Task#Semigroup", t => {
 test("Task#Applicative", t => {
     let res1 = 1;
     let res2 = 2;
+    // @ts-ignore
     t.throws(() => a.ap({}), "applicative expects a Task");
     t.throws(
         () =>
@@ -83,11 +85,11 @@ test("Task#Applicative", t => {
                 .fork(id, id),
         "applicative expects function to return a function"
     );
+    // @ts-ignore
     a.ap(c.ap(b.map(p => q => x => p(q(x))))).fork(id, x => {
         res1 = x;
     });
-    a
-        .ap(c)
+    a.ap(c)
         .ap(b)
         .fork(id, x => {
             res2 = x;
@@ -101,6 +103,7 @@ test("Task#Applicative", t => {
 test("Task#Chain Associativity", t => {
     let res1 = 1;
     let res2 = 2;
+    // @ts-ignore
     t.throws(() => a.chain(1), "chain expects a function");
     t.throws(
         () =>
@@ -131,6 +134,7 @@ test("Task#To Promise", t => {
     let res2 = 2;
     const p = a.toPromise();
     p.then(x => {
+        // @ts-ignore
         res1 = x;
     });
     a.fork(id, x => {
@@ -163,8 +167,11 @@ test("Task#Of", t => {
 });
 
 test("Task", t => {
+    // @ts-ignore
     t.throws(() => Task(1), "expects a function");
+    // @ts-ignore
     t.throws(() => a.fork(1, id), "fork expects a reject function");
+    // @ts-ignore
     t.throws(() => a.fork(id, 1), "fork expects a resolve function");
     t.notOk(a.fork(id, id), "fork may not return anything");
     t.equals(a.getValue(), impureTask, "get value");
