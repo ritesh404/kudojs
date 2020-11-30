@@ -1,6 +1,6 @@
 import * as test from "tape";
-import { setTimeout } from "timers";
-import { fmap, id } from "../functions/helpers";
+import fmap from "../functions/fmap";
+import id from "../functions/id";
 import Task from "./task";
 
 const add2 = (x: number) => x + 2;
@@ -39,8 +39,7 @@ test("Task#Functor Composition", t => {
     a.map(x => sub1(add2(x))).fork(id, x => {
         res1 = x;
     });
-    a
-        .map(sub1)
+    a.map(sub1)
         .map(add2)
         .fork(id, x => {
             res2 = x;
@@ -57,8 +56,7 @@ test("Task#Semigroup", t => {
     const a1 = gimmeTask(2);
     const a2 = gimmeTask(3);
     t.throws(() => a.concat(1), "concat expects a Task");
-    a
-        .concat(a1)
+    a.concat(a1)
         .concat(a2)
         .fork(id, (r1, r2, r3) => {
             res1 = [r1, r2, r3];
@@ -86,8 +84,7 @@ test("Task#Applicative", t => {
     a.ap(c.ap(b.map(p => q => x => p(q(x))))).fork(id, x => {
         res1 = x;
     });
-    a
-        .ap(c)
+    a.ap(c)
         .ap(b)
         .fork(id, x => {
             res2 = x;

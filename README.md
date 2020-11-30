@@ -7,8 +7,8 @@
 
 ---
 KudoJS is a small utility library with a collection of popular Algebraic Data Types and Helper functions to help you write code in a functional programming style in Javascript.
-### Installation
 
+### Installation
 Install and save KudoJS as a dependency in your current project
 ```
 $ npm install --save fp-kudojs

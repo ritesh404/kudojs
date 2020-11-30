@@ -1,25 +1,26 @@
 # KudoJS Helper Functions
 These are the functions under the `kudoJS.*` namespace 
 
-* [`kudoJS.id`](#kudojsid)
-* [`kudoJS.once`](#kudojsonce)
-* [`kudoJS.curry`](#kudojscurry)
-* [`kudoJS.ncurry`](#kudojsncurry)
-* [`kudoJS.compose`](#kudojscompose)
-* [`kudoJS.constant`](#kudojsconstant)
-* [`kudoJS.fmap`](#kudojsfmap)
-* [`kudoJS.bimap`](#kudojsbimap)
-* [`kudoJS.chain`](#kudojschain)
-* [`kudoJS.caseOf`](#kudojscaseof)
-* [`kudoJS.liftAn`](#kudojsliftan)
-* [`kudoJS.liftA2`](#kudojslifta2)
-* [`kudoJS.liftA3`](#kudojslifta3)
-* [`kudoJS.liftA4`](#kudojslifta4)
-* [`kudoJS.liftA5`](#kudojslifta5)
-* [`kudoJS.when`](#kudojswhen)
-* [`kudoJS.prop`](#kudojsprop)
-* [`kudoJS.eitherToMaybe`](#kudojseithertomaybe)
-* [`kudoJS.maybeToEither`](#kudojsmaybeToEither)
+- [KudoJS Helper Functions](#kudojs-helper-functions)
+		- [`kudoJS.id`](#kudojsid)
+		- [`kudoJS.once`](#kudojsonce)
+		- [`kudoJS.curry`](#kudojscurry)
+		- [`kudoJS.ocurry`](#kudojsocurry)
+		- [`kudoJS.compose`](#kudojscompose)
+		- [`kudoJS.constant`](#kudojsconstant)
+		- [`kudoJS.fmap`](#kudojsfmap)
+		- [`kudoJS.bimap`](#kudojsbimap)
+		- [`kudoJS.chain`](#kudojschain)
+		- [`kudoJS.caseOf`](#kudojscaseof)
+		- [`kudoJS.liftAn`](#kudojsliftan)
+		- [`kudoJS.liftA2`](#kudojslifta2)
+		- [`kudoJS.liftA3`](#kudojslifta3)
+		- [`kudoJS.liftA4`](#kudojslifta4)
+		- [`kudoJS.liftA5`](#kudojslifta5)
+		- [`kudoJS.when`](#kudojswhen)
+		- [`kudoJS.prop`](#kudojsprop)
+		- [`kudoJS.eitherToMaybe`](#kudojseithertomaybe)
+		- [`kudoJS.maybeToEither`](#kudojsmaybetoeither)
 
 ----
 ### `kudoJS.id`
@@ -56,10 +57,10 @@ Returns a curried equivalent of the provided function
 
 ----
 
-### `kudoJS.ncurry`
+### `kudoJS.ocurry`
 Returns a curried equivalent of the provided function which will accept named arguments in any order
 
-`ncurry(fn: Function, args: Array<string>): Function`
+`ocurry(fn: Function, args: Array<string>): Function`
 
 | Param | Type | Description |
 | --- | --- | --- |

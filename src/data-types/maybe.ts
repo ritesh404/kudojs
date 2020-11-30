@@ -1,155 +1,55 @@
-import { caseOf, curry, isFunction, throwError } from "../functions/helpers";
-import { Alt, Monad, PatternMatch, Setoid } from "../interfaces";
+import caseOf from "../functions/caseOf";
+import curry from "../functions/curry";
+import isFunction from "../functions/isFunction";
+import Alt from "../interfaces/alt";
+import Monad from "../interfaces/monad";
+import PatternMatch from "../interfaces/patternmatch";
+import Setoid from "../interfaces/setoid";
 import Either from "./either";
 
 export default abstract class Maybe<A>
     implements Setoid, Monad<A>, Alt<A>, PatternMatch {
-    /**
-     * @function Maybe.of
-     * @constructor
-     * @memberof Maybe
-     * @param {any} v - Value
-     * @description Creates a Just
-     */
-    public static of<A>(v: A): Maybe<A> {
+    protected _value: A;
+
+    public static of<B>(v: B): Maybe<B> {
         return new Just(v);
     }
 
-    /**
-     * @function Maybe.zero
-     * @constructor
-     * @memberof Maybe
-     * @description Creats a Nothing
-     */
-    public static zero<A>(): Maybe<A> {
+    public static zero<B>(): Maybe<B> {
         return new Nothing();
     }
 
-    /**
-     * @function Maybe.Just
-     * @constructor
-     * @memberof Maybe
-     * @param {any} v - Value
-     * @description Creates a Just
-     */
-    public static Just<A>(v: A): Maybe<A> {
+    public static Just<B>(v: B): Maybe<B> {
         return new Just(v);
     }
 
-    /**
-     * @function Maybe.Nothing
-     * @constructor
-     * @memberof Maybe
-     * @description Creats a Nothing
-     */
-    public static Nothing<A>(): Maybe<A> {
+    public static Nothing<B>(): Maybe<B> {
         return new Nothing();
     }
 
-    /**
-     * @function Maybe.fromNullable
-     * @constructor
-     * @memberof Maybe
-     * @param {any} v - Value
-     * @description Creates a Just if the value is not null or undefiend else creates a Nothing
-     */
-    public static fromNullable<A>(v: any): Maybe<A> {
-        return v ? new Just(v) : new Nothing();
+    public static fromNullable<B>(v: any): Maybe<B> {
+        return v !== undefined && v !== null ? new Just(v) : new Nothing();
     }
 
-    /**
-     * @function Maybe.withDefault
-     * @constructor
-     * @memberof Maybe
-     * @param {any} def - Value
-     * @param {any} v - Value
-     * @description Creates a Just if the value v is not null or undefiend else creates a Just with the default value def
-     */
-    public static withDefault<A>(def: any, v: any): Maybe<A> {
-        return v ? new Just(v) : new Just(def);
+    public static withDefault<B>(def: any, v: any): Maybe<B> {
+        return v !== undefined && v !== null ? new Just(v) : new Just(def);
     }
 
-    /**
-     * @function Maybe.catMaybes
-     * @memberof Maybe
-     * @param {Array<any>} ar - Array of Maybes
-     * @description A static method that takes an Array of Maybes and returns back an Array of values of all the Just in the passed Array
-     */
-    public static catMaybes<A>(ar: Array<Maybe<A>>): Array<any> {
+    public static catMaybes<B>(ar: Array<Maybe<B>>): Array<any> {
         return ar.filter(m => m.isJust()).map(m => m.getValue());
     }
 
-    /**
-     * @function Maybe.isNothing
-     * @memberof Maybe
-     * @param {any} v - Maybe
-     * @description A static method that returns true if the passed Maybe is a Nothing
-     */
-    public static isNothing<A>(v: Maybe<A>): boolean {
+    public static isNothing<B>(v: Maybe<B>): boolean {
         return v.isNothing();
     }
 
-    /**
-     * @function Maybe.isJust
-     * @memberof Maybe
-     * @param {any} v - Maybe
-     * @description A static method that returns true if the passed Maybe is a Just
-     */
-    public static isJust<A>(v: Maybe<A>): boolean {
+    public static isJust<B>(v: Maybe<B>): boolean {
         return v.isJust();
     }
-
-    protected _value: A;
-
-    /**
-     * @function Maybe.equals
-     * @memberof Maybe
-     * @param {any} n - Any Value of Type Setoid
-     * @description Returns true if the current and the passed element are of Maybe type with the same value
-     */
-    public abstract equals(n: Setoid): boolean;
-
-    /**
-     * @function Maybe.map
-     * @memberof Maybe
-     * @param {Function} f - Function
-     * @description Applies the passed function to the value of the current Maybe if it is a Just
-     */
-    public abstract map<B>(f: (a: A) => B): Maybe<B>;
-
-    /**
-     * @function Maybe.chain
-     * @memberof Maybe
-     * @param {Function} f - Function that returns another Maybe
-     * @description An instance method that can chain together many computations that return a Maybe type
-     */
-    public abstract chain<B>(f: (a: A) => Maybe<B>): Maybe<B>;
-    public abstract caseOf(o: { Nothing: Function } | { Just: Function }): any;
-
-    /**
-     * @function Maybe.isNothing
-     * @memberof Maybe
-     * @description An instance method that returns true if the current Maybe is a Nothing
-     */
-    public abstract isNothing(): boolean;
-
-    /**
-     * @function Maybe.isJust
-     * @memberof Maybe
-     * @description An instance method that returns true if the current Maybe is a Nothing
-     */
-    public abstract isJust(): boolean;
-
     public of<B>(v: B): Maybe<B> {
         return new Just(v);
     }
 
-    /**
-     * @function Maybe.alt
-     * @memberof Maybe
-     * @param {any} v - Maybe
-     * @description An instance method that returns the current maybe if it is a Just else returns the passed Maybe
-     */
     public alt<B>(v: Maybe<B>): Maybe<B> {
         return caseOf(
             {
@@ -160,15 +60,9 @@ export default abstract class Maybe<A>
         );
     }
 
-    /**
-     * @function Maybe.ap
-     * @memberof Maybe
-     * @param {any} j - Maybe with a function
-     * @description Applies the function inside the passed Maybe to the current Maybe if it is a Just
-     */
     public ap<B>(j: Maybe<(a: A) => B>): Maybe<B> {
         if (!isFunction(j.getValue()))
-            throwError("Maybe: Wrapped value is not a function");
+            throw Error("Maybe: Wrapped value is not a function");
 
         return caseOf(
             {
@@ -179,14 +73,24 @@ export default abstract class Maybe<A>
         );
     }
 
-    /**
-     * @function Maybe.getValue
-     * @memberof Maybe
-     * @description Get the value within the Maybe
-     */
     public getValue(): A {
         return this._value;
     }
+
+    public abstract equals(n: Setoid): boolean;
+
+    public abstract map<B>(f: (a: A) => B): Maybe<B>;
+
+    public abstract chain<B>(f: (a: A) => Maybe<B>): Maybe<B>;
+
+    public abstract caseOf(o: {
+        Nothing: (a: any) => any;
+        Just: (a: any) => any;
+    }): any;
+
+    public abstract isNothing(): boolean;
+
+    public abstract isJust(): boolean;
 }
 // @ts-ignore: implicit any
 Maybe.prototype["fantasy-land/equals"] = Maybe.prototype.equals;
@@ -227,12 +131,13 @@ export class Nothing<A> extends Maybe<A> {
     }
 
     public caseOf(o: { Nothing: Function }) {
-        return o.Nothing ? o.Nothing() : throwError("Maybe: Expected Nothing!");
+        if (o.Nothing) return o.Nothing();
+        else throw Error("Maybe: Expected Nothing!");
     }
 }
 
 export class Just<A> extends Maybe<A> {
-    constructor(v: any) {
+    public constructor(v: any) {
         super();
         this._value = v;
     }
@@ -247,12 +152,12 @@ export class Just<A> extends Maybe<A> {
     }
 
     public map<B>(f: (a: A) => B): Maybe<B> {
-        if (!isFunction(f)) throwError("Maybe: Expected a function");
+        if (!isFunction(f)) throw Error("Maybe: Expected a function");
         return new Just(f(this.getValue()));
     }
 
     public chain<B>(f: (a: A) => Maybe<B>): Maybe<B> {
-        if (!isFunction(f)) throwError("Maybe: Expected a function");
+        if (!isFunction(f)) throw Error("Maybe: Expected a function");
         return f(this.getValue());
     }
 
@@ -269,17 +174,11 @@ export class Just<A> extends Maybe<A> {
     }
 
     public caseOf(o: { Just: Function }) {
-        return o.Just
-            ? o.Just(this.getValue())
-            : throwError("Maybe: Expected Just");
+        if (o.Just) return o.Just(this.getValue());
+        else throw Error("Maybe: Expected Just");
     }
 }
 
-/**
- * @function eitherToMaybe
- * @param {Maybe} m - Maybe type
- * @description Converts a Either type to an Maybe Type
- */
 export const eitherToMaybe = <A, B>(e: Either<A, B>) =>
     caseOf(
         {
@@ -294,15 +193,9 @@ const _prop = <A>(
     o: { [k: string]: A; [k: number]: A }
 ): Maybe<A> => {
     if (typeof key !== "string" && typeof key !== "number")
-        throwError("Key should be either string or number");
-    if (!o) Maybe.Nothing();
+        throw Error("Key should be either string or number");
+    if (!o) return Maybe.Nothing();
     return key in o ? Maybe.fromNullable(o[key]) : Maybe.Nothing();
 };
 
-/**
- * @function prop
- * @param {string | number} key - Key
- * @param {Object} o - Object
- * @description Returns a Maybe Just if value exists for the given key else returns a Nothing
- */
 export const prop = curry(_prop);

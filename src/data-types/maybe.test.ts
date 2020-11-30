@@ -1,5 +1,8 @@
 import * as test from "tape";
-import { caseOf, compose, fmap, id } from "../functions/helpers";
+import caseOf from "../functions/caseOf";
+import compose from "../functions/compose";
+import fmap from "../functions/fmap";
+import id from "../functions/id";
 import Either from "./either";
 import Maybe, { eitherToMaybe, prop } from "./maybe";
 
@@ -61,7 +64,10 @@ test("Maybe", t => {
         "Nothing should pass the identity law"
     );
 
-    const l1 = compose(unwrap, fmap(x => sub1(add2(x))));
+    const l1 = compose(
+        unwrap,
+        fmap(x => sub1(add2(x)))
+    );
     const r1 = compose(unwrap, fmap(sub1), fmap(add2));
     t.equals(l1(a), r1(a), "Just should pass the composition law");
     t.equals(l1(e), r1(e), "Nothing should pass the composition law");

@@ -1,212 +1,101 @@
-import { caseOf, isFunction, throwError } from "../functions/helpers";
-import { BiFunctor, Monad, PatternMatch, Setoid } from "../interfaces";
+import caseOf from "../functions/caseOf";
+import isFunction from "../functions/isFunction";
+import BiFunctor from "../interfaces/bifunctor";
+import Monad from "../interfaces/monad";
+import PatternMatch from "../interfaces/patternmatch";
+import Setoid from "../interfaces/setoid";
 import Maybe from "./maybe";
 
 abstract class Either<A, B>
     implements Setoid, BiFunctor<A, B>, Monad<B>, PatternMatch {
-    /**
-     * @function Either.of
-     * @constructor
-     * @memberof Either
-     * @param {any} v - Value
-     * @description Creates a Right Either
-     */
-    public static of<A, B>(v: B): Either<A, B> {
+    protected _value: A | B;
+
+    public static of<C, D>(v: D): Either<C, D> {
         return new Right(v);
     }
 
-    /**
-     * @function Either.Right
-     * @constructor
-     * @memberof Either
-     * @param {any} v - Value
-     * @description Creates a Right Either
-     */
-    public static Right<A, B>(v: B): Either<A, B> {
+    public static Right<C, D>(v: D): Either<C, D> {
         return new Right(v);
     }
 
-    /**
-     * @function Either.Left
-     * @constructor
-     * @memberof Either
-     * @param {any} v - Value
-     * @description Creates a Left Either
-     */
-    public static Left<A, B>(v: A): Either<A, B> {
+    public static Left<C, D>(v: C): Either<C, D> {
         return new Left(v);
     }
 
-    /**
-     * @function Either.fromNullable
-     * @constructor
-     * @memberof Either
-     * @param {any} v - Value
-     * @description Creates a Right if the value is not null or undefiend else creates a Left
-     */
-    public static fromNullable<A, B>(v: any): Either<A, B> {
+    public static fromNullable<C, D>(v: any): Either<C, D> {
         return v ? new Right(v) : new Left(v);
     }
 
-    /**
-     * @function Either.withDefault
-     * @constructor
-     * @memberof Either
-     * @param {any} def - Value
-     * @param {any} v - Value
-     * @description Creates a Right if the value v is not null or undefiend else creates a Right with the default value def
-     */
-    public static withDefault<A, B>(def: any, v: any): Either<A, B> {
+    public static withDefault<C, D>(def: any, v: any): Either<C, D> {
         return v ? new Right(v) : new Right(def);
     }
 
-    /**
-     * @function Either.swap
-     * @memberof Either
-     * @description Swap the Left and Right elements of the current Either
-     */
-    public static swap<A, B>(e: Either<A, B>) {
+    public static swap<C, D>(e: Either<C, D>) {
         return e.swap();
     }
 
-    /**
-     * @function Either.try
-     * @memberof Either
-     * @param {Function} f - A function that may throw an error
-     * @description * Executes the passed function that may throw and converts it to an Either type.
-     */
     public static try(f: Function) {
-        return <A, B>(...args: Array<any>): Either<A, B> => {
+        return <C, D>(...args: Array<any>): Either<C, D> => {
             try {
-                return new Right<A, B>(f.apply(null, args));
+                return new Right<C, D>(f.apply(null, args));
             } catch (e) {
-                return new Left<A, B>(e);
+                return new Left<C, D>(e);
             }
         };
     }
 
-    /**
-     * @function Either.bimap
-     * @memberof Either
-     * @param {any} e - Etiher type
-     * @param {Function} fl - Function to be applied on the Left element
-     * @param {Function} fr - Function to be applied on the Right element
-     * @description A static method that applies fl to the Left element or fr to the Right element of the current Either
-     */
-    public static bimap<A, B, C, D>(
-        e: Either<A, B>,
-        fl: (a: A) => C,
-        fr: (a: B) => D
+    public static bimap<G, K, C, D>(
+        e: Either<G, K>,
+        fl: (a: G) => C,
+        fr: (b: K) => D
     ) {
         return e.bimap(fl, fr);
     }
 
-    /**
-     * @function Either.isLeft
-     * @memberof Either
-     * @description An static method that returns true if the current Either is a Left
-     */
-    public static isLeft<A, B>(v: Either<A, B>): boolean {
+    public static isLeft<C, D>(v: Either<C, D>): boolean {
         return v.isLeft();
     }
 
-    /**
-     * @function Either.isRight
-     * @memberof Either
-     * @description An static method that returns true if the current Either is a Right
-     */
-    public static isRight<A, B>(v: Either<A, B>): boolean {
+    public static isRight<C, D>(v: Either<C, D>): boolean {
         return v.isRight();
     }
-
-    protected _value: A | B;
-
-    /**
-     * @function Either.equals
-     * @memberof Either
-     * @param {any} n - Any Value of Type Setoid
-     * @description Returns true if the current and the passed element are of Either type with the same value
-     */
-    public abstract equals(n: Setoid): boolean;
-
-    /**
-     * @function Either.map
-     * @memberof Either
-     * @param {Function} f - Function
-     * @description Applies the passed function to the value of the current Either if it is a Just
-     */
-    public abstract map<C>(f: (a: B) => C): Either<A, C>;
-
-    /**
-     * @function Either.bimap
-     * @memberof Either
-     * @param {Function} fl - Function to be applied on the Left element
-     * @param {Function} fr - Function to be applied on the Right element
-     * @description Apply fl to the Left element or fr to the Right element of the current Either
-     */
-    public abstract bimap<C, D>(fl: (a: A) => C, fr: (a: B) => D): Either<C, D>;
-
-    /**
-     * @function Either.chain
-     * @memberof Either
-     * @param {Function} f - Function that returns another Either
-     * @description An instance method that can chain together many computations that return a Either type
-     */
-    public abstract chain<C>(f: (a: B) => Either<A, C>): Either<A, C>;
-    public abstract caseOf(o: { Left: Function } | { Right: Function }): any;
-
-    /**
-     * @function Either.swap
-     * @memberof Either
-     * @description Swap the Left and Right elements of the current Either
-     */
-    public abstract swap(): Either<A, B>;
-
-    /**
-     * @function Either.isLeft
-     * @memberof Either
-     * @description An instance method that returns true if the current Either is a Left
-     */
-    public abstract isLeft(): boolean;
-
-    /**
-     * @function Either.isRight
-     * @memberof Either
-     * @description An instance method that returns true if the current Either is a Right
-     */
-    public abstract isRight(): boolean;
-
     public of<C>(v: C): Either<A, C> {
         return new Right(v);
     }
 
-    /**
-     * @function Either.ap
-     * @memberof Either
-     * @param {any} j - Either with a function
-     * @description Applies the function inside the passed Either to the current Either if it is a Right
-     */
-    public ap<C>(j: Either<A, (a: B) => C>): Either<B, C> {
-        if (!isFunction(j.getValue()))
-            throwError("Either: Wrapped value is not a function");
+    public ap<C>(j: Either<A, C>): Either<B, C> {
+        return this.caseOf({
+            Left: (v: A) => j,
+            Right: (v: (a: B) => C) => {
+                if (!isFunction(this.getValue()))
+                    throw Error("Either: Wrapped value is not a function");
 
-        return caseOf(
-            {
-                Left: (v: A) => j,
-                Right: (v: (a: B) => C) => this.map(v)
-            },
-            j
-        );
+                return j.map(this.getValue());
+            }
+        });
     }
 
-    /**
-     * @function Either.getValue
-     * @memberof Either
-     * @description Get the value within the Either
-     */
     public getValue(): A | B {
         return this._value;
     }
+    public abstract equals(n: Setoid): boolean;
+
+    public abstract map<C>(f: (a: B) => C): Either<A, C>;
+
+    public abstract bimap<C, D>(fl: (a: A) => C, fr: (a: B) => D): Either<C, D>;
+
+    public abstract chain<C>(f: (a: B) => Either<A, C>): Either<A, C>;
+
+    public abstract caseOf(o: {
+        Left: (a: any) => any;
+        Right: (a: any) => any;
+    }): any;
+
+    public abstract swap(): Either<A, B>;
+
+    public abstract isLeft(): boolean;
+
+    public abstract isRight(): boolean;
 }
 // @ts-ignore: implicit any
 Either.prototype["fantasy-land/equals"] = Either.prototype.equals;
@@ -222,7 +111,7 @@ Either.prototype["fantasy-land/of"] = Either.prototype.of;
 Either.prototype["fantasy-land/ap"] = Either.prototype.ap;
 
 class Left<A, B> extends Either<A, B> {
-    constructor(v: A) {
+    public constructor(v: A) {
         super();
         this._value = v;
     }
@@ -265,14 +154,13 @@ class Left<A, B> extends Either<A, B> {
     }
 
     public caseOf(o: { Left: Function }) {
-        return o.Left
-            ? o.Left(this.getValue())
-            : throwError("Either: Expected Left!");
+        if (o.Left) return o.Left(this.getValue());
+        else throw Error("Either: Expected Left!");
     }
 }
 
 class Right<A, B> extends Either<A, B> {
-    constructor(v: B) {
+    public constructor(v: B) {
         super();
         this._value = v;
     }
@@ -287,7 +175,7 @@ class Right<A, B> extends Either<A, B> {
     }
 
     public map<C>(f: (a: B) => C): Either<A, C> {
-        if (!isFunction(f)) throwError("Either: Expected a function");
+        if (!isFunction(f)) throw Error("Either: Expected a function to map");
         return new Right<A, C>(f(<B>this.getValue()));
     }
 
@@ -296,7 +184,7 @@ class Right<A, B> extends Either<A, B> {
     }
 
     public chain<C>(f: (a: B) => Either<A, C>): Either<A, C> {
-        if (!isFunction(f)) throwError("Either: Expected a function");
+        if (!isFunction(f)) throw Error("Either: Expected a function to chain");
         return f(<B>this.getValue());
     }
 
@@ -317,19 +205,13 @@ class Right<A, B> extends Either<A, B> {
     }
 
     public caseOf(o: { Right: Function }) {
-        return o.Right
-            ? o.Right(this.getValue())
-            : throwError("Either: Expected Right");
+        if (o.Right) return o.Right(this.getValue());
+        else throw Error("Either: Expected Right");
     }
 }
 
 export default Either;
 
-/**
- * @function maybeToEither
- * @param {Maybe} m - Maybe type
- * @description Converts a Maybe type to an Either Type
- */
 export const maybeToEither = <A>(m: Maybe<A>) =>
     caseOf(
         {

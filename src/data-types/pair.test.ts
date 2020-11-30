@@ -1,11 +1,17 @@
 import * as test from "tape";
-import { compose, fmap, id } from "../functions/helpers";
+import compose from "../functions/compose";
+import fmap from "../functions/fmap";
+import id from "../functions/id";
 import Pair from "./pair";
 
 const unwrap = (m: { getValue: Function }) => m.getValue();
 const add2 = (x: Array<any>) => x.map(v => v + 2);
 const sub1 = (x: Array<any>) => x.map(v => v - 1);
-const gimmePair = (x: Array<any>) => Pair(x, x.map(v => v + 1));
+const gimmePair = (x: Array<any>) =>
+    Pair(
+        x,
+        x.map(v => v + 1)
+    );
 
 test("Pair", t => {
     const a = Pair([1], [2]);
@@ -25,7 +31,10 @@ test("Pair", t => {
         "should pass the identity law"
     );
 
-    const l1 = compose(unwrap, fmap(x => sub1(add2(x))));
+    const l1 = compose(
+        unwrap,
+        fmap(x => sub1(add2(x)))
+    );
     const r1 = compose(unwrap, fmap(sub1), fmap(add2));
     t.deepEqual(l1(a), r1(a), "should pass functor composition law");
 

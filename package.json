@@ -1,113 +1,123 @@
 {
-  "name": "fp-kudojs",
-  "version": "0.3.5",
-  "description": "A utility library to write code in functional programming style in Javascript",
-  "main": "dist/kudo.cjs.js",
-  "module": "dist/kudo.es.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "test": "cross-env NODE_ENV=test TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' nyc tape --reporter=lcov --require ts-node/register src/**/*.test.ts | tap-spec",
-    "check-coverage": "nyc check-coverage",
-    "report-coverage": "cat ./coverage/lcov.info | codecov",
-    "build:typescript": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' tsc ./src/index.ts",
-    "build:js": "cross-env rollup -c",
-    "build": "cross-env rollup -c",
-    "precommit": "cross-env lint-staged && npm run test",
-    "prepare": "npm run build",
-    "semantic-release": "semantic-release",
-    "travis-deploy-once": "travis-deploy-once"
-  },
-  "lint-staged": {
-    "*.ts": [
-      "prettier --parser typescript --write",
-      "tslint",
-      "git add"
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
+    "name": "fp-kudojs",
+    "version": "0.3.5",
+    "description": "A utility library to write code in functional programming style in Javascript",
+    "main": "dist/kudo.cjs.js",
+    "module": "dist/kudo.es.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "test": "cross-env NODE_ENV=test TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' nyc tape --reporter=lcov --require ts-node/register src/**/*.test.ts | tap-spec",
+        "check-coverage": "nyc check-coverage",
+        "report-coverage": "cat ./coverage/lcov.info | codecov",
+        "build:typescript": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' tsc ./src/index.ts",
+        "build:js": "cross-env rollup -c",
+        "build": "cross-env rollup -c",
+        "precommit": "cross-env lint-staged && npm run test",
+        "prepare": "npm run build",
+        "semantic-release": "semantic-release",
+        "travis-deploy-once": "travis-deploy-once"
     },
-    "ghooks": {
-      "pre-commit": "npm run precommit",
-      "commit-msg": "commitlint -e $GIT_PARAMS"
+    "lint-staged": {
+        "*.ts": [
+            "prettier --parser typescript --write",
+            "eslint",
+            "git add"
+        ]
+    },
+    "config": {
+        "commitizen": {
+            "path": "cz-conventional-changelog"
+        },
+        "ghooks": {
+            "pre-commit": "npm run precommit",
+            "commit-msg": "commitlint -e $GIT_PARAMS"
+        }
+    },
+    "nyc": {
+        "check-coverage": true,
+        "branches": 90,
+        "functions": 90,
+        "lines": 95,
+        "statements": 95,
+        "sourceMap": false,
+        "instrument": true,
+        "all": true,
+        "extension": [
+            ".ts"
+        ],
+        "exclude": [
+            "src/**/*.test.ts",
+            "src/interfaces/*",
+            "dist",
+            "node_modules"
+        ],
+        "reporter": [
+            "text",
+            "lcov"
+        ],
+        "require": [
+            "ts-node/register"
+        ],
+        "include": [
+            "src/**/*.ts"
+        ]
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/breezyboa/kudojs.git"
+    },
+    "keywords": [
+        "kudojs",
+        "functional",
+        "programming",
+        "fp",
+        "javascript",
+        "typescript"
+    ],
+    "author": "Ritesh Pillai",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/breezyboa/kudojs/issues"
+    },
+    "homepage": "https://github.com/breezyboa/kudojs#readme",
+    "dependencies": {},
+    "devDependencies": {
+        "@commitlint/cli": "^7.6.1",
+        "@commitlint/config-conventional": "^7.6.0",
+        "@types/tape": "^4.13.0",
+        "@typescript-eslint/eslint-plugin": "^4.8.2",
+        "@typescript-eslint/eslint-plugin-tslint": "^4.8.2",
+        "@typescript-eslint/parser": "^4.8.2",
+        "babel-core": "^6.26.3",
+        "babel-plugin-external-helpers": "^6.22.0",
+        "babel-preset-env": "^1.7.0",
+        "babelrc-rollup": "^3.0.0",
+        "codecov": "^3.8.1",
+        "cross-env": "^5.2.1",
+        "cz-conventional-changelog": "^2.1.0",
+        "eslint": "^7.14.0",
+        "eslint-config-prettier": "^6.15.0",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-jsdoc": "^30.7.8",
+        "eslint-plugin-prefer-arrow": "^1.2.2",
+        "eslint-plugin-prettier": "^3.1.4",
+        "eslint-plugin-react": "^7.21.5",
+        "ghooks": "^2.0.4",
+        "lint-staged": "^6.1.1",
+        "nyc": "^11.9.0",
+        "prettier": "^1.19.1",
+        "rollup": "^0.58.2",
+        "rollup-plugin-babel": "^3.0.7",
+        "rollup-plugin-istanbul": "^2.0.1",
+        "rollup-plugin-typescript2": "^0.14.0",
+        "rollup-plugin-uglify": "^3.0.0",
+        "semantic-release": "^15.14.0",
+        "tap-spec": "^4.1.2",
+        "tape": "^4.13.3",
+        "travis-deploy-once": "^5.0.0",
+        "ts-node": "^4.1.0",
+        "tslint": "^5.20.1",
+        "tslint-config-prettier": "^1.18.0",
+        "typescript": "^3.3"
     }
-  },
-  "nyc": {
-    "check-coverage": true,
-    "branches": 90,
-    "functions": 90,
-    "lines": 95,
-    "statements": 95,
-    "sourceMap": false,
-    "instrument": true,
-    "all": true,
-    "extension": [
-      ".ts"
-    ],
-    "exclude": [
-      "src/**/*.test.ts",
-      "src/interfaces.ts",
-      "dist",
-      "node_modules"
-    ],
-    "reporter": [
-      "text",
-      "lcov"
-    ],
-    "require": [
-      "ts-node/register"
-    ],
-    "include": [
-      "src/**/*.ts"
-    ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/breezyboa/kudojs.git"
-  },
-  "keywords": [
-    "kudojs",
-    "functional",
-    "programming",
-    "fp",
-    "javascript",
-    "typescript"
-  ],
-  "author": "Ritesh Pillai",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/breezyboa/kudojs/issues"
-  },
-  "homepage": "https://github.com/breezyboa/kudojs#readme",
-  "dependencies": {},
-  "devDependencies": {
-    "@commitlint/cli": "7.2.1",
-    "@commitlint/config-conventional": "7.1.2",
-    "@types/tape": "4.2.31",
-    "babel-core": "6.26.3",
-    "babel-plugin-external-helpers": "6.22.0",
-    "babel-preset-env": "1.6.1",
-    "babelrc-rollup": "3.0.0",
-    "codecov": "3.0.2",
-    "cross-env": "5.1.5",
-    "cz-conventional-changelog": "2.1.0",
-    "ghooks": "2.0.2",
-    "lint-staged": "6.1.0",
-    "nyc": "11.4.1",
-    "prettier": "1.12.1",
-    "rollup": "0.58.2",
-    "rollup-plugin-babel": "3.0.4",
-    "rollup-plugin-istanbul": "2.0.1",
-    "rollup-plugin-typescript2": "0.14.0",
-    "rollup-plugin-uglify": "3.0.0",
-    "semantic-release": "^15.4.1",
-    "tap-spec": "4.1.1",
-    "tape": "4.9.0",
-    "ts-node": "4.1.0",
-    "tslint": "5.10.0",
-    "tslint-config-prettier": "1.12.0",
-    "typescript": "2.8.3",
-    "travis-deploy-once": "^5.0.0"
-  }
 }
