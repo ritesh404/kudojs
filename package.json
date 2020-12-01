@@ -1,6 +1,6 @@
 {
     "name": "fp-kudojs",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "description": "A utility library to write code in functional programming style in Javascript",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",

@@ -13,3 +13,13 @@ coverage/*
 *.test.ts
 .npmignore
 docs
+.travis.yml
+.babelrc
+.eslintignore
+.eslintrc
+.editorconfig
+.prettierrc.json
+commitlint.config.js
+tsconfig.json
+rollup.config.js
+src
