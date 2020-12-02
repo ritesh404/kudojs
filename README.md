@@ -2,7 +2,6 @@
   <img src="https://user-images.githubusercontent.com/7039911/35882138-2972170e-0ba9-11e8-8fcf-f96dfcb4d562.jpg">
 </p>
 
-[![Travis](https://travis-ci.org/ritesh404/kudojs.svg?branch=master)](https://travis-ci.org/breezyboa/kudojs) 
 [![npm (scoped)](https://img.shields.io/npm/v/fp-kudojs.svg)](https://www.npmjs.com/package/fp-kudojs)
 
 ---

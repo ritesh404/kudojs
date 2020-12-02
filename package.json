@@ -1,6 +1,6 @@
 {
     "name": "fp-kudojs",
-    "version": "0.4.1",
+    "version": "0.4.2",
     "description": "A utility library to write code in functional programming style in Javascript",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -13,8 +13,7 @@
         "build": "cross-env rm -rf ./dist && rollup -c && npm run build:typescript",
         "precommit": "cross-env lint-staged && npm run test",
         "prepare": "npm run build",
-        "semantic-release": "semantic-release",
-        "travis-deploy-once": "travis-deploy-once"
+        "semantic-release": "semantic-release"
     },
     "lint-staged": {
         "*.ts": [
@@ -114,7 +113,6 @@
         "semantic-release": "^17.3",
         "tap-spec": "^5.0",
         "tape": "^5.0",
-        "travis-deploy-once": "^5.0.0",
         "ts-node": "^9.0",
         "tslib": "^2.0.3",
         "tslint": "^5.20.1",
