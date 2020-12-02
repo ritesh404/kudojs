@@ -1,28 +1,24 @@
 import * as test from "tape";
-import {
-    bimap,
-    caseOf,
-    chain,
-    compose,
-    constant,
-    curry,
-    fmap,
-    id,
-    liftA2,
-    liftA3,
-    liftA4,
-    liftA5,
-    liftAn,
-    ncurry,
-    once,
-    when
-} from "./functions/helpers";
 
-import Either from "./data-types/either";
-import Maybe from "./data-types/maybe";
+import Either, { maybeToEither } from "./data-types/either";
+import Maybe, { eitherToMaybe, prop } from "./data-types/maybe";
 import Pair from "./data-types/pair";
 import Reader from "./data-types/reader";
+import State from "./data-types/state";
 import Task from "./data-types/task";
+import bimap from "./functions/bimap";
+import caseOf from "./functions/caseOf";
+import chain from "./functions/chain";
+import compose from "./functions/compose";
+import constant from "./functions/constant";
+import curry from "./functions/curry";
+import fmap from "./functions/fmap";
+import id from "./functions/id";
+import liftA2 from "./functions/liftA2";
+import liftA3 from "./functions/liftA3";
+import liftAn from "./functions/liftAn";
+import ocurry from "./functions/ocurry";
+import once from "./functions/once";
 import Kudo from "./index";
 
 test("Entry", t => {
@@ -34,17 +30,16 @@ test("Entry", t => {
     t.equals(Kudo.chain, chain, "chain function check");
     t.equals(Kudo.caseOf, caseOf, "caseOf function check");
     t.equals(Kudo.curry, curry, "curry function check");
-    t.equals(Kudo.ncurry, ncurry, "ncurry function check");
+    t.equals(Kudo.ocurry, ocurry, "ncurry function check");
     t.equals(Kudo.compose, compose, "compose function check");
     t.equals(Kudo.constant, constant, "constant function check");
     t.equals(Kudo.liftAn, liftAn, "liftAn function check");
     t.equals(Kudo.liftA2, liftA2, "liftA2 function check");
     t.equals(Kudo.liftA3, liftA3, "liftA3 function check");
-    t.equals(Kudo.liftA4, liftA4, "liftA4 function check");
-    t.equals(Kudo.liftA5, liftA5, "liftA5 function check");
     t.equals(Kudo.Either, Either, "Either ADT check");
     t.equals(Kudo.Maybe, Maybe, "Maybe ADT check");
     t.equals(Kudo.Task, Task, "Task ADT check");
     t.equals(Kudo.Pair, Pair, "Pair ADT check");
     t.equals(Kudo.Reader, Reader, "Reader ADT check");
+    t.equals(Kudo.State, State, "State ADT check");
 });

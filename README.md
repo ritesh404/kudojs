@@ -32,7 +32,7 @@ These are the functions under the `kudoJS.*` namespace
 * [`kudoJS.id`](docs/helper-functions.md#kudojsid)
 * [`kudoJS.once`](docs/helper-functions.md#kudojsonce)
 * [`kudoJS.curry`](docs/helper-functions.md#kudojscurry)
-* [`kudoJS.ncurry`](docs/helper-functions.md#kudojsncurry)
+* [`kudoJS.ocurry`](docs/helper-functions.md#kudojsocurry)
 * [`kudoJS.compose`](docs/helper-functions.md#kudojscompose)
 * [`kudoJS.constant`](docs/helper-functions.md#kudojsconstant)
 * [`kudoJS.fmap`](docs/helper-functions.md#kudojsfmap)
