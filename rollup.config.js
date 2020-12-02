@@ -24,20 +24,17 @@ export default [
             {
                 file: "dist/kudo.iife.js",
                 format: "iife",
-                name: "kudoJS",
-                sourcemap: true
+                name: "kudoJS"
             },
             {
                 file: "dist/kudo.cjs.js",
                 format: "cjs",
-                name: "kudoJS",
-                sourcemap: true
+                name: "kudoJS"
             },
             {
                 file: "dist/kudo.es.js",
                 format: "es",
-                name: "kudoJS",
-                sourcemap: true
+                name: "kudoJS"
             }
         ]
     }
