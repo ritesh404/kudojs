@@ -9,14 +9,15 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    container: 'node:12-alpine'
     steps:
-      - uses: actions/checkout@main
-      - run: apk update && apk upgrade && apk add --no-cache bash git openssh
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
       - run: npm ci
       - run: npm run build --if-present
       - run: npm test
-      - run: npm run semantic-release
+      - run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
