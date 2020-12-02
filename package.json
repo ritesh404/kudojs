@@ -2,18 +2,17 @@
     "name": "fp-kudojs",
     "version": "0.0.0-development",
     "description": "A utility library to write code in functional programming style in Javascript",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
+    "main": "index.js",
+    "types": "index.d.ts",
     "scripts": {
-        "test": "cross-env NODE_ENV=test TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\", \"noImplicitAny\": false}' nyc tape --reporter=lcov --require ts-node/register src/**/*.test.ts | tap-spec",
+        "test": "cross-env npm run build:clean && NODE_ENV=test TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\", \"noImplicitAny\": false}' nyc tape --reporter=lcov --require ts-node/register src/**/*.test.ts | tap-spec",
         "check-coverage": "nyc check-coverage",
         "report-coverage": "cat ./coverage/lcov.info | codecov",
         "build:typescript": "cross-env tsc",
         "build:js": "cross-env rollup -c",
-        "build": "cross-env rm -rf ./dist && rollup -c && npm run build:typescript",
-        "precommit": "cross-env lint-staged && npm run test",
-        "prepare": "npm run build",
-        "semantic-release": "semantic-release"
+        "build": "cross-env npm run build:clean && rollup -c && npm run build:typescript && cp -r ./dist/* . && rm -rf ./dist",
+        "build:clean": "cross-env rm -rf ./dist && rm -rf ./interfaces && rm -rf ./functions && rm -rf ./data-types && rm -rf ./index.* && rm -rf ./kudo.*",
+        "precommit": "cross-env lint-staged && npm run test"
     },
     "release": {
         "branches": [

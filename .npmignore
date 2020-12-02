@@ -12,10 +12,11 @@ coverage/*
 */.nyc_output
 *.test.ts
 .npmignore
+dist
 docs
 .babelrc
 .eslintignore
-.eslintrc
+.eslintrc.js
 .editorconfig
 .prettierrc.json
 commitlint.config.js

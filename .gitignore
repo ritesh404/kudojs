@@ -12,3 +12,9 @@ coverage/*
 .nyc_output
 */.nyc_output
 dist/*
+data-types/*
+functions/*
+interfaces/*
+*.d.ts
+*.js
+*.js.map
