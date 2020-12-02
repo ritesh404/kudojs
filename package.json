@@ -15,6 +15,11 @@
         "prepare": "npm run build",
         "semantic-release": "semantic-release"
     },
+    "release": {
+        "branches": [
+            "main"
+        ]
+    },
     "lint-staged": {
         "*.ts": [
             "prettier --parser typescript --write",
