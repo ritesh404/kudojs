@@ -8,7 +8,7 @@
         "test": "cross-env npm run build:clean && NODE_ENV=test TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\", \"noImplicitAny\": false}' nyc tape --reporter=lcov --require ts-node/register src/**/*.test.ts | tap-spec",
         "check-coverage": "nyc check-coverage",
         "report-coverage": "cat ./coverage/lcov.info | codecov",
-        "build:typescript": "cross-env tsc -m \"commonjs\"",
+        "build:typescript": "cross-env tsc",
         "build:js": "cross-env rollup -c",
         "build": "cross-env npm run build:clean && rollup -c && npm run build:typescript && cp -r ./dist/* . && rm -rf ./dist",
         "build:clean": "cross-env rm -rf ./dist && rm -rf ./interfaces && rm -rf ./functions && rm -rf ./data-types && rm -rf ./index.* && rm -rf ./kudo.*",
@@ -82,9 +82,7 @@
         "url": "https://github.com/breezyboa/kudojs/issues"
     },
     "homepage": "https://github.com/breezyboa/kudojs#readme",
-    "dependencies": {
-        "tslib": "^2.0.3"
-    },
+    "dependencies": {},
     "devDependencies": {
         "@commitlint/cli": "^7.6.1",
         "@commitlint/config-conventional": "^7.6.0",
@@ -120,6 +118,7 @@
         "tap-spec": "^5.0",
         "tape": "^5.0",
         "ts-node": "^9.0",
+        "tslib": "^2.0.3",
         "tslint": "^5.20.1",
         "tslint-config-prettier": "^1.18.0",
         "typescript": "^4.0"
