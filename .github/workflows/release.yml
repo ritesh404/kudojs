@@ -1,0 +1,21 @@
+name: Release npm package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    container: 'node:12-alpine'
+    steps:
+      - uses: actions/checkout@main
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
+      - run: npm run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
