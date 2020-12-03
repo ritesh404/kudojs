@@ -2,7 +2,8 @@
     "name": "fp-kudojs",
     "version": "0.0.0-development",
     "description": "A utility library to write code in functional programming style in Javascript",
-    "main": "index.js",
+    "main": "kudo.cjs.js",
+    "module": "kudo.es.js",
     "types": "index.d.ts",
     "scripts": {
         "test": "cross-env npm run build:clean && NODE_ENV=test TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\", \"noImplicitAny\": false}' nyc tape src/*.test.ts src/**/**/*.test.ts | tap-spec",
