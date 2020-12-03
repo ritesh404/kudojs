@@ -5,13 +5,13 @@
     "main": "index.js",
     "types": "index.d.ts",
     "scripts": {
-        "test": "cross-env npm run build:clean && NODE_ENV=test TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\", \"noImplicitAny\": false}' nyc tape --reporter=lcov --require ts-node/register src/**/*.test.ts | tap-spec",
+        "test": "cross-env npm run build:clean && NODE_ENV=test TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\", \"noImplicitAny\": false}' nyc tape src/*.test.ts src/**/**/*.test.ts | tap-spec",
         "check-coverage": "nyc check-coverage",
         "report-coverage": "cat ./coverage/lcov.info | codecov",
-        "build:typescript": "cross-env tsc -m \"commonjs\"",
+        "build:typescript": "cross-env tsc",
         "build:js": "cross-env rollup -c",
         "build": "cross-env npm run build:clean && rollup -c && npm run build:typescript && cp -r ./dist/* . && rm -rf ./dist",
-        "build:clean": "cross-env rm -rf ./dist && rm -rf ./interfaces && rm -rf ./functions && rm -rf ./data-types && rm -rf ./index.* && rm -rf ./kudo.*",
+        "build:clean": "cross-env rm -rf ./dist && rm -rf ./interfaces && rm -rf ./functions && rm -rf ./adt && rm -rf ./index.* && rm -rf ./kudo.*",
         "precommit": "cross-env lint-staged && npm run test"
     },
     "release": {
@@ -35,35 +35,6 @@
             "commit-msg": "commitlint -e $GIT_PARAMS"
         }
     },
-    "nyc": {
-        "check-coverage": true,
-        "branches": 90,
-        "functions": 90,
-        "lines": 90,
-        "statements": 90,
-        "sourceMap": false,
-        "instrument": true,
-        "all": true,
-        "extension": [
-            ".ts"
-        ],
-        "exclude": [
-            "src/**/*.test.ts",
-            "src/interfaces/*",
-            "dist",
-            "node_modules"
-        ],
-        "reporter": [
-            "text",
-            "lcov"
-        ],
-        "require": [
-            "ts-node/register"
-        ],
-        "include": [
-            "src/**/*.ts"
-        ]
-    },
     "repository": {
         "type": "git",
         "url": "https://github.com/breezyboa/kudojs.git"
@@ -82,12 +53,11 @@
         "url": "https://github.com/breezyboa/kudojs/issues"
     },
     "homepage": "https://github.com/breezyboa/kudojs#readme",
-    "dependencies": {
-        "tslib": "^2.0.3"
-    },
+    "dependencies": {},
     "devDependencies": {
         "@commitlint/cli": "^7.6.1",
         "@commitlint/config-conventional": "^7.6.0",
+        "@istanbuljs/nyc-config-typescript": "^1.0.1",
         "@types/node": "^14.14.10",
         "@types/tape": "^4.13.0",
         "@typescript-eslint/eslint-plugin": "^4.8.2",
@@ -109,7 +79,7 @@
         "eslint-plugin-react": "^7.21.5",
         "ghooks": "^2.0.4",
         "lint-staged": "^6.1.1",
-        "nyc": "^11.9.0",
+        "nyc": "^15.1.0",
         "prettier": "^1.19.1",
         "rollup": "^2.34.0",
         "rollup-plugin-babel": "^3.0.7",
@@ -120,6 +90,7 @@
         "tap-spec": "^5.0",
         "tape": "^5.0",
         "ts-node": "^9.0",
+        "tslib": "^2.0.3",
         "tslint": "^5.20.1",
         "tslint-config-prettier": "^1.18.0",
         "typescript": "^4.0"

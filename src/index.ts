@@ -1,24 +1,24 @@
 /* istanbul ignore file */
 
-import Either, { maybeToEither } from "./data-types/either";
-import Maybe, { eitherToMaybe, prop } from "./data-types/maybe";
-import Pair from "./data-types/pair";
-import Reader from "./data-types/reader";
-import State from "./data-types/state";
-import Task from "./data-types/task";
-import bimap from "./functions/bimap";
-import caseOf from "./functions/caseOf";
-import chain from "./functions/chain";
-import compose from "./functions/compose";
-import constant from "./functions/constant";
-import curry from "./functions/curry";
-import fmap from "./functions/fmap";
-import id from "./functions/id";
-import liftA2 from "./functions/liftA2";
-import liftA3 from "./functions/liftA3";
-import liftAn from "./functions/liftAn";
-import ocurry from "./functions/ocurry";
-import once from "./functions/once";
+import Either, { maybeToEither } from "./adt/Either";
+import Maybe, { eitherToMaybe, prop } from "./adt/Maybe";
+import Pair from "./adt/Pair";
+import Reader from "./adt/Reader";
+import State from "./adt/State";
+import Task from "./adt/Task";
+import bimap from "./function/bimap";
+import caseOf from "./function/caseOf";
+import chain from "./function/chain";
+import compose from "./function/compose";
+import constant from "./function/constant";
+import curry from "./function/curry";
+import fmap from "./function/fmap";
+import id from "./function/id";
+import liftA2 from "./function/liftA2";
+import liftA3 from "./function/liftA3";
+import liftAn from "./function/liftAn";
+import ocurry from "./function/ocurry";
+import once from "./function/once";
 
 export default {
     Either,

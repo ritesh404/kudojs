@@ -1,0 +1,36 @@
+{
+    "check-coverage": true,
+    "branches": 70,
+    "functions": 75,
+    "lines": 80,
+    "statements": 80,
+    "sourceMap": false,
+    "instrument": true,
+    "all": true,
+    "extends": "@istanbuljs/nyc-config-typescript",
+    "extension": [
+        ".ts"
+    ],
+    "exclude": [
+        "src/**/**/*.test.ts",
+        "src/interface/*",
+        "dist",
+        "node_modules"
+    ],
+    "reporter": [
+        "text",
+        "lcov"
+    ],
+    "require": [
+        "ts-node/register"
+    ],
+    "include": [ 
+        "src/*.ts",
+        "src/**/**/*.ts"
+    ],
+    "exclude": [
+        "src/*.test.ts",
+        "src/**/**/*.test.ts",
+        "src/interface/*"
+    ]
+}

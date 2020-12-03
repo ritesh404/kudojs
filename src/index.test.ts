@@ -1,45 +1,38 @@
 import * as test from "tape";
 
-import Either, { maybeToEither } from "./data-types/either";
-import Maybe, { eitherToMaybe, prop } from "./data-types/maybe";
-import Pair from "./data-types/pair";
-import Reader from "./data-types/reader";
-import State from "./data-types/state";
-import Task from "./data-types/task";
-import bimap from "./functions/bimap";
-import caseOf from "./functions/caseOf";
-import chain from "./functions/chain";
-import compose from "./functions/compose";
-import constant from "./functions/constant";
-import curry from "./functions/curry";
-import fmap from "./functions/fmap";
-import id from "./functions/id";
-import liftA2 from "./functions/liftA2";
-import liftA3 from "./functions/liftA3";
-import liftAn from "./functions/liftAn";
-import ocurry from "./functions/ocurry";
-import once from "./functions/once";
-import Kudo from "./index";
+import Kudo from "./";
 
 test("Entry", t => {
     t.equals(Kudo.toString(), "[object Object]");
-    t.equals(Kudo.id, id, "id function check");
-    t.equals(Kudo.once, once, "once function check");
-    t.equals(Kudo.fmap, fmap, "fmap function check");
-    t.equals(Kudo.bimap, bimap, "bimap function check");
-    t.equals(Kudo.chain, chain, "chain function check");
-    t.equals(Kudo.caseOf, caseOf, "caseOf function check");
-    t.equals(Kudo.curry, curry, "curry function check");
-    t.equals(Kudo.ocurry, ocurry, "ncurry function check");
-    t.equals(Kudo.compose, compose, "compose function check");
-    t.equals(Kudo.constant, constant, "constant function check");
-    t.equals(Kudo.liftAn, liftAn, "liftAn function check");
-    t.equals(Kudo.liftA2, liftA2, "liftA2 function check");
-    t.equals(Kudo.liftA3, liftA3, "liftA3 function check");
-    t.equals(Kudo.Either, Either, "Either ADT check");
-    t.equals(Kudo.Maybe, Maybe, "Maybe ADT check");
-    t.equals(Kudo.Task, Task, "Task ADT check");
-    t.equals(Kudo.Pair, Pair, "Pair ADT check");
-    t.equals(Kudo.Reader, Reader, "Reader ADT check");
-    t.equals(Kudo.State, State, "State ADT check");
+    t.equals(typeof Kudo.id, "function", "id function check");
+    t.equals(typeof Kudo.once, "function", "once function check");
+    t.equals(typeof Kudo.fmap, "function", "fmap function check");
+    t.equals(typeof Kudo.bimap, "function", "bimap function check");
+    t.equals(typeof Kudo.chain, "function", "chain function check");
+    t.equals(typeof Kudo.caseOf, "function", "caseOf function check");
+    t.equals(typeof Kudo.curry, "function", "curry function check");
+    t.equals(typeof Kudo.ocurry, "function", "ncurry function check");
+    t.equals(typeof Kudo.compose, "function", "compose function check");
+    t.equals(typeof Kudo.constant, "function", "constant function check");
+    t.equals(typeof Kudo.liftAn, "function", "liftAn function check");
+    t.equals(typeof Kudo.liftA2, "function", "liftA2 function check");
+    t.equals(typeof Kudo.liftA3, "function", "liftA3 function check");
+    t.equals(
+        typeof Kudo.maybeToEither,
+        "function",
+        "maybeToEither function check"
+    );
+    t.equals(typeof Kudo.prop, "function", "prop function check");
+    t.equals(
+        typeof Kudo.eitherToMaybe,
+        "function",
+        "eitherToMaybe function check"
+    );
+    t.equals(typeof Kudo.Either, "function", "Either ADT check");
+    t.equals(typeof Kudo.Maybe, "function", "Maybe ADT check");
+    t.equals(typeof Kudo.Task, "function", "Task ADT check");
+    t.equals(typeof Kudo.Pair, "function", "Pair ADT check");
+    t.equals(typeof Kudo.Reader, "function", "Reader ADT check");
+    t.equals(typeof Kudo.State, "function", "State ADT check");
+    t.end();
 });

@@ -24,3 +24,4 @@ tsconfig.json
 rollup.config.js
 src
 .github/*
+.nycrc
