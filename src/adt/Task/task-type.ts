@@ -2,7 +2,7 @@ import compose from "../../function/compose";
 import isFunction from "../../function/isFunction";
 import once from "../../function/once";
 import Monad from "../../interface/monad";
-import Semigroup from "../../interface/semigroup";
+import Semigroup from "../../interface/Semigroup_";
 
 class Task implements Semigroup, Monad<(rej: Function, res: Function) => any> {
     private _value: (rej: Function, res: Function) => any;

@@ -3,8 +3,8 @@ import curry from "../../function/curry";
 import isFunction from "../../function/isFunction";
 import Alt from "../../interface/Alt";
 import Monad from "../../interface/Monad";
-import PatternMatch from "../../interface/patternmatch";
-import Setoid from "../../interface/setoid";
+import PatternMatch from "../../interface/Patternmatch_";
+import Setoid from "../../interface/Setoid_";
 import Either from "./../Either";
 
 export default abstract class Maybe<A>

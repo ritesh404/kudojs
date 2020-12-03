@@ -1,4 +1,4 @@
-import PatternMatch from "../../interface/patternmatch";
+import PatternMatch from "../../interface/Patternmatch_";
 import curry from "../curry";
 import isFunction from "../isFunction";
 

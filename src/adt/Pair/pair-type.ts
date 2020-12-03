@@ -1,8 +1,8 @@
 import isFunction from "../../function/isFunction";
 import BiFunctor from "../../interface/Bifunctor";
 import Monad from "../../interface/Monad";
-import Semigroup from "../../interface/Semigroup";
-import Setoid from "../../interface/Setoid";
+import Semigroup from "../../interface/Semigroup_";
+import Setoid from "../../interface/Setoid_";
 
 class Pair<A, B> implements Setoid, Semigroup, BiFunctor<A, B>, Monad<B> {
     private _value: Array<A | B>;
