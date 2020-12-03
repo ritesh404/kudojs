@@ -1,4 +1,4 @@
-import Monad from "../../interface/monad";
+import Monad from "../../interface/Monad";
 import curry from "../curry";
 import isFunction from "../isFunction";
 

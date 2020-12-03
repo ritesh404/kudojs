@@ -1,7 +1,7 @@
 import compose from "../../function/compose";
 import isFunction from "../../function/isFunction";
 import once from "../../function/once";
-import Monad from "../../interface/monad";
+import Monad from "../../interface/Monad";
 import Semigroup from "../../interface/Semigroup";
 
 class Task implements Semigroup, Monad<(rej: Function, res: Function) => any> {

@@ -1,5 +1,5 @@
 import isFunction from "../../function/isFunction";
-import Monad from "../../interface/monad";
+import Monad from "../../interface/Monad";
 import Pair from "../Pair";
 
 class State<A, B> implements Monad<B> {

@@ -1,6 +1,6 @@
 import id from "../../function/id";
 import isFunction from "../../function/isFunction";
-import Monad from "../../interface/monad";
+import Monad from "../../interface/Monad";
 
 class Reader<A, B> implements Monad<B> {
     private _value: Function;
