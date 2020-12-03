@@ -2,8 +2,8 @@ import caseOf from "../../function/caseOf";
 import isFunction from "../../function/isFunction";
 import BiFunctor from "../../interface/Bifunctor";
 import Monad from "../../interface/Monad";
-import PatternMatch from "../../interface/Patternmatch_";
-import Setoid from "../../interface/Setoid_";
+import PatternMatch from "../../interface/Patternmatch";
+import Setoid from "../../interface/Setoid";
 import Maybe from "../Maybe";
 
 abstract class Either<A, B>
