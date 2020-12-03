@@ -5,7 +5,7 @@ import constant from "./constant";
 import compose from "./compose";
 import caseOf from "./caseOf";
 import curry from "./curry";
-import Either from "../adt/either";
+import Either from "../adt/Either";
 import fmap from "./fmap";
 import id from "./id";
 import isFunction from "./isFunction";

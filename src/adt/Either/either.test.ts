@@ -4,7 +4,7 @@ import compose from "../../function/compose";
 import fmap from "../../function/fmap";
 import id from "../../function/id";
 import Either, { maybeToEither } from ".";
-import Maybe from "../maybe";
+import Maybe from "../Maybe";
 
 const data = { a: { b: { c: 1 } } };
 const unwrap = (m: { getValue: Function }) => m.getValue();
