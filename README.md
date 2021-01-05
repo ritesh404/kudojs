@@ -13,18 +13,29 @@ Install and save KudoJS as a dependency in your current project
 ```
 $ npm install --save fp-kudojs
 ```
-### Using with CommonJS
+### Import using CommonJS
 ```
 const kudoJS = require("fp-kudojs") 
 ```
-### Using ES Modules
+### Import using JS Modules
 ```
 import kudoJS from "fp-kudojs"
 ```
-### Using without modules
+### IIFE
 ```
 <script src="/path/to/kudo.iife.js"></script>
 ```
+### Import single entities using CommonJS
+```
+const compose = require("fp-kudojs/function/compose");
+const Maybe = require("fp-kudojs/adt/Maybe");
+```
+### Import single entities using JS Modules
+```
+import compose from "fp-kudojs/function/compose";
+import Maybe from "fp-kudojs/adt/Maybe";
+```
+
 ### Helper Functions
 
 These are the functions under the `kudoJS.*` namespace 
