@@ -9,6 +9,7 @@ These are the functions under the `kudoJS.*` namespace
 		- [`kudoJS.compose`](#kudojscompose)
 		- [`kudoJS.constant`](#kudojsconstant)
 		- [`kudoJS.fmap`](#kudojsfmap)
+		- [`kudoJS.assoc`](#kudojsassoc)
 		- [`kudoJS.bimap`](#kudojsbimap)
 		- [`kudoJS.chain`](#kudojschain)
 		- [`kudoJS.caseOf`](#kudojscaseof)
@@ -19,6 +20,7 @@ These are the functions under the `kudoJS.*` namespace
 		- [`kudoJS.liftA5`](#kudojslifta5)
 		- [`kudoJS.when`](#kudojswhen)
 		- [`kudoJS.prop`](#kudojsprop)
+		- [`kudoJS.pick`](#kudojspick)
 		- [`kudoJS.eitherToMaybe`](#kudojseithertomaybe)
 		- [`kudoJS.maybeToEither`](#kudojsmaybetoeither)
 
@@ -104,6 +106,22 @@ Takes a function and a functor, applies the function to each of the functor's va
 | --- | --- | --- |
 | fn | <code>function</code> | function to be mapped |
 | f | <code>Functor</code> | Functor |
+
+----
+
+
+### `kudoJS.assoc`
+
+Associates a value to the specified key in the object. This returns a clone of the original object
+
+`assoc(key: string, value: A, o: {[k:string]: A}): {[k:string]: A}`
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| key | <code>string</code> | Key |
+| value | <code>function</code> | Value to be assigned to key in object |
+| o | <code>Object</code> | Object to which value needs to be assigned against the Key |
 
 ----
 
@@ -255,6 +273,19 @@ Returns a Maybe Just if value exists for the given key else returns a Nothing
 | Param | Type | Description |
 | --- | --- | --- |
 | key | <code>string | number</code> | Key |
+| o | <code>Object</code> | Key Value Object |
+
+----
+
+
+### `kudoJS.pick`
+Returns a Maybe Just containing the object with just the keys if values exists for the given keys else returns a Nothing
+
+`pick( keys: Array<string>, o: { [k: string]: A}): Maybe<{[k:string]: A}>`
+
+| Param | Type | Description |
+| --- | --- | --- |
+| keys | <code>Array<string></code> | Keys |
 | o | <code>Object</code> | Key Value Object |
 
 ----
