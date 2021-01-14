@@ -4,7 +4,7 @@ import compose from "../../function/compose";
 import fmap from "../../function/fmap";
 import id from "../../function/id";
 import Either from "../Either";
-import Maybe, { eitherToMaybe, prop } from ".";
+import Maybe, { eitherToMaybe, prop, pick } from ".";
 
 // const laws: any = require("laws");
 // console.log(laws);
@@ -214,6 +214,24 @@ test("Maybe", t => {
     t.ok(
         prop("b", data1).equals(Maybe.Nothing()),
         "prop returns a Nothing if value does not exists"
+    );
+
+    t.equals(
+        Maybe.isNothing(pick(["d"], undefined)),
+        true,
+        "should return 'Nothing' if object is undefined"
+    );
+
+    t.equals(
+        Maybe.isNothing(pick(["d"], {})),
+        true,
+        "should return 'Nothing' if object is does not have key"
+    );
+
+    t.equals(
+        pick(["d"], { d: 1 }).getValue().d,
+        1,
+        "should return 'Just(value)' if object has key"
     );
 
     t.end();

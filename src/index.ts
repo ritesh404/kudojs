@@ -1,11 +1,12 @@
 /* istanbul ignore file */
 
 import Either, { maybeToEither } from "./adt/Either";
-import Maybe, { eitherToMaybe, prop } from "./adt/Maybe";
+import Maybe, { eitherToMaybe, pick, prop } from "./adt/Maybe";
 import Pair from "./adt/Pair";
 import Reader from "./adt/Reader";
 import State from "./adt/State";
 import Task from "./adt/Task";
+import assoc from "./function/assoc";
 import bimap from "./function/bimap";
 import caseOf from "./function/caseOf";
 import chain from "./function/chain";
@@ -27,6 +28,7 @@ export default {
     Reader,
     State,
     Task,
+    assoc,
     bimap,
     caseOf,
     chain,
@@ -42,5 +44,6 @@ export default {
     maybeToEither,
     ocurry,
     once,
+    pick,
     prop
 };

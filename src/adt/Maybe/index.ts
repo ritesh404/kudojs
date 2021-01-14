@@ -196,5 +196,15 @@ const _prop = <A>(
     if (!o) return Maybe.Nothing();
     return key in o ? Maybe.fromNullable(o[key]) : Maybe.Nothing();
 };
-
 export const prop = curry(_prop);
+
+function _pick(arr: Array<string>, o: any) {
+    if (!o || arr.length <= 0) return Maybe.Nothing();
+    const v = arr.reduce((acc: any, key) => {
+        if (o[key]) acc[key] = o[key];
+        return acc;
+    }, {});
+
+    return Object.keys(v).length > 0 ? Maybe.Just(v) : Maybe.Nothing();
+}
+export const pick = curry(_pick);
