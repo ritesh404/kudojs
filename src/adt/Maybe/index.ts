@@ -129,7 +129,8 @@ export class Nothing<A> extends Maybe<A> {
         return "Nothing()";
     }
 
-    public caseOf(o: { Nothing: Function }) {
+    public caseOf(o: { Nothing: Function; Just: Function }) {
+        if (!o.Just) throw new Error("Maybe: case for Just missing");
         if (o.Nothing) return o.Nothing();
         else throw Error("Maybe: Expected Nothing!");
     }
@@ -172,7 +173,8 @@ export class Just<A> extends Maybe<A> {
         return `Just(${this.getValue()})`;
     }
 
-    public caseOf(o: { Just: Function }) {
+    public caseOf(o: { Just: Function; Nothing: Function }) {
+        if (!o.Nothing) throw new Error("Maybe: case for Nothing missing");
         if (o.Just) return o.Just(this.getValue());
         else throw Error("Maybe: Expected Just");
     }

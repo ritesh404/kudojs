@@ -160,13 +160,15 @@ test("Maybe", t => {
 
     caseOf(
         {
-            Just: v => t.equal(v, 1, "successful Just pattern match")
+            Just: v => t.equal(v, 1, "successful Just pattern match"),
+            Nothing: x => x
         },
         a
     );
     caseOf(
         {
-            Nothing: v => t.notOk(v, "successful Nothing pattern match")
+            Nothing: v => t.notOk(v, "successful Nothing pattern match"),
+            Just: x => x
         },
         e
     );
