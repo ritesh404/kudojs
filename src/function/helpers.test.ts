@@ -3,7 +3,6 @@ import bimap from "./bimap";
 import chain from "./chain";
 import constant from "./constant";
 import compose from "./compose";
-import caseOf from "./caseOf";
 import curry from "./curry";
 import Either from "../adt/Either";
 import fmap from "./fmap";
@@ -126,12 +125,6 @@ test("Helpers", t => {
         compose(add2, sub1)(1),
         2,
         "compose return the same result as calling the functions individually"
-    );
-
-    t.equals(caseOf({ Right: v => v + 1 }, e1), 2, "pattern match");
-    t.throws(
-        () => caseOf({ Right: v => v + 1 }, "hello"),
-        "pattern match fail"
     );
 
     t.throws(() => liftAn(1, [e1]), "liftAn expects a function");

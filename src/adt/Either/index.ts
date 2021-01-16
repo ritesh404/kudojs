@@ -159,7 +159,8 @@ class Left<A, B> extends Either<A, B> {
         return `Left(${this.getValue()})`;
     }
 
-    public caseOf(o: { Left: Function }) {
+    public caseOf(o: { Left: Function; Right: Function }) {
+        if (!o.Right) throw new Error("Either: case for Right missing");
         if (o.Left) return o.Left(this.getValue());
         else throw Error("Either: Expected Left!");
     }
@@ -210,7 +211,8 @@ class Right<A, B> extends Either<A, B> {
         return `Right(${this.getValue()})`;
     }
 
-    public caseOf(o: { Right: Function }) {
+    public caseOf(o: { Right: Function; Left: Function }) {
+        if (!o.Left) throw new Error("Either: case for Left missing");
         if (o.Right) return o.Right(this.getValue());
         else throw Error("Either: Expected Right");
     }

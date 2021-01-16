@@ -191,13 +191,15 @@ test("Either", t => {
 
     caseOf(
         {
-            Right: v => t.equal(v, 1, "successful Right pattern match")
+            Right: v => t.equal(v, 1, "successful Right pattern match"),
+            Left: x => x
         },
         a
     );
     caseOf(
         {
-            Left: v => t.equal(v, 1, "successful Left pattern match")
+            Left: v => t.equal(v, 1, "successful Left pattern match"),
+            Right: x => x
         },
         e
     );
