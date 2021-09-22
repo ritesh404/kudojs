@@ -54,9 +54,8 @@
         "url": "https://github.com/breezyboa/kudojs/issues"
     },
     "homepage": "https://github.com/breezyboa/kudojs#readme",
-    "dependencies": {},
     "devDependencies": {
-        "@commitlint/cli": "^7.6.1",
+        "@commitlint/cli": "^13.1.0",
         "@commitlint/config-conventional": "^7.6.0",
         "@istanbuljs/nyc-config-typescript": "^1.0.1",
         "@types/node": "^14.14.10",
@@ -88,7 +87,7 @@
         "rollup-plugin-typescript2": "^0.29.0",
         "rollup-plugin-uglify": "^3.0.0",
         "semantic-release": "^17.3",
-        "tap-spec": "^5.0",
+        "tap-spec": "^2.2.2",
         "tape": "^5.0",
         "ts-node": "^9.0",
         "tslib": "^2.0.3",
