@@ -86,7 +86,7 @@
         "rollup-plugin-istanbul": "^2.0.1",
         "rollup-plugin-typescript2": "^0.29.0",
         "rollup-plugin-uglify": "^3.0.0",
-        "semantic-release": "^17.3",
+        "semantic-release": "^19.0",
         "tap-spec": "^2.2.2",
         "tape": "^5.0",
         "ts-node": "^9.0",
