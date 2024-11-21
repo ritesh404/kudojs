@@ -25,7 +25,7 @@ Identity constructor
 
 | Param | Type | Description |
 | --- | --- | --- |
-| v | <code>any</code> | Value to be wrapped by identity. This cannot be undefiend |
+| v | <code>any</code> | Value to be wrapped by identity. This cannot be undefined |
 
 <a name="Identity.of"></a>
 
@@ -35,12 +35,12 @@ Identity constructor
 
 | Param | Type | Description |
 | --- | --- | --- |
-| v | <code>any</code> | Value to be wrapped by identity. This cannot be undefiend  |
+| v | <code>any</code> | Value to be wrapped by identity. This cannot be undefined  |
 
 <a name="Identity.equals"></a>
 
 ### Identity.equals(j)
-Check if the values of the current Identity is equal to the values of the passed Identity. This checkes for `===`'ty of the values of the 2 Identities
+Check if the values of the current Identity is equal to the values of the passed Identity. This checks for `===`'ty of the values of the 2 Identities
 
 
 | Param | Type | Description |

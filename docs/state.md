@@ -1,22 +1,22 @@
 <a name="State"></a>
 
 ## State
-State is parameterized by two types, a state <code>s</code> and a resultant <code>a</code>
+State is parameterized by two types, a state <code>s</code> and a result <code>a</code>
 State should wrap a function of the form <code>s -> Pair a s</code> and can be constructed by providing a function of this form. There are 3 methods that are available on the State for running with a given initial state
 
 **Implements:** <code>[Monad](https://github.com/fantasyland/fantasy-land#monad)</code>
 
-* [State](#State)
-    * [State(f)](#new_State_new)
-    * [.of](#State.of)
-    * [.toString()](#State.toString)
-    * [.map(f)](#State.map)
-    * [.getValue()](#State.getValue)
-    * [.ap(t)](#State.ap)
-    * [.chain(f)](#State.chain)
-    * [.runWith(e)](#State.runWith)
-    * [.execWith(e)](#State.execWith)
-    * [.evalWith(e)](#State.evalWith)
+- [State](#state)
+  - [State(f)](#statef)
+  - [State.of(v)](#stateofv)
+  - [State.toString()](#statetostring)
+  - [State.map(f)](#statemapf)
+  - [State.getValue()](#stategetvalue)
+  - [State.ap(t)](#stateapt)
+  - [State.chain(f)](#statechainf)
+  - [State.runWith(s)](#staterunwiths)
+  - [State.execWith(s)](#stateexecwiths)
+  - [State.evalWith(s)](#stateevalwiths)
 
 <a name="new_State_new"></a>
 
@@ -97,7 +97,7 @@ When called, execWith will run the state transition with the given value as the 
 <a name="State.evalWith"></a>
 
 ### State.evalWith(s)
-When called, evalWith will run the state transition with the given value as the initial state and will return the resultant.
+When called, evalWith will run the state transition with the given value as the initial state and will return the result.
 
 | Param | Type | Description |
 | --- | --- | --- |

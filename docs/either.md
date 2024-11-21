@@ -23,8 +23,8 @@ A common use of this structure is to handle things like error handling and thing
     * [.bimap(fl, fr)](#Either.bimap)
     * [.chain(f)](#Either.chain)
     * [.swap()](#Either.swap)
-    * [.isLeft(e)](#Either.isLefte)
-    * [.isRight(e)](#Either.isRighte)
+    * [.isLeft(e)](#Either.isLeft)
+    * [.isRight(e)](#Either.isRight)
     * [.ap(j)](#Either.ap)
     * [.getValue()](#Either.getValue)
 
@@ -62,7 +62,7 @@ Creates a Left Either
 <a name="Either.fromNullable"></a>
 
 ### Either.fromNullable(v)
-Creates a Right if the value is not null or undefiend else creates a Left
+Creates a Right if the value is not null or undefined else creates a Left
 
 
 | Param | Type | Description |
@@ -72,7 +72,7 @@ Creates a Right if the value is not null or undefiend else creates a Left
 <a name="Either.withDefault"></a>
 
 ### Either.withDefault(def, v)
-Creates a Right if the value v is not null or undefiend else creates a Right with the default value def
+Creates a Right if the value v is not null or undefined else creates a Right with the default value def
 
 
 | Param | Type | Description |
@@ -101,27 +101,27 @@ A static method that applies fl to the Left element or fr to the Right element o
 
 | Param | Type | Description |
 | --- | --- | --- |
-| e | <code>any</code> | Etiher type |
+| e | <code>any</code> | Either type |
 | fl | <code>function</code> | Function to be applied on the Left element |
 | fr | <code>function</code> | Function to be applied on the Right element |
 
-<a name="Either.isLefte"></a>
+<a name="Either.isLeft"></a>
 
 ### Either.isLeft(e)
-An static method that returns true if the passed Either is a Left
+A static method that returns true if the passed Either is a Left
 
  Param | Type | Description |
 | --- | --- | --- |
-| e | <code>any</code> | Etiher type |
+| e | <code>any</code> | Either type |
 
-<a name="Either.isRighte"></a>
+<a name="Either.isRight"></a>
 
 ### Either.isRight(e)
-An static method that returns true if the passed Either is a Right
+A static method that returns true if the passed Either is a Right
 
  Param | Type | Description |
 | --- | --- | --- |
-| e | <code>any</code> | Etiher type |
+| e | <code>any</code> | Either type |
 
 <a name="Either.equals"></a>
 

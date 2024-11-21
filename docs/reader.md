@@ -1,19 +1,19 @@
 <a name="Reader"></a>
 
 ## Reader
-The Reader monad represents a computation, which can read values from a shared environment, pass values from function to function, and execute sub-computations in a modified environment. It is also usefull when it comes to dependency injections
+The Reader monad represents a computation, which can read values from a shared environment, pass values from function to function, and execute sub-computations in a modified environment. It is also useful when it comes to dependency injections
 
 **Implements:** <code>[Monad](https://github.com/fantasyland/fantasy-land#monad)</code>
 
-* [Reader](#Reader)
-    * [Reader(f)](#new_Reader_new)
-    * [.of](#Reader.of)
-    * [.toString()](#Reader.toString)
-    * [.map(f)](#Reader.map)
-    * [.getValue()](#Reader.getValue)
-    * [.ap(t)](#Reader.ap)
-    * [.chain(f)](#Reader.chain)
-    * [.runWith(e)](#Reader.runWith)
+- [Reader](#reader)
+  - [Reader(f)](#readerf)
+  - [Reader.of(v)](#readerofv)
+  - [Reader.toString()](#readertostring)
+  - [Reader.map(f)](#readermapf)
+  - [Reader.getValue()](#readergetvalue)
+  - [Reader.ap(t)](#readerapt)
+  - [Reader.chain(f)](#readerchainf)
+  - [Reader.runWith(e)](#readerrunwithe)
 
 <a name="new_Reader_new"></a>
 

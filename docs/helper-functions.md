@@ -180,7 +180,7 @@ const k1 = caseOf({
 
 ### `kudoJS.liftAn`
 
-lets us combine n separate wrapped values into one with a given function.
+combine n separate wrapped values into one with a given function.
 
 `liftAn(f: (a: A ...an: A) => B, ar: Array<Apply<A>>): Apply<B>`
 
@@ -193,7 +193,7 @@ lets us combine n separate wrapped values into one with a given function.
 
 ### `kudoJS.liftA2`
 
-lets us combine 2 separate wrapped values into one with a given function.
+combine 2 separate wrapped values into one with a given function.
 
 `liftA2(f: (a1: A, a2: A) => B, ar1: Apply<A>, ar2: Apply<A>): Apply<B>`
 
@@ -207,7 +207,7 @@ lets us combine 2 separate wrapped values into one with a given function.
 
 ### `kudoJS.liftA3`
 
-lets us combine 3 separate wrapped values into one with a given function.
+combine 3 separate wrapped values into one with a given function.
 
 `liftA3(f: (a1: A, a2: A, a3: A) => B, ar1: Apply<A>, ar2: Apply<A>, ar3: Apply<A>): Apply<B>`
 
@@ -222,7 +222,7 @@ lets us combine 3 separate wrapped values into one with a given function.
 
 ### `kudoJS.liftA4`
 
-lets us combine 4 separate wrapped values into one with a given function.
+combine 4 separate wrapped values into one with a given function.
 
 `liftA4(f: (a1: A, a2: A, a3: A, a4: A) => B, ar1: Apply<A>, ar2: Apply<A>, ar3: Apply<A>, ar4: Apply<A>): Apply<B>`
 
@@ -238,7 +238,7 @@ lets us combine 4 separate wrapped values into one with a given function.
 
 ### `kudoJS.liftA5`
 
-lets us combine 5 separate wrapped values into one with a given function.
+combine 5 separate wrapped values into one with a given function.
 
 `liftA5(f: (a1: A, a2: A, a3: A, a4: A, a5: A) => B, ar1: Apply<A>, ar2: Apply<A>, ar3: Apply<A>, ar4: Apply<A>, ar5: Apply<A>): Apply<B>`
 
@@ -260,7 +260,7 @@ Returns a function for which it takes one argument and passes it to the given pr
 
 | Param | Type | Description |
 | --- | --- | --- |
-| p | <code>function</code> | Predicate function. Should return true or false based on the argument passed |
+| p | <code>function</code> | Predicate function that should return true or false based on the argument passed |
 | f | <code>function</code> | Function to be executed with the given argument when predicate is satisfied |
 
 ----

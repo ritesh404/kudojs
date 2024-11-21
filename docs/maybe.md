@@ -6,23 +6,25 @@ A Maybe can help in dealing with optional values, arguments, and records with op
 
 **Implements:** <code>[Alt](https://github.com/fantasyland/fantasy-land#alt)</code>, <code>[Monad](https://github.com/fantasyland/fantasy-land#monad)</code>, <code>[Semigroup](https://github.com/fantasyland/fantasy-land#semigroup)</code>, <code>[Setoid](https://github.com/fantasyland/fantasy-land#setoid)</code>
 
-* [Maybe](#Maybe)
-    * [.of](#Maybe.of)
-    * [.zero](#Maybe.zero)
-    * [.Just](#Maybe.Just)
-    * [.Nothing](#Maybe.Nothing)
-    * [.fromNullable](#Maybe.fromNullable)
-    * [.withDefault](#Maybe.withDefault)
-    * [.catMaybes(ar)](#Maybe.catMaybes)
-    * [.isNothing(v)](#Maybe.isNothing)
-    * [.isJust(v)](#Maybe.isJust)
-    * [.equals(n)](#Maybe.equals)
-    * [.map(f)](#Maybe.map)
-    * [.chain(f)](#Maybe.chain)
-    * [.isNothing()](#Maybe.isNothing)
-    * [.isJust()](#Maybe.isJust)
-    * [.ap(j)](#Maybe.ap)
-    * [.getValue()](#Maybe.getValue)
+- [Maybe](#maybe)
+  - [Maybe.of(v)](#maybeofv)
+  - [Maybe.zero()](#maybezero)
+  - [Maybe.Just(v)](#maybejustv)
+  - [Maybe.Nothing()](#maybenothing)
+  - [Maybe.fromNullable(v)](#maybefromnullablev)
+  - [Maybe.withDefault(def, v)](#maybewithdefaultdef-v)
+  - [Maybe.](#maybe-1)
+  - [Maybe.catMaybes(ar)](#maybecatmaybesar)
+  - [Maybe.isNothing(v)](#maybeisnothingv)
+  - [Maybe.isJust(v)](#maybeisjustv)
+  - [Maybe.equals(n)](#maybeequalsn)
+  - [Maybe.map(f)](#maybemapf)
+  - [Maybe.chain(f)](#maybechainf)
+  - [Maybe.isNothing()](#maybeisnothing)
+  - [Maybe.isJust()](#maybeisjust)
+  - [Maybe.alt(v)](#maybealtv)
+  - [Maybe.ap(j)](#maybeapj)
+  - [Maybe.getValue()](#maybegetvalue)
 
 
 <a name="Maybe.of"></a>
@@ -38,7 +40,7 @@ Creates a Just v
 <a name="Maybe.zero"></a>
 
 ### Maybe.zero()
-Creats a Nothing
+Creates a Nothing
 
 <a name="Maybe.Just"></a>
 
@@ -53,12 +55,12 @@ Creates a Just v
 <a name="Maybe.Nothing"></a>
 
 ### Maybe.Nothing()
-Creats a Nothing
+Creates a Nothing
 
 <a name="Maybe.fromNullable"></a>
 
 ### Maybe.fromNullable(v)
-Creates a Just if the value is not null or undefiend else creates a Nothing
+Creates a Just if the value is not null or undefined else creates a Nothing
 
 
 | Param | Type | Description |
@@ -68,7 +70,7 @@ Creates a Just if the value is not null or undefiend else creates a Nothing
 <a name="Maybe.withDefault"></a>
 
 ### Maybe.withDefault(def, v)
-Creates a Just if the value v is not null or undefiend else creates a Just with the default value def
+Creates a Just if the value v is not null or undefined else creates a Just with the default value def
 
 
 | Param | Type | Description |
@@ -126,7 +128,7 @@ Applies the passed function to the value of the current Maybe if it is a Just
 <a name="Maybe.chain"></a>
 
 ### Maybe.chain(f)
-Chain together many computations that return a Maybe type 
+Chains together many computations that return a Maybe type 
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -139,7 +141,7 @@ Returns true if the current Maybe is a Nothing
 <a name="Maybe.isJust"></a>
 
 ### Maybe.isJust()
-Returns true if the current Maybe is a Nothing
+Returns true if the current Maybe is a Just
 
 <a name="Maybe.alt"></a>
 

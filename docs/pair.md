@@ -6,20 +6,21 @@ A Pair is another way of storing two values in a single value. Elements of a Pai
 
 **Implements:** <code>[BiFunctor](https://github.com/fantasyland/fantasy-land#bifunctor)</code>, <code>[Monad](https://github.com/fantasyland/fantasy-land#monad)</code>, <code>[Semigroup](https://github.com/fantasyland/fantasy-land#semigroup)</code>, <code>[Setoid](https://github.com/fantasyland/fantasy-land#setoid)</code>
 
-* [Pair](#Pair)
-    * [Pair(v1, v2)](#new_Pair_new)
-    * [.of](#Pair.of)
-    * [.equals(j)](#Pair.equals)
-    * [.concat(p)](#Pair.concat)
-    * [.fst()](#Pair.fst)
-    * [.snd()](#Pair.snd)
-    * [.concat(j)](#Pair.concat)
-    * [.getValue()](#Pair.getValue)
-    * [.map(f)](#Pair.map)
-    * [.bimap(f1, f2)](#Pair.bimap)
-    * [.chain(f)](#Pair.chain)
-    * [.swap()](#Pair.swap)
-    * [.toString()](#Pair.toString)
+- [Pair](#pair)
+    - [Pair(v1, v2)](#pairv1-v2)
+    - [Pair.of(v)](#pairofv)
+    - [Pair.equals(j)](#pairequalsj)
+    - [Pair.concat( p)](#pairconcat-p)
+    - [Pair.fst()](#pairfst)
+    - [Pair.snd()](#pairsnd)
+    - [Pair.concat(j)](#pairconcatj)
+    - [Pair.getValue()](#pairgetvalue)
+    - [Pair.map(f)](#pairmapf)
+    - [Pair.bimap(f1, f2)](#pairbimapf1-f2)
+    - [Pair.chain(f)](#pairchainf)
+    - [Pair.swap()](#pairswap)
+    - [Pair.toString()](#pairtostring)
+    - [Examples](#examples)
 
 <a name="new_Pair_new"></a>
 
