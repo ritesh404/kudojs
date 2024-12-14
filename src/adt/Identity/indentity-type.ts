@@ -31,6 +31,7 @@ class Identity<A> implements Setoid, Semigroup, Monad<A> {
     }
 
     public concat(i: Identity<Semigroup>): Identity<A> {
+       
         const v = i.getValue();
         if (typeof v !== typeof this.getValue())
             throw new Error("Identity: types do not match to concat");
@@ -55,6 +56,7 @@ class Identity<A> implements Setoid, Semigroup, Monad<A> {
 
     // @ts-ignore
     public chain<B>(f: (a: A) => Identity<B>): Identity<B> {
+       
         if (!isFunction(f)) throw Error("Identity: Expected a function");
         const res = f(this.getValue());
         if (!(res instanceof Identity))

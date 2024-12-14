@@ -1,30 +1,10 @@
-import * as test from "tape";
+import { describe, it, expect } from "vitest";
 import caseOf from "../../function/caseOf";
 import compose from "../../function/compose";
 import fmap from "../../function/fmap";
 import id from "../../function/id";
 import Either from "../Either";
 import Maybe, { eitherToMaybe, prop, pick } from ".";
-
-// const laws: any = require("laws");
-// console.log(laws);
-// laws.functor.identity(Maybe.Just).asTest({ verbose: true, times: 100 })();
-// laws.functor.composition(Maybe.Just).asTest({ verbose: true, times: 100 })();
-// laws.applicative.identity(Maybe.Just).asTest({ verbose: true, times: 100 })();
-// laws.applicative.composition(Maybe.Just).asTest({ verbose: true, times: 100 })();
-// laws.applicative.homomorphism(Maybe.Just).asTest({ verbose: true, times: 100 })();
-// laws.applicative.interchange(Maybe.Just).asTest({ verbose: true, times: 100 })();
-// laws.monad.leftIdentity(Maybe.Just).asTest({ verbose: true, times: 100 })();
-// laws.monad.rightIdentity(Maybe.Just).asTest({ verbose: true, times: 100 })();
-
-// laws.functor.identity(Maybe.Nothing).asTest({ verbose: true, times: 100 })();
-// laws.functor.composition(Maybe.Nothing).asTest({ verbose: true, times: 100 })();
-// laws.applicative.identity(Maybe.Nothing).asTest({ verbose: true, times: 100 })();
-// laws.applicative.composition(Maybe.Nothing).asTest({ verbose: true, times: 100 })();
-// laws.applicative.homomorphism(Maybe.Nothing).asTest({ verbose: true, times: 100 })();
-// laws.applicative.interchange(Maybe.Nothing).asTest({ verbose: true, times: 100 })();
-// laws.monad.leftIdentity(Maybe.Nothing).asTest({ verbose: true, times: 100 })();
-// laws.monad.rightIdentity(Maybe.Nothing).asTest({ verbose: true, times: 100 })();
 
 const data = { a: { b: { c: 1 } } };
 const ar = [
@@ -34,207 +14,134 @@ const ar = [
     Maybe.Nothing(),
     Maybe.Just(5)
 ];
-const unwrap = (m: { getValue: Function }) => m.getValue();
+const unwrap = (m: { getValue: () => any }) => m.getValue();
 const add2 = (a: number) => a + 2;
 const sub1 = (a: number) => a - 1;
 
-test("Maybe", t => {
+describe("Maybe", () => {
     const a = Maybe.Just(1);
     const b = Maybe.Just(add2);
-    // const c = Maybe.Just(sub1);
     const e = Maybe.Nothing();
 
-    t.ok(Maybe.isJust(a), "Just is a Just");
-    t.notOk(Maybe.isNothing(a), "Just is not a Nothing");
-    t.notOk(Maybe.isJust(e), "Nothing is not a Just");
-    t.ok(Maybe.isNothing(e), "Nothing is a Nothing");
+    it("should handle Just and Nothing type checks", () => {
+        expect(Maybe.isJust(a)).toBe(true);
+        expect(Maybe.isNothing(a)).toBe(false);
+        expect(Maybe.isJust(e)).toBe(false);
+        expect(Maybe.isNothing(e)).toBe(true);
+    });
 
-    t.equals(a.toString(), "Just(1)", "should give a Just");
-    t.equals(e.toString(), "Nothing()", "should give a Nothing");
-    // @ts-ignore
-    t.throws(() => a.map(1), "Just map expects a function");
-    t.equals(
-        compose(unwrap, fmap(id))(a),
-        compose(unwrap)(a),
-        "Just should pass the identity law"
-    );
-    t.equals(
-        compose(unwrap, fmap(id))(e),
-        compose(unwrap)(e),
-        "Nothing should pass the identity law"
-    );
+    it("should convert to string correctly", () => {
+        expect(a.toString()).toBe("Just(1)");
+        expect(e.toString()).toBe("Nothing()");
+    });
 
-    const l1 = compose(
-        unwrap,
-        fmap(x => sub1(add2(x)))
-    );
-    const r1 = compose(unwrap, fmap(sub1), fmap(add2));
-    t.equals(l1(a), r1(a), "Just should pass the composition law");
-    t.equals(l1(e), r1(e), "Nothing should pass the composition law");
+    it("should handle map correctly", () => {
+        expect(() => a.map(1 as any)).toThrow("Maybe: Expected a function");
+    });
 
-    t.throws(() => a.ap(a), "Just applicative expects a function");
-    // t.ok(
-    //     a.ap(c.ap(b.map(p => q => x => p(q(x))))).equals(a.ap(c).ap(b)),
-    //     "Just should pass applicative composition"
-    // );
+    it("should satisfy identity law", () => {
+        expect(compose(unwrap, fmap(id))(a)).toBe(compose(unwrap)(a));
+        expect(compose(unwrap, fmap(id))(e)).toBe(compose(unwrap)(e));
+    });
 
-    t.equals(
-        unwrap(a.map(add2)),
-        unwrap(b.ap(a)),
-        "Just mapped to a function should the same as the function applied to Just"
-    );
-    t.equals(
-        // @ts-ignore
-        unwrap(e.map(add2)),
-        unwrap(b.ap(e)),
-        "Nothing mapped to a function should the same as the function applied to Nothing"
-    );
+    it("should satisfy composition law", () => {
+        const l1 = compose(unwrap, fmap(x => sub1(add2(x))));
+        const r1 = compose(unwrap, fmap(sub1), fmap(add2));
+        expect(l1(a)).toBe(r1(a));
+        expect(l1(e)).toBe(r1(e));
+    });
 
-    t.ok(Maybe.zero().isNothing(), "zero creates a Nothing");
-    t.equals(unwrap(Maybe.of(6)), unwrap(Maybe.Just(6)), "of creates a Just");
-    t.equals(unwrap(a.of(6)), unwrap(Maybe.Just(6)), "Just of creates a Just");
+    it("should handle ap correctly", () => {
+        expect(() => a.ap(a)).toThrow("Maybe: Wrapped value is not a function");
+        expect(unwrap(a.map(add2))).toBe(unwrap(b.ap(a)));
+        expect(unwrap(e.map(add2))).toBe(unwrap(b.ap(e)));
+    });
 
-    t.equals(
-        unwrap(Maybe.fromNullable(1)),
-        unwrap(a),
-        "creates a Just when non nullable value is passed"
-    );
-    t.equals(
-        unwrap(Maybe.fromNullable(null)),
-        unwrap(Maybe.Nothing()),
-        "creates a Nothing when null value is passed"
-    );
-    t.equals(
-        unwrap(Maybe.fromNullable(undefined)),
-        unwrap(Maybe.Nothing()),
-        "creates a Nothing when undefined value is passed"
-    );
+    it("should handle zero and of correctly", () => {
+        expect(Maybe.zero().isNothing()).toBe(true);
+        expect(unwrap(Maybe.of(6))).toBe(unwrap(Maybe.Just(6)));
+        expect(unwrap(a.of(6))).toBe(unwrap(Maybe.Just(6)));
+    });
 
-    t.equals(
-        unwrap(Maybe.withDefault(1, 2)),
-        unwrap(Maybe.Just(2)),
-        "creates a Just with default value if nullable value is passed"
-    );
-    t.equals(
-        unwrap(Maybe.withDefault(1, null)),
-        unwrap(a),
-        "creates a Just with default value if nullable value is passed"
-    );
+    it("should handle fromNullable correctly", () => {
+        expect(unwrap(Maybe.fromNullable(1))).toBe(unwrap(a));
+        expect(unwrap(Maybe.fromNullable(null))).toBe(unwrap(Maybe.Nothing()));
+        expect(unwrap(Maybe.fromNullable(undefined))).toBe(unwrap(Maybe.Nothing()));
+    });
 
-    t.ok(Maybe.Just(1).equals(a), "Just equality");
-    t.notOk(Maybe.Just(1).equals(e), "Just inequality");
-    t.notOk(Maybe.Just(1).equals(Maybe.Just(2)), "Just inequality");
-    t.ok(
-        Maybe.Just(1).equals(a) === a.equals(Maybe.Just(1)),
-        "Just commutativity"
-    );
-    t.ok(Maybe.Nothing().equals(e), "Nothing equality");
-    t.notOk(Maybe.Nothing().equals(a), "Nothing inequality");
-    t.ok(
-        Maybe.Nothing().equals(e) === e.equals(Maybe.Nothing()),
-        "Nothing commutativity"
-    );
+    it("should handle withDefault correctly", () => {
+        expect(unwrap(Maybe.withDefault(1, 2))).toBe(unwrap(Maybe.Just(2)));
+        expect(unwrap(Maybe.withDefault(1, null))).toBe(unwrap(a));
+    });
 
-    t.ok(a.alt(Maybe.Just(2)).equals(a), "Just Alt returns the current Maybe");
-    t.ok(
-        e.alt(Maybe.Just(1)).equals(a),
-        "Nothing Alt returns the passed Maybe"
-    );
-    // @ts-ignore
-    t.throws(() => a.chain(1), "Just chain expects a function");
-    t.ok(
-        prop("a")(data)
-            .chain(prop("b"))
-            .chain(prop("c"))
-            .equals(prop("a")(data).chain(x => prop("b")(x).chain(prop("c")))),
-        "Just chain Associativity"
-    );
+    it("should handle equality correctly", () => {
+        expect(Maybe.Just(1).equals(a)).toBe(true);
+        expect(Maybe.Just(1).equals(e)).toBe(false);
+        expect(Maybe.Just(1).equals(Maybe.Just(2))).toBe(false);
+        expect(Maybe.Just(1).equals(a)).toBe(a.equals(Maybe.Just(1)));
+        expect(Maybe.Nothing().equals(e)).toBe(true);
+        expect(Maybe.Nothing().equals(a)).toBe(false);
+        expect(Maybe.Nothing().equals(e)).toBe(e.equals(Maybe.Nothing()));
+    });
 
-    t.ok(
-        prop("a")(data)
-            .chain(prop("d"))
-            .chain(prop("c"))
-            .equals(prop("a")(data).chain(x => prop("d")(x).chain(prop("c")))),
-        "Nothing chain Associativity"
-    );
+    it("should handle alt correctly", () => {
+        expect(a.alt(Maybe.Just(2)).equals(a)).toBe(true);
+        expect(e.alt(Maybe.Just(1)).equals(a)).toBe(true);
+    });
 
-    caseOf(
-        {
-            Just: v => t.equal(v, 1, "successful Just pattern match"),
+    it("should handle chain correctly", () => {
+        expect(() => a.chain(1 as any)).toThrow("Maybe: Expected a function");
+        
+        // Chain associativity for Just
+        const chainJust1 = prop("a")(data).chain(prop("b")).chain(prop("c"));
+        const chainJust2 = prop("a")(data).chain(x => prop("b")(x).chain(prop("c")));
+        expect(chainJust1.equals(chainJust2)).toBe(true);
+
+        // Chain associativity for Nothing
+        const chainNothing1 = prop("a")(data).chain(prop("d")).chain(prop("c"));
+        const chainNothing2 = prop("a")(data).chain(x => prop("d")(x).chain(prop("c")));
+        expect(chainNothing1.equals(chainNothing2)).toBe(true);
+    });
+
+    it("should handle pattern matching correctly", () => {
+        caseOf({
+            Just: v => expect(v).toBe(1),
             Nothing: x => x
-        },
-        a
-    );
-    caseOf(
-        {
-            Nothing: v => t.notOk(v, "successful Nothing pattern match"),
+        }, a);
+
+        caseOf({
+            Nothing: v => expect(v).toBeFalsy(),
             Just: x => x
-        },
-        e
-    );
+        }, e);
 
-    t.throws(
-        () =>
-            caseOf(
-                {
-                    Nothing: id
-                },
-                a
-            ),
-        "Maybe: Expected Just"
-    );
-    t.throws(
-        () =>
-            caseOf(
-                {
-                    Just: id
-                },
-                e
-            ),
-        "Maybe: Expected Nothing"
-    );
+        expect(() => caseOf({ Nothing: id }, a)).toThrow("Maybe: Expected Just");
+        expect(() => caseOf({ Just: id }, e)).toThrow("Maybe: Expected Nothing");
+    });
 
-    t.deepEqual(Maybe.catMaybes(ar), [1, 2, 3, 5], "cat maybes");
+    it("should handle catMaybes correctly", () => {
+        expect(Maybe.catMaybes(ar)).toEqual([1, 2, 3, 5]);
+    });
 
-    const j1 = Maybe.Just(1);
-    const r11 = Either.Right(1);
-    const n1 = Maybe.Nothing();
-    const l11 = Either.Left(null);
-    t.ok(eitherToMaybe(r11).equals(j1), "Right(1) transforms to Just(1)");
-    t.ok(eitherToMaybe(l11).equals(n1), "Left(null) transforms to Nothing()");
+    it("should handle eitherToMaybe correctly", () => {
+        const j1 = Maybe.Just(1);
+        const r11 = Either.Right(1);
+        const n1 = Maybe.Nothing();
+        const l11 = Either.Left(null);
+        expect(eitherToMaybe(r11).equals(j1)).toBe(true);
+        expect(eitherToMaybe(l11).equals(n1)).toBe(true);
+    });
 
-    const data1 = { a: "A" };
-    t.throws(() => prop({}, data), "prop expects key to be string or number");
-    t.throws(
-        () => prop(1, "data"),
-        "prop expects second argument to be an object"
-    );
-    t.ok(
-        prop("a", data1).equals(Maybe.Just("A")),
-        "prop returns a Just if value exists"
-    );
-    t.ok(
-        prop("b", data1).equals(Maybe.Nothing()),
-        "prop returns a Nothing if value does not exists"
-    );
+    it("should handle prop correctly", () => {
+        const data1 = { a: "A" };
+        expect(() => prop({} as any, data)).toThrow("Key should be either string or number");
+        expect(() => prop(1, "data" as any)).toThrow("Cannot use 'in' operator to search for '1' in data");
+        expect(prop("a", data1).equals(Maybe.Just("A"))).toBe(true);
+        expect(prop("b", data1).equals(Maybe.Nothing())).toBe(true);
+    });
 
-    t.equals(
-        Maybe.isNothing(pick(["d"], undefined)),
-        true,
-        "should return 'Nothing' if object is undefined"
-    );
-
-    t.equals(
-        Maybe.isNothing(pick(["d"], {})),
-        true,
-        "should return 'Nothing' if object is does not have key"
-    );
-
-    t.equals(
-        pick(["d"], { d: 1 }).getValue().d,
-        1,
-        "should return 'Just(value)' if object has key"
-    );
-
-    t.end();
+    it("should handle pick correctly", () => {
+        expect(Maybe.isNothing(pick(["d"], undefined))).toBe(true);
+        expect(Maybe.isNothing(pick(["d"], {}))).toBe(true);
+        expect(pick(["d"], { d: 1 }).getValue().d).toBe(1);
+    });
 });

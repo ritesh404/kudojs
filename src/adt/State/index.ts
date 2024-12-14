@@ -1,7 +1,8 @@
 import StateType from "./state-type";
 
-// tslint:disable-next-line
-const State: any = (v: any) => new StateType(v);
+function State(v: any) {
+    return new StateType(v);
+}
 State.of = StateType.prototype.of;
 State.get = StateType.prototype.get;
 State.put = StateType.prototype.put;

@@ -1,7 +1,8 @@
 import ReaderType from "./reader-type";
 
-// tslint:disable-next-line
-const Reader: any = (v: any) => new ReaderType(v);
+function Reader(v:any){
+    return new ReaderType(v);
+}
 Reader.of = ReaderType.prototype.of;
 Reader.ask = ReaderType.prototype.ask;
 // @ts-ignore: implicit any

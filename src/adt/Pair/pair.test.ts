@@ -1,10 +1,10 @@
-import * as test from "tape";
+import { describe, it, expect } from "vitest";
 import compose from "../../function/compose";
 import fmap from "../../function/fmap";
 import id from "../../function/id";
 import Pair from "./";
 
-const unwrap = (m: { getValue: Function }) => m.getValue();
+const unwrap = (m: { getValue: () => any }) => m.getValue();
 const add2 = (x: Array<any>) => x.map(v => v + 2);
 const sub1 = (x: Array<any>) => x.map(v => v - 1);
 const gimmePair = (x: Array<any>) =>
@@ -13,106 +13,78 @@ const gimmePair = (x: Array<any>) =>
         x.map(v => v + 1)
     );
 
-test("Pair", t => {
+describe("Pair", () => {
     const a = Pair([1], [2]);
     const b = Pair([1], sub1);
-    // const c = Pair([1], add2);
 
-    t.throws(() => Pair(), "first value must be defined");
-    t.throws(() => Pair(1), "second value must be defined");
-    t.equals(a.toString(), "Pair((1), (2))", "should give a Pair");
+    it("should validate constructor arguments", () => {
+        expect(() => Pair()).toThrow("Pair: Both first and second values must be defined");
+        expect(() => Pair(1)).toThrow("Pair: Both first and second values must be defined");
+    });
 
-    t.throws(() => a.map(1), "map expects a function");
-    t.throws(() => a.map(), "map takes one argument as a function");
-    t.deepEqual(unwrap(a.map(add2)), unwrap(Pair([1], [4])), "map");
-    t.deepEqual(
-        compose(unwrap, fmap(id))(a),
-        compose(unwrap)(a),
-        "should pass the identity law"
-    );
+    it("should convert to string correctly", () => {
+        expect(a.toString()).toBe("Pair((1), (2))");
+    });
 
-    const l1 = compose(
-        unwrap,
-        fmap(x => sub1(add2(x)))
-    );
-    const r1 = compose(unwrap, fmap(sub1), fmap(add2));
-    t.deepEqual(l1(a), r1(a), "should pass functor composition law");
+    it("should handle map correctly", () => {
+        expect(() => a.map(1 as any)).toThrow("Pair: Expected a function");
+        expect(() => a.map(undefined as any)).toThrow("Pair: Expected a function");
+        expect(unwrap(a.map(add2))).toEqual(unwrap(Pair([1], [4])));
+    });
 
-    t.throws(() => a.ap(1), "applicative expects a Pair");
-    t.throws(
-        () => a.ap(Pair(1, 1)),
-        "applicative expects second to be a function type"
-    );
-    t.throws(
-        () => Pair(1, 1).ap(Pair(1, add2)),
-        "applicative expects both values to be semigroups"
-    );
-    // t.ok(
-    //     a.ap(c.ap(b.map(p => q => x => p(q(x))))).toString() ===
-    //         a
-    //             .ap(c)
-    //             .ap(b)
-    //             .toString(),
-    //     "should pass applicative composition"
-    // );
+    it("should satisfy identity law", () => {
+        expect(compose(unwrap, fmap(id))(a)).toEqual(compose(unwrap)(a));
+    });
 
-    t.deepEqual(unwrap(Pair.of(1)), unwrap(Pair(1, 1)), "of creates a Pair");
-    t.deepEqual(unwrap(a.of(1)), unwrap(Pair(1, 1)), "of creates a Pair");
+    it("should satisfy functor composition law", () => {
+        const l1 = compose(unwrap, fmap(x => sub1(add2(x))));
+        const r1 = compose(unwrap, fmap(sub1), fmap(add2));
+        expect(l1(a)).toEqual(r1(a));
+    });
 
-    t.ok(
-        Pair([1], [2]).equals(a) === a.equals(Pair([1], [2])),
-        "commutativity"
-    );
-    t.ok(a.equals(a), "reflexivity");
-    t.notOk(Pair([1], [2]).equals(b), "inequality");
+    it("should handle ap correctly", () => {
+        expect(() => a.ap(1 as any)).toThrow("Pair: Pair required");
+        expect(() => a.ap(Pair(1, 1))).toThrow("Pair: Second wrapped value should be a function");
+        expect(() => Pair(1, 1).ap(Pair(1, add2))).toThrow("Pair: Second wrapped value should be a function");
+    });
 
-    t.ok(
-        Pair(1, 2)
-            .swap()
-            .equals(Pair(2, 1)),
-        "swap"
-    );
+    it("should handle of correctly", () => {
+        expect(unwrap(Pair.of(1))).toEqual(unwrap(Pair(1, 1)));
+        expect(unwrap(a.of(1))).toEqual(unwrap(Pair(1, 1)));
+    });
 
-    t.throws(
-        () => a.bimap(1, add2),
-        "bimap expects first paramter as function"
-    );
-    t.throws(
-        () => a.bimap(add2, 2),
-        "bimap expects second paramter as function"
-    );
-    t.ok(a.bimap(add2, add2).toString() === Pair([3], [4]).toString(), "bimap");
+    it("should handle equality correctly", () => {
+        expect(Pair([1], [2]).equals(a)).toBe(a.equals(Pair([1], [2]))); // commutativity
+        expect(a.equals(a)).toBe(true); // reflexivity
+        expect(Pair([1], [2]).equals(b)).toBe(false); // inequality
+    });
 
-    t.throws(() => a.concat(1), "concat expects a Pair");
-    t.throws(
-        () => a.concat(Pair({ a: "1" }, { a: "1" })),
-        "concat expects a Pair with semigroups"
-    );
-    t.ok(
-        a.concat(Pair([2], [2])).toString() === Pair([1, 2], [2, 2]).toString(),
-        "concat"
-    );
+    it("should handle swap correctly", () => {
+        expect(Pair(1, 2).swap().equals(Pair(2, 1))).toBe(true);
+    });
 
-    t.throws(() => a.chain(1), "chain expects a function");
-    t.throws(
-        () => Pair(1, 1).chain(gimmePair),
-        "chain expects fst to be a semigroup"
-    );
-    t.throws(() => a.chain(() => 1), "chain expects function to return a pair");
-    t.throws(
-        () => a.chain(() => Pair.of(1)),
-        "chain expects fst of returned Pair to be a semigroup"
-    );
-    t.ok(
-        gimmePair([1])
-            .chain(gimmePair)
-            .chain(gimmePair)
-            .toString() ===
-            gimmePair([1])
-                .chain(x => gimmePair(x).chain(gimmePair))
-                .toString(),
-        "chain Associativity"
-    );
+    it("should handle bimap correctly", () => {
+        expect(() => a.bimap(1 as any, add2)).toThrow("Pair: Expected functions for both parts");
+        expect(() => a.bimap(add2, 2 as any)).toThrow("Pair: Expected functions for both parts");
+        expect(a.bimap(add2, add2).toString()).toBe(Pair([3], [4]).toString());
+    });
 
-    t.end();
+    it("should handle concat correctly", () => {
+        expect(() => a.concat(1 as any)).toThrow("Pair: Pair required");
+        expect(() => a.concat(Pair({ a: "1" }, { a: "1" }))).toThrow("Pair: Both Pairs must contain Semigroups");
+        expect(a.concat(Pair([2], [2])).toString()).toBe(Pair([1, 2], [2, 2]).toString());
+    });
+
+    it("should handle chain correctly", () => {
+        expect(() => a.chain(1 as any)).toThrow("Pair: Expected a function");
+        expect(() => Pair(1, 1).chain(gimmePair)).toThrow("Pair: First value should be a Semigroup");
+        expect(() => a.chain(() => 1)).toThrow("Pair: Function must return a Pair");
+        expect(() => a.chain(() => Pair.of(1))).toThrow("Pair: First value of the returned Pair should be a Semigrou");
+    });
+
+    it("should satisfy chain associativity", () => {
+        const chain1 = gimmePair([1]).chain(gimmePair).chain(gimmePair).toString();
+        const chain2 = gimmePair([1]).chain(x => gimmePair(x).chain(gimmePair)).toString();
+        expect(chain1).toBe(chain2);
+    });
 });
