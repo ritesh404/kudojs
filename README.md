@@ -21,10 +21,6 @@ const kudoJS = require("fp-kudojs")
 ```
 import kudoJS from "fp-kudojs"
 ```
-### IIFE
-```
-<script src="/path/to/kudo.iife.js"></script>
-```
 ### Import single entities using CommonJS
 ```
 const compose = require("fp-kudojs/function/compose");

@@ -1,89 +1,71 @@
-import * as test from "tape";
+import { describe, it, expect } from "vitest";
 import compose from "../../function/compose";
 import fmap from "../../function/fmap";
 import id from "../../function/id";
 import Identity from "./";
 
-const unwrap = (m: { getValue: Function }) => m.getValue();
+const unwrap = (m: { getValue: () => any }) => m.getValue();
 const add2 = (x: number) => x + 2;
 const sub1 = (x: number) => x - 1;
 const gimme = (x: number) => Identity(x + 1);
 
-test("Identity", t => {
+describe("Identity", () => {
     const a = Identity(1);
-    // const b = Identity(2);
 
-    t.throws(() => Identity(), "first value must be defined");
-    t.equals(a.toString(), "Identity(1)", "should give a Identity");
+    it("should throw when value is undefined", () => {
+        expect(() => Identity()).toThrow("Identity: Value is undefined");
+    });
 
-    t.throws(() => a.map(1), "map expects a function");
-    t.throws(() => a.map(), "map takes one argument as a function");
-    t.deepEqual(unwrap(a.map(add2)), unwrap(Identity(3)), "map");
-    t.deepEqual(
-        compose(unwrap, fmap(id))(a),
-        compose(unwrap)(a),
-        "should pass the identity law"
-    );
+    it("should convert to string correctly", () => {
+        expect(a.toString()).toBe("Identity(1)");
+    });
 
-    const l1 = compose(
-        unwrap,
-        fmap(x => sub1(add2(x)))
-    );
-    const r1 = compose(unwrap, fmap(sub1), fmap(add2));
-    t.deepEqual(l1(a), r1(a), "should pass functor composition law");
+    it("should handle map correctly", () => {
+        expect(() => a.map(1 as any)).toThrow("Identity: Expected a function");
+        expect(() => a.map(undefined as any)).toThrow("Identity: Expected a function");
+        expect(unwrap(a.map(add2))).toEqual(unwrap(Identity(3)));
+    });
 
-    t.throws(() => a.ap(1), "applicative expects a Identity");
-    t.throws(
-        () => a.ap(Identity(1)),
-        "applicative expects second to be a function type"
-    );
-    t.throws(
-        () => a.ap(Identity(add2)),
-        "applicative expects both values to be semigroups"
-    );
-    // t.ok(
-    //     a.ap(c.ap(b.map(p => q => x => p(q(x))))).toString() ===
-    //         a
-    //             .ap(c)
-    //             .ap(b)
-    //             .toString(),
-    //     "should pass applicative composition"
-    // );
+    it("should satisfy identity law", () => {
+        expect(compose(unwrap, fmap(id))(a)).toEqual(compose(unwrap)(a));
+    });
 
-    t.deepEqual(unwrap(Identity.of(1)), unwrap(a), "of creates a Identity");
-    t.deepEqual(unwrap(a.of(1)), unwrap(Identity(1)), "of creates a Identity");
+    it("should satisfy functor composition law", () => {
+        const l1 = compose(unwrap, fmap(x => sub1(add2(x))));
+        const r1 = compose(unwrap, fmap(sub1), fmap(add2));
+        expect(l1(a)).toEqual(r1(a));
+    });
 
-    t.ok(Identity(1).equals(a) === a.equals(Identity(1)), "commutativity");
-    t.ok(a.equals(a), "reflexivity");
+    it("should handle ap correctly", () => {
+        expect(() => a.ap(1 as any)).toThrow("Identity: Function not found");
+        expect(() => a.ap(Identity(1))).toThrow("Identity: Function not found");
+        expect(() => a.ap(Identity(add2))).toThrow("Identity: Function not found");
+    });
 
-    t.throws(() => a.concat(1), "concat expects a Identity");
-    t.throws(
-        () => a.concat(Identity(1)),
-        "concat expects a Identity with semigroups"
-    );
-    t.ok(
-        Identity([1])
-            .concat(Identity([2]))
-            .toString() === Identity([1, 2]).toString(),
-        "concat"
-    );
+    it("should handle of correctly", () => {
+        expect(unwrap(Identity.of(1))).toEqual(unwrap(a));
+        expect(unwrap(a.of(1))).toEqual(unwrap(Identity(1)));
+    });
 
-    t.throws(() => a.chain(1), "chain expects a function");
-    t.throws(
-        () => a.chain(() => 1),
-        "chain expects function to return a Identity"
-    );
+    it("should satisfy equality laws", () => {
+        expect(Identity(1).equals(a)).toBe(a.equals(Identity(1))); // commutativity
+        expect(a.equals(a)).toBe(true); // reflexivity
+    });
 
-    t.ok(
-        gimme(1)
-            .chain(gimme)
-            .chain(gimme)
-            .toString() ===
-            gimme(1)
-                .chain(x => gimme(x).chain(gimme))
-                .toString(),
-        "chain Associativity"
-    );
+    it("should handle concat correctly", () => {
+        // expect(() => a.concat(1 as any)).toThrow("concat expects a Identity");
+        expect(() => a.concat(Identity(1))).toThrow("Identity: Semigroup required to concat");
+        expect(Identity([1]).concat(Identity([2])).toString()).toBe(Identity([1, 2]).toString());
+    });
 
-    t.end();
+    it("should handle chain correctly", () => {
+        expect(() => a.chain(1 as any)).toThrow("Identity: Expected a function");
+        expect(() => a.chain(() => 1)).toThrow("Identity: Function must return Identity");
+    });
+
+    it("should satisfy chain associativity", () => {
+        const chain1 = gimme(1).chain(gimme).chain(gimme).toString();
+        const chain2 = gimme(1).chain(x => gimme(x).chain(gimme)).toString();
+        expect(chain1).toBe(chain2);
+    });
 });

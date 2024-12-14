@@ -1,38 +1,40 @@
-import * as test from "tape";
+import { describe, it, expect } from "vitest";
 
 import Kudo from "./";
 
-test("Entry", t => {
-    t.equals(Kudo.toString(), "[object Object]");
-    t.equals(typeof Kudo.id, "function", "id function check");
-    t.equals(typeof Kudo.once, "function", "once function check");
-    t.equals(typeof Kudo.fmap, "function", "fmap function check");
-    t.equals(typeof Kudo.bimap, "function", "bimap function check");
-    t.equals(typeof Kudo.chain, "function", "chain function check");
-    t.equals(typeof Kudo.caseOf, "function", "caseOf function check");
-    t.equals(typeof Kudo.curry, "function", "curry function check");
-    t.equals(typeof Kudo.ocurry, "function", "ncurry function check");
-    t.equals(typeof Kudo.compose, "function", "compose function check");
-    t.equals(typeof Kudo.constant, "function", "constant function check");
-    t.equals(typeof Kudo.liftAn, "function", "liftAn function check");
-    t.equals(typeof Kudo.liftA2, "function", "liftA2 function check");
-    t.equals(typeof Kudo.liftA3, "function", "liftA3 function check");
-    t.equals(
-        typeof Kudo.maybeToEither,
-        "function",
-        "maybeToEither function check"
-    );
-    t.equals(typeof Kudo.prop, "function", "prop function check");
-    t.equals(
-        typeof Kudo.eitherToMaybe,
-        "function",
-        "eitherToMaybe function check"
-    );
-    t.equals(typeof Kudo.Either, "function", "Either ADT check");
-    t.equals(typeof Kudo.Maybe, "function", "Maybe ADT check");
-    t.equals(typeof Kudo.Task, "function", "Task ADT check");
-    t.equals(typeof Kudo.Pair, "function", "Pair ADT check");
-    t.equals(typeof Kudo.Reader, "function", "Reader ADT check");
-    t.equals(typeof Kudo.State, "function", "State ADT check");
-    t.end();
+describe("Entry", () => {
+    it("should have correct toString representation", () => {
+        expect(Kudo.toString()).toBe("[object Object]");
+    });
+
+    it("should expose helper functions", () => {
+        expect(typeof Kudo.id).toBe("function");
+        expect(typeof Kudo.once).toBe("function");
+        expect(typeof Kudo.fmap).toBe("function");
+        expect(typeof Kudo.bimap).toBe("function");
+        expect(typeof Kudo.chain).toBe("function");
+        expect(typeof Kudo.caseOf).toBe("function");
+        expect(typeof Kudo.curry).toBe("function");
+        expect(typeof Kudo.ocurry).toBe("function");
+        expect(typeof Kudo.compose).toBe("function");
+        expect(typeof Kudo.constant).toBe("function");
+        expect(typeof Kudo.liftAn).toBe("function");
+        expect(typeof Kudo.liftA2).toBe("function");
+        expect(typeof Kudo.liftA3).toBe("function");
+    });
+
+    it("should expose conversion functions", () => {
+        expect(typeof Kudo.maybeToEither).toBe("function");
+        expect(typeof Kudo.eitherToMaybe).toBe("function");
+        expect(typeof Kudo.prop).toBe("function");
+    });
+
+    it("should expose ADTs", () => {
+        expect(typeof Kudo.Either).toBe("function");
+        expect(typeof Kudo.Maybe).toBe("function");
+        expect(typeof Kudo.Task).toBe("function");
+        expect(typeof Kudo.Pair).toBe("function");
+        expect(typeof Kudo.Reader).toBe("function");
+        expect(typeof Kudo.State).toBe("function");
+    });
 });

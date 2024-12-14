@@ -1,15 +1,17 @@
-import * as test from "tape";
+import { describe, it, expect } from "vitest";
 import assoc from "./";
 
-test("assoc", t => {
-    t.throws(
-        () => assoc("d", 1, undefined),
-        "should throw error if object is undefined"
-    );
+describe("assoc", () => {
+    it("should throw error if object is undefined", () => {
+        expect(() => assoc("d", 1, undefined)).toThrow();
+    });
 
-    t.equals(assoc("d", 1, {}).d, 1, "should set the value to a key in object");
+    it("should set the value to a key in object", () => {
+        expect(assoc("d", 1, {}).d).toBe(1);
+    });
 
-    const o = {};
-    t.notEquals(assoc("d", 1, o), o, "should not mutate original object");
-    t.end();
+    it("should not mutate original object", () => {
+        const o = {};
+        expect(assoc("d", 1, o)).not.toBe(o);
+    });
 });

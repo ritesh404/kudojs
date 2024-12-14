@@ -8,7 +8,7 @@ import Maybe from "../Maybe";
 
 abstract class Either<A, B>
     implements Setoid, BiFunctor<A, B>, Monad<B>, PatternMatch {
-    protected _value: A | B;
+    protected _value!: A | B;
 
     public static of<C, D>(v: D): Either<C, D> {
         return new Right(v);
@@ -23,7 +23,7 @@ abstract class Either<A, B>
     }
 
     public static fromNullable<C, D>(v: any): Either<C, D> {
-        return v !== null || v !== undefined ? new Right(v) : new Left(v);
+        return v !== null && v !== undefined ? new Right(v) : new Left(v);
     }
 
     public static withDefault<C, D, F>(
@@ -42,7 +42,7 @@ abstract class Either<A, B>
             try {
                 return new Right<C, D>(f.apply(null, args));
             } catch (e) {
-                return new Left<C, D>(e);
+                return new Left<C, D>(e as C);
             }
         };
     }

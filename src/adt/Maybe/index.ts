@@ -9,7 +9,7 @@ import Either from "./../Either";
 
 export default abstract class Maybe<A>
     implements Setoid, Monad<A>, Alt<A>, PatternMatch {
-    protected _value: A;
+    protected _value!: A;
 
     public static of<B>(v: B): Maybe<B> {
         return new Just(v);
@@ -65,7 +65,7 @@ export default abstract class Maybe<A>
             Nothing: (v: A) => j,
             Just: (v: (a: B) => C) => {
                 if (!isFunction(v))
-                    throw Error("Either: Wrapped value is not a function");
+                    throw Error("Maybe: Wrapped value is not a function");
 
                 return j.map(v);
             }

@@ -1,98 +1,81 @@
 {
     "name": "fp-kudojs",
-    "version": "0.0.0-development",
-    "description": "A utility library to write code in functional programming style in Javascript",
-    "main": "kudo.cjs.js",
-    "module": "kudo.es.js",
-    "types": "index.d.ts",
-    "scripts": {
-        "test": "cross-env npm run build:clean && NODE_ENV=test TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\", \"noImplicitAny\": false}' nyc tape src/*.test.ts src/**/**/*.test.ts | tap-spec",
-        "check-coverage": "nyc check-coverage",
-        "report-coverage": "cat ./coverage/lcov.info | codecov",
-        "build:typescript": "cross-env tsc",
-        "build:js": "cross-env rollup -c",
-        "build": "cross-env npm run build:clean && rollup -c && npm run build:typescript && cp -r ./dist/* . && rm -rf ./dist",
-        "build:clean": "cross-env rm -rf ./dist && rm -rf ./interfaces && rm -rf ./functions && rm -rf ./adt && rm -rf ./index.* && rm -rf ./kudo.*",
-        "precommit": "cross-env lint-staged && npm run test"
-    },
-    "release": {
-        "branches": [
-            "main"
-        ]
-    },
-    "lint-staged": {
-        "*.ts": [
-            "prettier --parser typescript --write",
-            "eslint",
-            "git add"
-        ]
-    },
-    "config": {
-        "commitizen": {
-            "path": "cz-conventional-changelog"
+    "version": "1.0.0",
+    "description": "A small utility library with a collection of popular Algebraic Data Types and Helper functions to help you write code in a functional programming style in Javascript",
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/types/index.d.ts",
+    "unpkg": "./dist/iife/kudo.js",
+    "type": "module",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "require": "./dist/index.js",
+            "types": "./dist/types/index.d.ts"
         },
-        "ghooks": {
-            "pre-commit": "npm run precommit",
-            "commit-msg": "commitlint -e $GIT_PARAMS"
+        "./function/*": {
+            "import": "./dist/function/*.es.js",
+            "require": "./dist/function/*.cjs.js",
+            "types": "./dist/types/function/*.d.ts"
+        },
+        "./adt/*": {
+            "import": "./dist/adt/*.es.js",
+            "require": "./dist/adt/*.cs.js",
+            "types": "./dist/types/adt/*.d.ts"
         }
     },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/breezyboa/kudojs.git"
+    "scripts": {
+        "build": "npm run build:clean && npm run build:types && npm run build:bundle",
+        "build:clean": "rimraf dist",
+        "build:types": "tsc --project tsconfig.build.json",
+        "build:bundle": "vite build",
+        "test": "vitest",
+        "test:coverage": "vitest run --coverage",
+        "lint": "eslint src --ext .ts",
+        "format": "prettier --write \"src/**/*.ts\"",
+        "prepare": "husky install",
+        "semantic-release": "semantic-release"
     },
+    "dependencies": {
+        "tslib": "^2.6.2"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^19.0.3",
+        "@commitlint/config-conventional": "^19.0.3",
+        "@types/node": "^20.11.24",
+        "@typescript-eslint/eslint-plugin": "^7.1.1",
+        "@typescript-eslint/parser": "^7.1.1",
+        "@vitest/coverage-v8": "^1.3.1",
+        "eslint": "^8.57.0",
+        "eslint-config-prettier": "^9.1.0",
+        "glob": "^10.3.10",
+        "husky": "^9.0.11",
+        "prettier": "^3.2.5",
+        "rimraf": "^5.0.5",
+        "typescript": "^5.3.3",
+        "vite": "^5.1.4",
+        "vite-plugin-dts": "^4.3.0",
+        "vitest": "^1.3.1"
+    },
+    "files": [
+        "dist",
+        "src"
+    ],
     "keywords": [
-        "kudojs",
         "functional",
         "programming",
         "fp",
-        "javascript",
+        "pattern matching",
+        "algebraic data types",
         "typescript"
     ],
     "author": "Ritesh Pillai",
     "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/breezyboa/kudojs/issues"
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ritesh404/kudojs.git"
     },
-    "homepage": "https://github.com/breezyboa/kudojs#readme",
-    "devDependencies": {
-        "@commitlint/cli": "^13.1.0",
-        "@commitlint/config-conventional": "^7.6.0",
-        "@istanbuljs/nyc-config-typescript": "^1.0.1",
-        "@types/node": "^14.14.10",
-        "@types/tape": "^4.13.0",
-        "@typescript-eslint/eslint-plugin": "^4.8.2",
-        "@typescript-eslint/eslint-plugin-tslint": "^4.8.2",
-        "@typescript-eslint/parser": "^4.8.2",
-        "babel-core": "^6.26.3",
-        "babel-plugin-external-helpers": "^6.22.0",
-        "babel-preset-env": "^1.7.0",
-        "babelrc-rollup": "^3.0.0",
-        "codecov": "^3.8.1",
-        "cross-env": "^5.2.1",
-        "cz-conventional-changelog": "^2.1.0",
-        "eslint": "^7.14.0",
-        "eslint-config-prettier": "^6.15.0",
-        "eslint-plugin-import": "^2.22.1",
-        "eslint-plugin-jsdoc": "^30.7.8",
-        "eslint-plugin-prefer-arrow": "^1.2.2",
-        "eslint-plugin-prettier": "^3.1.4",
-        "eslint-plugin-react": "^7.21.5",
-        "ghooks": "^2.0.4",
-        "lint-staged": "^6.1.1",
-        "nyc": "^15.1.0",
-        "prettier": "^1.19.1",
-        "rollup": "^2.34.0",
-        "rollup-plugin-babel": "^3.0.7",
-        "rollup-plugin-istanbul": "^2.0.1",
-        "rollup-plugin-typescript2": "^0.29.0",
-        "rollup-plugin-uglify": "^3.0.0",
-        "semantic-release": "^17.3",
-        "tap-spec": "^2.2.2",
-        "tape": "^5.0",
-        "ts-node": "^9.0",
-        "tslib": "^2.0.3",
-        "tslint": "^5.20.1",
-        "tslint-config-prettier": "^1.18.0",
-        "typescript": "^4.0"
+    "engines": {
+        "node": ">=18"
     }
 }

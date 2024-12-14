@@ -1,16 +1,19 @@
-import * as test from "tape";
+import { describe, it, expect } from "vitest";
 import deepClone from "./";
 
-test("deep clone", t => {
-    t.equals(deepClone(1), 1, "should return value if type is not object");
-    const o1 = { d: 1 };
-    t.notEquals(deepClone(o1), o1, "should not mutate original object");
-    const s = { p: 1 };
-    const o2 = { d: s };
-    t.notEquals(
-        deepClone(o2).d,
-        o2.d,
-        "returned value should not be deep equal to original value"
-    );
-    t.end();
+describe("deepClone", () => {
+    it("should return value if type is not object", () => {
+        expect(deepClone(1)).toBe(1);
+    });
+
+    it("should not mutate original object", () => {
+        const o1 = { d: 1 };
+        expect(deepClone(o1)).not.toBe(o1);
+    });
+
+    it("should deep clone nested objects", () => {
+        const s = { p: 1 };
+        const o2 = { d: s };
+        expect(deepClone(o2).d).not.toBe(o2.d);
+    });
 });
