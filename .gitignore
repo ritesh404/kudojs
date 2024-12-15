@@ -19,3 +19,4 @@ interface/*
 *.js
 *.js.map
 .cursorrules
+site/*

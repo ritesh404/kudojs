@@ -2,7 +2,7 @@
 
 ## Reader
 
-The Reader monad represents a computation, which can read values from a shared environment, pass values from function to function, and execute sub-computations in a modified environment. It is also useful when it comes to dependency injections
+The `Reader` monad represents a computation that can read values from a shared environment, pass values from function to function, and execute sub-computations in a modified environment. It is also useful for dependency injection.
 
 **Implements:** <code>[Monad](https://github.com/fantasyland/fantasy-land#monad)</code>
 
@@ -20,33 +20,33 @@ The Reader monad represents a computation, which can read values from a shared e
 
 ### Reader(f)
 
-Reader constructor
+The `Reader` constructor.
 
-| Param | Type                  | Description                                                                                                            |
-| ----- | --------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| f     | <code>function</code> | A function of the form (e -> a) that is wrapped by the Reader, nothing is executed until it is run with an environment |
+| Param | Type                  | Description                                                                                                                 |
+| ----- | --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| f     | <code>function</code> | A function of the form `(e -> a)` that is wrapped by the `Reader`. Nothing is executed until it is run with an environment. |
 
 <a name="Reader.of"></a>
 
 ### Reader.of(v)
 
-Reader constructor that populates the right portion with it's argument. of essentially will lift a value of type a into a Reader
+The `Reader` constructor that populates the right portion with its argument. `of` essentially lifts a value of type `a` into a `Reader`.
 
-| Param | Type             | Description                                     |
-| ----- | ---------------- | ----------------------------------------------- |
-| v     | <code>any</code> | any value that needs to be lifted to the Reader |
+| Param | Type             | Description                                         |
+| ----- | ---------------- | --------------------------------------------------- |
+| v     | <code>any</code> | Any value that needs to be lifted into the `Reader` |
 
 <a name="Reader.toString"></a>
 
 ### Reader.toString()
 
-Get a stringified version of the Reader
+Gets a stringified version of the `Reader`.
 
 <a name="Reader.map"></a>
 
 ### Reader.map(f)
 
-Apply the function f to the right portion of the Reader
+Applies the function `f` to the right portion of the `Reader`.
 
 | Param | Type                  | Description |
 | ----- | --------------------- | ----------- |
@@ -56,34 +56,34 @@ Apply the function f to the right portion of the Reader
 
 ### Reader.getValue()
 
-Get the function within the Reader
+Gets the function within the `Reader`.
 
 <a name="Reader.ap"></a>
 
 ### Reader.ap(t)
 
-ap allows for values wrapped in a Reader to be applied to functions also wrapped in a Reader. In order to use ap, the Reader must contain a function as its value.
+`ap` allows for values wrapped in a `Reader` to be applied to functions also wrapped in a `Reader`. In order to use `ap`, the `Reader` must contain a function as its value.
 
-| Param | Type                           | Description                                |
-| ----- | ------------------------------ | ------------------------------------------ |
-| t     | [<code>Reader</code>](#Reader) | Reader with function as the second element |
+| Param | Type                           | Description                             |
+| ----- | ------------------------------ | --------------------------------------- |
+| t     | [<code>Reader</code>](#Reader) | A `Reader` with a function as its value |
 
 <a name="Reader.chain"></a>
 
 ### Reader.chain(f)
 
-Chain together many computations that return a Reader
+Chains together many computations that return a `Reader`.
 
-| Param | Type                  | Description                          |
-| ----- | --------------------- | ------------------------------------ |
-| f     | <code>function</code> | Function that returns another Reader |
+| Param | Type                  | Description                            |
+| ----- | --------------------- | -------------------------------------- |
+| f     | <code>function</code> | Function that returns another `Reader` |
 
 <a name="Reader.runWith"></a>
 
 ### Reader.runWith(e)
 
-As Reader is a lazy datatype that requires a shared environment to run, it's instance provides a runWith method that takes in an environment and returns the result of the computation.
+Since `Reader` is a lazy datatype that requires a shared environment to run, its instance provides a `runWith` method. This method takes in an environment and returns the result of the computation.
 
-| Param | Type             | Description                                          |
-| ----- | ---------------- | ---------------------------------------------------- |
-| e     | <code>any</code> | An environment that needs to be passed to the Reader |
+| Param | Type             | Description                                            |
+| ----- | ---------------- | ------------------------------------------------------ |
+| e     | <code>any</code> | An environment that needs to be passed to the `Reader` |
