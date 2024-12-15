@@ -1,6 +1,6 @@
 {
     "name": "fp-kudojs",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A small utility library with a collection of popular Algebraic Data Types and Helper functions to help you write code in a functional programming style in Javascript",
     "main": "./dist/index.js",
     "module": "./dist/index.js",
