@@ -1,0 +1,1522 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../setup/">
+      
+      
+        <link rel="next" href="../identity/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.48">
+    
+    
+      
+        <title>Helper Functions - KudoJS Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kudojs-helper-functions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="KudoJS Documentation" class="md-header__button md-logo" aria-label="KudoJS Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            KudoJS Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Helper Functions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="KudoJS Documentation" class="md-nav__button md-logo" aria-label="KudoJS Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    KudoJS Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Helper Functions
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Helper Functions
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#kudojsid" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.id
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojsonce" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.once
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojscurry" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.curry
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojsocurry" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.ocurry
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojscompose" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.compose
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojsconstant" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.constant
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojsfmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.fmap
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojsassoc" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.assoc
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojsbimap" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.bimap
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojschain" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.chain
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojscaseof" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.caseOf
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojsliftan" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.liftAn
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojslifta2" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.liftA2
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojslifta3" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.liftA3
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojslifta4" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.liftA4
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojslifta5" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.liftA5
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojswhen" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.when
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojsprop" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.prop
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojspick" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.pick
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojseithertomaybe" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.eitherToMaybe
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojsmaybetoeither" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.maybeToEither
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Algebraic Data Types
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Algebraic Data Types
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../identity/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Identity
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pair/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pair
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../maybe/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Maybe
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../either/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Either
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reader/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Reader
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../state/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    State
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#kudojsid" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.id
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojsonce" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.once
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojscurry" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.curry
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojsocurry" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.ocurry
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojscompose" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.compose
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojsconstant" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.constant
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojsfmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.fmap
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojsassoc" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.assoc
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojsbimap" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.bimap
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojschain" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.chain
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojscaseof" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.caseOf
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojsliftan" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.liftAn
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojslifta2" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.liftA2
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojslifta3" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.liftA3
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojslifta4" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.liftA4
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojslifta5" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.liftA5
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojswhen" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.when
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojsprop" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.prop
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojspick" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.pick
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojseithertomaybe" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.eitherToMaybe
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kudojsmaybetoeither" class="md-nav__link">
+    <span class="md-ellipsis">
+      kudoJS.maybeToEither
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="kudojs-helper-functions">KudoJS Helper Functions</h1>
+<p>These are the functions under the <code>kudoJS.*</code> namespace:</p>
+<ul>
+<li><a href="#kudojs-helper-functions">KudoJS Helper Functions</a><ul>
+<li><a href="#kudojsid"><code>kudoJS.id</code></a></li>
+<li><a href="#kudojsonce"><code>kudoJS.once</code></a></li>
+<li><a href="#kudojscurry"><code>kudoJS.curry</code></a></li>
+<li><a href="#kudojsocurry"><code>kudoJS.ocurry</code></a></li>
+<li><a href="#kudojscompose"><code>kudoJS.compose</code></a></li>
+<li><a href="#kudojsconstant"><code>kudoJS.constant</code></a></li>
+<li><a href="#kudojsfmap"><code>kudoJS.fmap</code></a></li>
+<li><a href="#kudojsassoc"><code>kudoJS.assoc</code></a></li>
+<li><a href="#kudojsbimap"><code>kudoJS.bimap</code></a></li>
+<li><a href="#kudojschain"><code>kudoJS.chain</code></a></li>
+<li><a href="#kudojscaseof"><code>kudoJS.caseOf</code></a></li>
+<li><a href="#kudojsliftan"><code>kudoJS.liftAn</code></a></li>
+<li><a href="#kudojslifta2"><code>kudoJS.liftA2</code></a></li>
+<li><a href="#kudojslifta3"><code>kudoJS.liftA3</code></a></li>
+<li><a href="#kudojslifta4"><code>kudoJS.liftA4</code></a></li>
+<li><a href="#kudojslifta5"><code>kudoJS.liftA5</code></a></li>
+<li><a href="#kudojswhen"><code>kudoJS.when</code></a></li>
+<li><a href="#kudojsprop"><code>kudoJS.prop</code></a></li>
+<li><a href="#kudojspick"><code>kudoJS.pick</code></a></li>
+<li><a href="#kudojseithertomaybe"><code>kudoJS.eitherToMaybe</code></a></li>
+<li><a href="#kudojsmaybetoeither"><code>kudoJS.maybeToEither</code></a></li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="kudojsid"><code>kudoJS.id</code></h3>
+<p>The identity function. It returns the value given to it.</p>
+<p><code>id(x: any): any</code></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x</td>
+<td><code>*</code></td>
+<td>Any</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kudojsonce"><code>kudoJS.once</code></h3>
+<p>Returns a function that, when called, fires the passed function only once.</p>
+<p><code>once(f: Function): Function</code></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>f</td>
+<td><code>function</code></td>
+<td>Function to be called once</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kudojscurry"><code>kudoJS.curry</code></h3>
+<p>Returns a curried equivalent of the provided function.</p>
+<p><code>curry(fn: Function): Function</code></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fn</td>
+<td><code>function</code></td>
+<td>Function to be curried</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kudojsocurry"><code>kudoJS.ocurry</code></h3>
+<p>Returns a curried equivalent of the provided function, which will accept named arguments in any order.</p>
+<p><code>ocurry(fn: Function, args: Array&lt;string&gt;): Function</code></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fn</td>
+<td><code>function</code></td>
+<td>Function to be curried that accepts a single named argument object</td>
+</tr>
+<tr>
+<td>args</td>
+<td><code>Array.&lt;string&gt;</code></td>
+<td>Array of key names of the function's named argument object</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kudojscompose"><code>kudoJS.compose</code></h3>
+<p>Performs right-to-left function composition.</p>
+<p><code>compose(...fns: Function): Function</code></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>...fns</td>
+<td><code>function</code></td>
+<td>Functions to compose</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kudojsconstant"><code>kudoJS.constant</code></h3>
+<p>Takes any value and returns a function that will return the same value, no matter what you pass to it.</p>
+<p><code>constant(x: any): any</code></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x</td>
+<td><code>*</code></td>
+<td>Any</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kudojsfmap"><code>kudoJS.fmap</code></h3>
+<p>Takes a function and a functor, applies the function to each of the functor's values, and returns a functor.</p>
+<p><code>fmap(fn: (a: A) =&gt; B, f: Functor&lt;A&gt;): Functor&lt;B&gt;</code></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fn</td>
+<td><code>function</code></td>
+<td>Function to be mapped</td>
+</tr>
+<tr>
+<td>f</td>
+<td><code>Functor</code></td>
+<td>Functor</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kudojsassoc"><code>kudoJS.assoc</code></h3>
+<p>Associates a value with the specified key in the object and returns a clone of the original object.</p>
+<p><code>assoc(key: string, value: A, o: {[k:string]: A}): {[k:string]: A}</code></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>key</td>
+<td><code>string</code></td>
+<td>Key</td>
+</tr>
+<tr>
+<td>value</td>
+<td><code>any</code></td>
+<td>Value to be assigned to the key in the object</td>
+</tr>
+<tr>
+<td>o</td>
+<td><code>Object</code></td>
+<td>Object to which the value needs to be assigned against the key</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kudojsbimap"><code>kudoJS.bimap</code></h3>
+<p>Maps both sides of the disjunction.</p>
+<p><code>bimap(f1: (a: A) =&gt; C, f2: (b: B) =&gt; D, b: BiFunctor&lt;A, B&gt;): BiFunctor&lt;C, D&gt;</code></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>f1</td>
+<td><code>function</code></td>
+<td>Function to be applied on the left side of the disjunction</td>
+</tr>
+<tr>
+<td>f2</td>
+<td><code>function</code></td>
+<td>Function to be applied on the right side of the disjunction</td>
+</tr>
+<tr>
+<td>b</td>
+<td><code>BiFunctor</code></td>
+<td>BiFunctor</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kudojschain"><code>kudoJS.chain</code></h3>
+<p>Chains together many computations of the same type.</p>
+<p><code>chain(f: (a: A) =&gt; Monad&lt;B&gt;, m: Monad&lt;A&gt;): Monad&lt;B&gt;</code></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>f</td>
+<td><code>function</code></td>
+<td>Function that returns a Monad</td>
+</tr>
+<tr>
+<td>m</td>
+<td><code>Monad</code></td>
+<td>Monad</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kudojscaseof"><code>kudoJS.caseOf</code></h3>
+<p>Conditional behavior based on the structure of algebraic data types.</p>
+<p><code>caseOf(o: Object, p: ADT): any</code></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>o</td>
+<td><code>Object</code></td>
+<td>An object with key as the ADT constructor name and value as the function expression</td>
+</tr>
+<tr>
+<td>p</td>
+<td><code>PatternMatch</code></td>
+<td>An ADT that supports pattern matching</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong></p>
+<pre><code>import {caseOf, Maybe} from &quot;fp-kudojs&quot;;
+
+const j1 = Maybe.Just(1);
+
+const k1 = caseOf({
+    Nothing: () =&gt; null,
+    Just: (v) =&gt; v+1
+}, j1);
+//k1 = 2;
+</code></pre>
+<hr />
+<h3 id="kudojsliftan"><code>kudoJS.liftAn</code></h3>
+<p>Combines <code>n</code> separate wrapped values into one with a given function.</p>
+<p><code>liftAn(f: (a: A ...an: A) =&gt; B, ar: Array&lt;Apply&lt;A&gt;&gt;): Apply&lt;B&gt;</code></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>f</td>
+<td><code>function</code></td>
+<td>Function with <code>n</code> arguments to be lifted</td>
+</tr>
+<tr>
+<td>ar</td>
+<td><code>Apply</code></td>
+<td>Array of wrapped values (<code>Apply&lt;A&gt;</code>). The values will be passed as arguments to the function <code>f</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kudojslifta2"><code>kudoJS.liftA2</code></h3>
+<p>Combines 2 separate wrapped values into one with a given function.</p>
+<p><code>liftA2(f: (a1: A, a2: A) =&gt; B, ar1: Apply&lt;A&gt;, ar2: Apply&lt;A&gt;): Apply&lt;B&gt;</code></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>f</td>
+<td><code>function</code></td>
+<td>Function to be lifted</td>
+</tr>
+<tr>
+<td>ar1</td>
+<td><code>Apply</code></td>
+<td>Wrapped value (Apply)</td>
+</tr>
+<tr>
+<td>ar2</td>
+<td><code>Apply</code></td>
+<td>Wrapped value (Apply)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kudojslifta3"><code>kudoJS.liftA3</code></h3>
+<p>Combines 3 separate wrapped values into one with a given function.</p>
+<p><code>liftA3(f: (a1: A, a2: A, a3: A) =&gt; B, ar1: Apply&lt;A&gt;, ar2: Apply&lt;A&gt;, ar3: Apply&lt;A&gt;): Apply&lt;B&gt;</code></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>f</td>
+<td><code>function</code></td>
+<td>Function to be lifted</td>
+</tr>
+<tr>
+<td>ar1</td>
+<td><code>Apply</code></td>
+<td>Wrapped value (Apply)</td>
+</tr>
+<tr>
+<td>ar2</td>
+<td><code>Apply</code></td>
+<td>Wrapped value (Apply)</td>
+</tr>
+<tr>
+<td>ar3</td>
+<td><code>Apply</code></td>
+<td>Wrapped value (Apply)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kudojslifta4"><code>kudoJS.liftA4</code></h3>
+<p>Combines 4 separate wrapped values into one with a given function.</p>
+<p><code>liftA4(f: (a1: A, a2: A, a3: A, a4: A) =&gt; B, ar1: Apply&lt;A&gt;, ar2: Apply&lt;A&gt;, ar3: Apply&lt;A&gt;, ar4: Apply&lt;A&gt;): Apply&lt;B&gt;</code></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>f</td>
+<td><code>function</code></td>
+<td>Function to be lifted</td>
+</tr>
+<tr>
+<td>ar1</td>
+<td><code>Apply</code></td>
+<td>Wrapped value (Apply)</td>
+</tr>
+<tr>
+<td>ar2</td>
+<td><code>Apply</code></td>
+<td>Wrapped value (Apply)</td>
+</tr>
+<tr>
+<td>ar3</td>
+<td><code>Apply</code></td>
+<td>Wrapped value (Apply)</td>
+</tr>
+<tr>
+<td>ar4</td>
+<td><code>Apply</code></td>
+<td>Wrapped value (Apply)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kudojslifta5"><code>kudoJS.liftA5</code></h3>
+<p>Combines 5 separate wrapped values into one with a given function.</p>
+<p><code>liftA5(f: (a1: A, a2: A, a3: A, a4: A, a5: A) =&gt; B, ar1: Apply&lt;A&gt;, ar2: Apply&lt;A&gt;, ar3: Apply&lt;A&gt;, ar4: Apply&lt;A&gt;, ar5: Apply&lt;A&gt;): Apply&lt;B&gt;</code></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>f</td>
+<td><code>function</code></td>
+<td>Function to be lifted</td>
+</tr>
+<tr>
+<td>ar1</td>
+<td><code>Apply</code></td>
+<td>Wrapped value (Apply)</td>
+</tr>
+<tr>
+<td>ar2</td>
+<td><code>Apply</code></td>
+<td>Wrapped value (Apply)</td>
+</tr>
+<tr>
+<td>ar3</td>
+<td><code>Apply</code></td>
+<td>Wrapped value (Apply)</td>
+</tr>
+<tr>
+<td>ar4</td>
+<td><code>Apply</code></td>
+<td>Wrapped value (Apply)</td>
+</tr>
+<tr>
+<td>ar5</td>
+<td><code>Apply</code></td>
+<td>Wrapped value (Apply)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kudojswhen"><code>kudoJS.when</code></h3>
+<p>Returns a function that takes one argument and passes it to the given predicate function. If the predicate is satisfied, <code>f</code> is run with the same argument. If the predicate is not satisfied, the argument is returned as is.</p>
+<p><code>when(p: Function, f: Function): Function</code></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>p</td>
+<td><code>function</code></td>
+<td>Predicate function that returns <code>true</code> or <code>false</code> based on the argument passed</td>
+</tr>
+<tr>
+<td>f</td>
+<td><code>function</code></td>
+<td>Function to be executed with the given argument when the predicate is satisfied</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kudojsprop"><code>kudoJS.prop</code></h3>
+<p>Returns a <strong>Maybe Just</strong> if a value exists for the given key; otherwise, returns a <strong>Nothing</strong>.</p>
+<p><code>prop(key: string | number, o: { [k: string]: A; [k: number]: A }): Maybe&lt;A&gt;</code></p>
+<p>| Param | Type                | Description      |
+| ----- | ------------------- | ---------------- | --- |
+| key   | <code>string        | number</code>    | Key |
+| o     | <code>Object</code> | Key-Value Object |</p>
+<hr />
+<h3 id="kudojspick"><code>kudoJS.pick</code></h3>
+<p>Returns a <strong>Maybe Just</strong> containing the object with only the specified keys if values exist for the given keys; otherwise, returns a <strong>Nothing</strong>.</p>
+<p><code>pick(keys: Array&lt;string&gt;, o: { [k: string]: A }): Maybe&lt;{[k: string]: A}&gt;</code></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>keys</td>
+<td><code>Array<string></code></td>
+<td>Keys</td>
+</tr>
+<tr>
+<td>o</td>
+<td><code>Object</code></td>
+<td>Key-Value Object</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kudojseithertomaybe"><code>kudoJS.eitherToMaybe</code></h3>
+<p>Converts an <strong>Either</strong> type to a <strong>Maybe</strong> type.</p>
+<p><code>eitherToMaybe(e: Either&lt;A, B&gt;): Maybe&lt;A&gt;</code></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>e</td>
+<td><code>Either</code></td>
+<td>Either type</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kudojsmaybetoeither"><code>kudoJS.maybeToEither</code></h3>
+<p>Converts a <strong>Maybe</strong> type to an <strong>Either</strong> type.</p>
+<p><code>maybeToEither(m: Maybe&lt;A&gt;): Either&lt;A&gt;</code></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>m</td>
+<td><code>Maybe</code></td>
+<td>Maybe type</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>TODO: Add more documentation and examples</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>
