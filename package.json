@@ -2,26 +2,26 @@
     "name": "fp-kudojs",
     "version": "1.0.2",
     "description": "A small utility library with a collection of popular Algebraic Data Types and Helper functions to help you write code in a functional programming style in Javascript",
-    "main": "./dist/index.js",
-    "module": "./dist/index.js",
-    "types": "./dist/types/index.d.ts",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
     "unpkg": "./dist/iife/kudo.js",
     "type": "module",
     "exports": {
         ".": {
-            "import": "./dist/index.js",
-            "require": "./dist/index.js",
-            "types": "./dist/types/index.d.ts"
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.cjs",
+            "types": "./dist/index.d.ts"
         },
         "./function/*": {
-            "import": "./dist/function/*.es.js",
-            "require": "./dist/function/*.cjs.js",
-            "types": "./dist/types/function/*.d.ts"
+            "import": "./dist/function/*/index.mjs",
+            "require": "./dist/function/*/index.cjs",
+            "types": "./dist/function/*/index.d.ts"
         },
         "./adt/*": {
-            "import": "./dist/adt/*.es.js",
-            "require": "./dist/adt/*.cs.js",
-            "types": "./dist/types/adt/*.d.ts"
+            "import": "./dist/adt/*/index.mjs",
+            "require": "./dist/adt/*/index.cjs",
+            "types": "./dist/adt/*/index.d.ts"
         }
     },
     "scripts": {

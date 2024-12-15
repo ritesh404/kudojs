@@ -16,37 +16,47 @@ const entries = Object.fromEntries(
 export default defineConfig({
     build: {
         lib: {
-            entry: entries,
+            entry: {
+                index: resolve(__dirname, "src/index.ts"),
+                ...entries,
+            },
             formats: ["es", "cjs"],
+            fileName: (format, entryName) => {
+                const extension = format === "es" ? ".mjs" : ".cjs";
+                return `${entryName}${extension}`;
+            },
         },
         rollupOptions: {
             external: ["tslib"],
             output: [
                 {
-                    // preserveModules: true,
+                    preserveModules: true,
                     preserveModulesRoot: "src",
-                    entryFileNames: `[name].es.js`,
                     dir: "dist",
                     format: "es",
+                    entryFileNames: "[name].mjs",
                 },
                 {
-                    // preserveModules: true,
+                    preserveModules: true,
                     preserveModulesRoot: "src",
-                    entryFileNames: `[name].cjs.js`,
                     dir: "dist",
                     format: "cjs",
+                    entryFileNames: "[name].cjs",
                 },
             ],
         },
-        sourcemap: true,
-        minify: "esbuild",
-        target: "es2022",
     },
     plugins: [
         dts({
-            rollupTypes: true,
-            include: ["src"],
-            outDir: ["dist/types"],
+            rollupTypes: false,
+            include: ["src/**/*.ts"],
+            exclude: ["src/**/*.test.ts"],
+            compilerOptions: {
+                baseUrl: ".",
+                paths: {
+                    "@/*": ["./src/*"],
+                },
+            },
         }),
     ],
 });

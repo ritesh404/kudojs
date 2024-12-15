@@ -45,5 +45,5 @@ export default {
     ocurry,
     once,
     pick,
-    prop
+    prop,
 };
