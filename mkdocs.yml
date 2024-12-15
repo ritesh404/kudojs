@@ -1,0 +1,15 @@
+site_name: KudoJS Documentation
+theme:
+    name: material
+nav:
+    - Home: README.md
+    - Setup: setup.md
+    - Helper Functions: helper-functions.md
+    - Algebraic Data Types:
+          - Identity: identity.md
+          - Pair: pair.md
+          - Maybe: maybe.md
+          - Either: either.md
+          - Task: task.md
+          - Reader: reader.md
+          - State: state.md
