@@ -18,3 +18,4 @@ interface/*
 *.d.ts
 *.js
 *.js.map
+.cursorrules
