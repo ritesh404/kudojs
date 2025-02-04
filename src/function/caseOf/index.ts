@@ -11,8 +11,8 @@ function caseOf<A, B>(
         else {
             // @ts-ignore
             if (o[p]) return o[p](p);
-            if (o._) return o._();
-            if (o.default) return o.default();
+            if (o._) return o._(p as unknown as A);
+            if (o.default) return o.default(p as unknown as A);
         }
     } else if (isFunction(p.caseOf)) return p.caseOf(o);
     throw Error("caseOf: Unable to pattern match");
