@@ -1,3 +1,5 @@
-export default interface PatternMatch {
-    caseOf(o: { [k: string]: (a: any) => any }): any;
+interface PatternMatch {
+    caseOf<T>(o: { [k: string]: (...args: any[]) => T }): T;
 }
+
+export default PatternMatch;

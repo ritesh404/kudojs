@@ -12,7 +12,7 @@ const ar = [
     Maybe.Just(2),
     Maybe.Just(3),
     Maybe.Nothing(),
-    Maybe.Just(5)
+    Maybe.Just(5),
 ];
 const unwrap = (m: { getValue: () => any }) => m.getValue();
 const add2 = (a: number) => a + 2;
@@ -21,7 +21,7 @@ const sub1 = (a: number) => a - 1;
 describe("Maybe", () => {
     const a = Maybe.Just(1);
     const b = Maybe.Just(add2);
-    const e = Maybe.Nothing();
+    const e: Maybe<number> = Maybe.Nothing();
 
     it("should handle Just and Nothing type checks", () => {
         expect(Maybe.isJust(a)).toBe(true);
@@ -45,7 +45,10 @@ describe("Maybe", () => {
     });
 
     it("should satisfy composition law", () => {
-        const l1 = compose(unwrap, fmap(x => sub1(add2(x))));
+        const l1 = compose(
+            unwrap,
+            fmap((x) => sub1(add2(x))),
+        );
         const r1 = compose(unwrap, fmap(sub1), fmap(add2));
         expect(l1(a)).toBe(r1(a));
         expect(l1(e)).toBe(r1(e));
@@ -66,7 +69,9 @@ describe("Maybe", () => {
     it("should handle fromNullable correctly", () => {
         expect(unwrap(Maybe.fromNullable(1))).toBe(unwrap(a));
         expect(unwrap(Maybe.fromNullable(null))).toBe(unwrap(Maybe.Nothing()));
-        expect(unwrap(Maybe.fromNullable(undefined))).toBe(unwrap(Maybe.Nothing()));
+        expect(unwrap(Maybe.fromNullable(undefined))).toBe(
+            unwrap(Maybe.Nothing()),
+        );
     });
 
     it("should handle withDefault correctly", () => {
@@ -91,31 +96,45 @@ describe("Maybe", () => {
 
     it("should handle chain correctly", () => {
         expect(() => a.chain(1 as any)).toThrow("Maybe: Expected a function");
-        
+
         // Chain associativity for Just
         const chainJust1 = prop("a")(data).chain(prop("b")).chain(prop("c"));
-        const chainJust2 = prop("a")(data).chain(x => prop("b")(x).chain(prop("c")));
+        const chainJust2 = prop("a")(data).chain((x) =>
+            prop("b")(x).chain(prop("c")),
+        );
         expect(chainJust1.equals(chainJust2)).toBe(true);
 
         // Chain associativity for Nothing
         const chainNothing1 = prop("a")(data).chain(prop("d")).chain(prop("c"));
-        const chainNothing2 = prop("a")(data).chain(x => prop("d")(x).chain(prop("c")));
+        const chainNothing2 = prop("a")(data).chain((x) =>
+            prop("d")(x).chain(prop("c")),
+        );
         expect(chainNothing1.equals(chainNothing2)).toBe(true);
     });
 
     it("should handle pattern matching correctly", () => {
-        caseOf({
-            Just: v => expect(v).toBe(1),
-            Nothing: x => x
-        }, a);
+        caseOf(
+            {
+                Just: (v) => expect(v).toBe(1),
+                Nothing: (x) => x,
+            },
+            a,
+        );
 
-        caseOf({
-            Nothing: v => expect(v).toBeFalsy(),
-            Just: x => x
-        }, e);
+        caseOf(
+            {
+                Nothing: (v) => expect(v).toBeFalsy(),
+                Just: (x) => x,
+            },
+            e,
+        );
 
-        expect(() => caseOf({ Nothing: id }, a)).toThrow("Maybe: Expected Just");
-        expect(() => caseOf({ Just: id }, e)).toThrow("Maybe: Expected Nothing");
+        expect(() => caseOf({ Nothing: id }, a)).toThrow(
+            "Maybe: Expected Just",
+        );
+        expect(() => caseOf({ Just: id }, e)).toThrow(
+            "Maybe: Expected Nothing",
+        );
     });
 
     it("should handle catMaybes correctly", () => {
@@ -133,8 +152,12 @@ describe("Maybe", () => {
 
     it("should handle prop correctly", () => {
         const data1 = { a: "A" };
-        expect(() => prop({} as any, data)).toThrow("Key should be either string or number");
-        expect(() => prop(1, "data" as any)).toThrow("Cannot use 'in' operator to search for '1' in data");
+        expect(() => prop({} as any, data)).toThrow(
+            "Key should be either string or number",
+        );
+        expect(() => prop(1, "data" as any)).toThrow(
+            "Cannot use 'in' operator to search for '1' in data",
+        );
         expect(prop("a", data1).equals(Maybe.Just("A"))).toBe(true);
         expect(prop("b", data1).equals(Maybe.Nothing())).toBe(true);
     });

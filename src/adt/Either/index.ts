@@ -7,7 +7,8 @@ import Setoid from "../../interface/Setoid";
 import Maybe from "../Maybe";
 
 abstract class Either<A, B>
-    implements Setoid, BiFunctor<A, B>, Monad<B>, PatternMatch {
+    implements Setoid, BiFunctor<A, B>, Monad<B>, PatternMatch
+{
     protected _value!: A | B;
 
     public static of<C, D>(v: D): Either<C, D> {
@@ -26,11 +27,12 @@ abstract class Either<A, B>
         return v !== null && v !== undefined ? new Right(v) : new Left(v);
     }
 
-    public static withDefault<C, D, F>(
-        def: any,
-        v: Either<F, D>
-    ): Either<C, D> {
-        return v.caseOf({ Left: () => Either.of(def), Right: () => v });
+    public static withDefault<A, B>(
+        def: B | null | undefined,
+        v: B,
+    ): Either<A, B> {
+        if (def === null || def === undefined) return new Right(v);
+        return new Right(def);
     }
 
     public static swap<C, D>(e: Either<C, D>) {
@@ -38,7 +40,7 @@ abstract class Either<A, B>
     }
 
     public static try(f: Function) {
-        return <C, D>(...args: Array<any>): Either<C, D> => {
+        return <C, D>(...args: Array<unknown>): Either<C, D> => {
             try {
                 return new Right<C, D>(f.apply(null, args));
             } catch (e) {
@@ -50,7 +52,7 @@ abstract class Either<A, B>
     public static bimap<G, K, C, D>(
         e: Either<G, K>,
         fl: (a: G) => C,
-        fr: (b: K) => D
+        fr: (b: K) => D,
     ) {
         return e.bimap(fl, fr);
     }
@@ -62,21 +64,19 @@ abstract class Either<A, B>
     public static isRight<C, D>(v: Either<C, D>): boolean {
         return v.isRight();
     }
-    // @ts-ignore
-    public of<C>(v: C): Either<A, C> {
-        return new Right(v);
+
+    public of(v: B): Either<A, B> {
+        return new Right<A, B>(v);
     }
 
-    // @ts-ignore
-    public ap<C, D>(j: Either<C, B>): Either<C, D> {
+    public ap<C, D, E>(j: Either<C, D>): Either<C, E> {
         return this.caseOf({
-            Left: (v: A) => j,
-            Right: (v: (a: B) => D) => {
+            Left: (v: A) => j as unknown as Either<C, E>,
+            Right: (v: B) => {
                 if (!isFunction(v))
                     throw Error("Either: Wrapped value is not a function");
-
-                return j.map(v);
-            }
+                return j.map(v as unknown as (a: D) => E);
+            },
         });
     }
 
@@ -89,13 +89,12 @@ abstract class Either<A, B>
 
     public abstract bimap<C, D>(fl: (a: A) => C, fr: (a: B) => D): Either<C, D>;
 
-    // @ts-ignore
     public abstract chain<C>(f: (a: B) => Either<A, C>): Either<A, C>;
 
-    public abstract caseOf(o: {
-        Left: (a: any) => any;
-        Right: (a: any) => any;
-    }): any;
+    public abstract caseOf<A, B, T>(o: {
+        Left: (a: A) => T;
+        Right: (a: B) => T;
+    }): T;
 
     public abstract swap(): Either<A, B>;
 
@@ -224,7 +223,7 @@ export const maybeToEither = <A>(m: Maybe<A>) =>
     caseOf(
         {
             Nothing: (v: any) => Either.Left(null),
-            Just: (v: any) => Either.Right(v)
+            Just: (v: any) => Either.Right(v),
         },
-        m
+        m,
     );
