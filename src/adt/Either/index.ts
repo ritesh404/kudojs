@@ -91,10 +91,7 @@ abstract class Either<A, B>
 
     public abstract chain<C>(f: (a: B) => Either<A, C>): Either<A, C>;
 
-    public abstract caseOf<A, B, T>(o: {
-        Left: (a: A) => T;
-        Right: (a: B) => T;
-    }): T;
+    public abstract caseOf<T>(o: { Left: (a: A) => T; Right: (a: B) => T }): T;
 
     public abstract swap(): Either<A, B>;
 
@@ -158,9 +155,9 @@ class Left<A, B> extends Either<A, B> {
         return `Left(${this.getValue()})`;
     }
 
-    public caseOf(o: { Left: Function; Right: Function }) {
+    public caseOf<C>(o: { Left: (a: A) => C; Right: (a: B) => C }): C {
         if (!o.Right) throw new Error("Either: case for Right missing");
-        if (o.Left) return o.Left(this.getValue());
+        if (o.Left) return o.Left(this.getValue() as A);
         else throw Error("Either: Expected Left!");
     }
 }
@@ -210,9 +207,9 @@ class Right<A, B> extends Either<A, B> {
         return `Right(${this.getValue()})`;
     }
 
-    public caseOf(o: { Right: Function; Left: Function }) {
+    public caseOf<C>(o: { Right: (a: B) => C; Left: (a: A) => C }): C {
         if (!o.Left) throw new Error("Either: case for Left missing");
-        if (o.Right) return o.Right(this.getValue());
+        if (o.Right) return o.Right(this.getValue() as B);
         else throw Error("Either: Expected Right");
     }
 }
